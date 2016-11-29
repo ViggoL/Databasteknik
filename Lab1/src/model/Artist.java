@@ -12,6 +12,10 @@ public class Artist {
 		this.setBio(bio);
 	}
 
+	public Artist() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getId() {
 		return id;
 	}
