@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-public class JVDB {
+public class JVDB implements JvdbInterface {
     private Connection conn = null;
     private PreparedStatement stmt = null;
     private String db = "jvdb", usr = "client", pwd = "lab", port = "3306", host = "viggolunden.com";
@@ -17,15 +17,27 @@ public class JVDB {
         stmt = conn.prepareStatement("");
     }
 
-    public void close() throws SQLException {
+    /* (non-Javadoc)
+	 * @see src.model.JvdbInterface#close()
+	 */
+    @Override
+	public void close() throws SQLException {
         conn.close();
     }
 
-    public boolean isOpen() throws SQLException {
+    /* (non-Javadoc)
+	 * @see src.model.JvdbInterface#isOpen()
+	 */
+    @Override
+	public boolean isOpen() throws SQLException {
         return !conn.isClosed();
     }
 
-    public List<User> getUsers() throws SQLException {
+    /* (non-Javadoc)
+	 * @see src.model.JvdbInterface#getUsers()
+	 */
+    @Override
+	public List<User> getUsers() throws SQLException {
         String sql = "SELECT * FROM users";
         ResultSet resultSet = stmt.executeQuery(sql);
         List<User> users = new ArrayList<>();
@@ -36,7 +48,11 @@ public class JVDB {
         }
         return users;
     }
-    public boolean addUser(String userName, String password, String email) throws SQLException {
+    /* (non-Javadoc)
+	 * @see src.model.JvdbInterface#addUser(java.lang.String, java.lang.String, java.lang.String)
+	 */
+    @Override
+	public boolean addUser(String userName, String password, String email) throws SQLException {
         String sql = "INSERT INTO users (userName, pwHash, email) VALUES (?, ?, ?);";
 
         stmt = conn.prepareStatement(sql);
@@ -45,7 +61,11 @@ public class JVDB {
         stmt.setString(3, email);
         return stmt.executeUpdate() != 0;
     }
-    public List<Movie> getMovies() throws SQLException
+    /* (non-Javadoc)
+	 * @see src.model.JvdbInterface#getMovies()
+	 */
+    @Override
+	public List<Movie> getMovies() throws SQLException
     {
     	// Get all movies
     	String sql = "SELECT * FROM movies";
@@ -78,6 +98,10 @@ public class JVDB {
     	
     }
 
+	/* (non-Javadoc)
+	 * @see src.model.JvdbInterface#getArtists()
+	 */
+	@Override
 	public List<Artist> getArtists() throws SQLException {
 		String sql = "SELECT * FROM artists";
 		ResultSet rs = stmt.executeQuery(sql);
@@ -90,6 +114,10 @@ public class JVDB {
 		return artists;
 	}
 	
+	/* (non-Javadoc)
+	 * @see src.model.JvdbInterface#getGenres()
+	 */
+	@Override
 	public List<Genre> getGenres() throws SQLException {
 		String sql = "SELECT * FROM genres";
 		ResultSet rs = stmt.executeQuery(sql);
