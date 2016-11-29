@@ -1,2 +1,0 @@
-INDEX VERSION 1.129+/Users/jlipecki/Documents/Studier_2015_2018/Ht 16/Databasteknik/Databaser/Databasteknik_Viggos/.metadata/.plugins/org.eclipse.jdt.core
-460390469.index
