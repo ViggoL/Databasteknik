@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/Viggo/Desktop/mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="lib" path="D:/Dropbox/Skola/Databasteknik/Lab1/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="D:/Downloads/ui-3.5.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
