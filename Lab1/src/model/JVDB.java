@@ -78,4 +78,28 @@ public class JVDB {
     	
     }
 
+	public List<Artist> getArtists() throws SQLException {
+		String sql = "SELECT * FROM artists";
+		ResultSet rs = stmt.executeQuery(sql);
+		List<Artist> artists = new ArrayList<>();
+		while (rs.next()) 
+		{
+			Artist a = new Artist(rs.getInt(1), rs.getString(2), rs.getString(3));
+			artists.add(a);
+		}
+		return artists;
+	}
+	
+	public List<Genre> getGenres() throws SQLException {
+		String sql = "SELECT * FROM genres";
+		ResultSet rs = stmt.executeQuery(sql);
+		List<Genre> genres = new ArrayList<>();
+		while (rs.next())
+		{
+			Genre g = new Genre(rs.getInt(1), rs.getString(2));
+			genres.add(g);
+		}
+		return genres;
+	}
+
 }
