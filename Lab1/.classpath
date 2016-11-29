@@ -3,5 +3,6 @@
 	<classpathentry kind="src" path=""/>
 	<classpathentry exported="true" kind="lib" path="commons-codec-1.10.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_101]"/>
+	<classpathentry kind="lib" path="/Users/Viggo/Desktop/Databasteknik/Databasteknik/Lab1/mysql-connector-java-5.1.40-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
