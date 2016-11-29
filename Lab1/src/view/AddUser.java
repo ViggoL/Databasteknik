@@ -1,4 +1,4 @@
-package view;
+package src.view;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import model.JVDB;
+import src.model.*;
 
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -30,7 +30,7 @@ public class AddUser extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddUser(JVDB jvdb) {
+	public AddUser(final JVDB jvdb) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 139, 300);
 		contentPane = new JPanel();
@@ -58,11 +58,11 @@ public class AddUser extends JFrame {
 		btnOK.setBounds(10, 227, 102, 23);
 		contentPane.add(btnOK);
 		
-		TextField txtUsername = new TextField();
+		final TextField txtUsername = new TextField();
 		txtUsername.setBounds(10, 31, 102, 22);
 		contentPane.add(txtUsername);
 		
-		TextField txtEmail = new TextField();
+		final TextField txtEmail = new TextField();
 		txtEmail.setBounds(10, 79, 102, 22);
 		contentPane.add(txtEmail);
 		

@@ -1,9 +1,11 @@
+package src;
 
-import view.*;
+
+import src.view.*;
 import java.sql.SQLException;
 import java.util.List;
 
-import model.*;
+import src.model.*;
 
 
 public class Main {

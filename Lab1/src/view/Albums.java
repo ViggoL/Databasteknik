@@ -1,4 +1,4 @@
-package view;
+package src.view;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import model.JVDB;
+import src.model.*;
 
 import java.awt.Checkbox;
 import java.awt.Button;
@@ -25,7 +25,7 @@ public class Albums extends JFrame {
 	 * Create the frame.
 	 * @param jvdb 
 	 */
-	public Albums(JVDB jvdb) {
+	public Albums(final JVDB jvdb) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 351, 341);
 		contentPane = new JPanel();

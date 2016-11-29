@@ -1,5 +1,5 @@
-package view;
-import model.*;
+package src.view;
+import src.model.*;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
