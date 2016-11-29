@@ -33,7 +33,7 @@ public class AddAlbum extends JFrame {
 	 * Create the frame.
 	 * @param jvdb 
 	 */
-	public AddAlbum(JVDB jvdb) {
+	public AddAlbum(JvdbInterface jvdb) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 341, 219);
 		contentPane = new JPanel();

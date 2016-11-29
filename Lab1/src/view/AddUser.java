@@ -30,7 +30,7 @@ public class AddUser extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddUser(final JVDB jvdb) {
+	public AddUser(final JvdbInterface jvdb) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 139, 300);
 		contentPane = new JPanel();

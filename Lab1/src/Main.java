@@ -11,7 +11,7 @@ import src.model.*;
 public class Main {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		JVDB jvdb = new JVDB();
+		JvdbInterface jvdb = new JVDB();
 		Albums a = new Albums(jvdb);
 		a.show();
 	}

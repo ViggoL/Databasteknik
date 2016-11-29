@@ -25,7 +25,7 @@ public class Albums extends JFrame {
 	 * Create the frame.
 	 * @param jvdb 
 	 */
-	public Albums(final JVDB jvdb) {
+	public Albums(final JvdbInterface jvdb) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 351, 341);
 		contentPane = new JPanel();
