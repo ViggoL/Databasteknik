@@ -163,6 +163,26 @@ public class JVDB implements JvdbInterface {
 		return movies;
 	}
 
+	public List<Album> getAlbumByDate(Date date) throws SQLException
+	{
+		// Get all Albums
+    	String sql = "SELECT * FROM albums WHERE albumReleaseDate=?";
+    	stmt = conn.prepareStatement(sql);
+    	stmt.setDate(1, date);
+    	ResultSet resultSet = stmt.executeQuery();
+    	List<Album> albums = new ArrayList<>();
+    	while (resultSet.next())
+    	{
+    		Album album = new Album();
+    		album.setId(resultSet.getInt(1));
+    		album.setName(resultSet.getString(2));
+    		album.setReleaseDate(resultSet.getDate(3));
+    		albums.add(album);
+    	}
+    	return albums;
+	}
+	
+	
 	@Override
 	public List<Album> getAlbums() throws SQLException {
     	// Get all Albums
@@ -175,6 +195,7 @@ public class JVDB implements JvdbInterface {
     		album.setId(resultSet.getInt(1));
     		album.setName(resultSet.getString(2));
     		album.setReleaseDate(resultSet.getDate(3));
+    		album.setRating(resultSet.getInt(4));
     		albums.add(album);
     	}
     	// Get the genres and artists for each album
@@ -210,10 +231,11 @@ public class JVDB implements JvdbInterface {
 	public void addAlbum(Album album) throws SQLException, NullPointerException {
 		try{
 			conn.setAutoCommit(false);
-			String sql = "INSERT INTO albums (albumName, albumReleaseDate) VALUES (?,?);";
+			String sql = "INSERT INTO albums (albumName, albumReleaseDate) VALUES (?,?,?);";
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, album.getName());
 			stmt.setDate(2, album.getReleaseDate());
+			stmt.setInt(3, album.getRating());
 			stmt.executeUpdate();
 			ResultSet keys = stmt.getGeneratedKeys();
 			keys.next();

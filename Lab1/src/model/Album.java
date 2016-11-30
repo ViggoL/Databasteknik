@@ -10,14 +10,16 @@ public class Album {
 	private Date releaseDate;
 	private List<Artist> artists = new ArrayList<Artist>();
 	private List<Genre> genres = new ArrayList<Genre>();
+	private int rating;
 	
 	
-	public Album(int id, String name, Date releaseDate, List<Artist> artists)
+	public Album(int id, String name, Date releaseDate, List<Artist> artists, int rating)
 	{
 		this.id = id;
 		this.name = name;
 		this.releaseDate = releaseDate;
 		this.setArtists(artists);
+		this.rating = rating;
 	}
 	
 	public Album() {
@@ -57,5 +59,24 @@ public class Album {
 
 	public void setGenres(List<Genre> genres) {
 		this.genres = genres;
+	}
+	
+	public Object[] getArray()
+	{
+		Object[] arr = new Object[5];
+		arr[0] = this.name;
+		arr[1] = this.releaseDate;
+		arr[2] = this.artists;
+		arr[3] = this.genres;
+		arr[4] = this.rating;
+		return arr;
+	}
+
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 }
