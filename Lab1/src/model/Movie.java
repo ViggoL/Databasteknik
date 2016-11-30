@@ -1,13 +1,14 @@
 package src.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Movie {
 	private int id;
 	private String name;
 	private Date releaseDate;
-	private List<Director> directors;
+	private List<Director> directors = new ArrayList<>();
 	
 	public Movie(){
 		

@@ -1,13 +1,15 @@
 package src.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Album {
 	private int id;
 	private String name;
 	private Date releaseDate;
-	private List<Artist> artists;
+	private List<Artist> artists = new ArrayList<Artist>();
+	private List<Genre> genres = new ArrayList<Genre>();
 	
 	
 	public Album(int id, String name, Date releaseDate, List<Artist> artists)
@@ -18,6 +20,10 @@ public class Album {
 		this.setArtists(artists);
 	}
 	
+	public Album() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -43,5 +49,13 @@ public class Album {
 
 	public void setArtists(List<Artist> artists) {
 		this.artists = artists;
+	}
+
+	public List<Genre> getGenres() {
+		return genres;
+	}
+
+	public void setGenres(List<Genre> genres) {
+		this.genres = genres;
 	}
 }

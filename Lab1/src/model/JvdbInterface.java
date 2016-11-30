@@ -15,8 +15,14 @@ public interface JvdbInterface {
 
 	List<Movie> getMovies() throws SQLException;
 
+	List<Movie> getMoviesByName(String name) throws SQLException;
+	
 	List<Artist> getArtists() throws SQLException;
 
 	List<Genre> getGenres() throws SQLException;
 
+	List<Album> getAlbums() throws SQLException;
+
+	void addAlbum(Album album) throws SQLException;
+	
 }

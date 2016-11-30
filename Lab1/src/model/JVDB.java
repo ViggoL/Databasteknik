@@ -98,6 +98,8 @@ public class JVDB implements JvdbInterface {
     	
     }
 
+    
+    
 	/* (non-Javadoc)
 	 * @see src.model.JvdbInterface#getArtists()
 	 */
@@ -128,6 +130,123 @@ public class JVDB implements JvdbInterface {
 			genres.add(g);
 		}
 		return genres;
+	}
+
+	@Override
+	public List<Movie> getMoviesByName(String name) throws SQLException {
+		String sql = "SELECT * FROM movies WHERE movieName=?";
+		stmt = conn.prepareStatement(sql);
+		stmt.setString(1, name);
+		ResultSet rs = stmt.executeQuery();
+		List<Movie> movies = new ArrayList<>();
+		while (rs.next())
+		{
+			Movie movie = new Movie();
+			movie.setId(rs.getInt(1));
+			movie.setName(rs.getString(2));
+			movie.setReleaseDate(rs.getDate(3));
+		}
+    	for (Movie m : movies)
+    	{
+        	sql = "SELECT directors.* FROM directors, tr_movies_directors WHERE directors.directorId=tr_movies_directors.directorId AND tr_movies_directors.movieId=?;";
+        	stmt = conn.prepareStatement(sql);
+        	stmt.setInt(1, m.getId());
+        	rs = stmt.executeQuery();
+        	List<Director> directors = new ArrayList<>();
+        	while (rs.next())
+        	{
+        		Director d = new Director(rs.getInt(1), rs.getString(2), rs.getString(3));
+        		directors.add(d);
+        	}
+        	m.setDirectors(directors);
+    	}	
+		return movies;
+	}
+
+	@Override
+	public List<Album> getAlbums() throws SQLException {
+    	// Get all Albums
+    	String sql = "SELECT * FROM albums";
+    	ResultSet resultSet = stmt.executeQuery(sql);
+    	List<Album> albums = new ArrayList<>();
+    	while (resultSet.next())
+    	{
+    		Album album = new Album();
+    		album.setId(resultSet.getInt(1));
+    		album.setName(resultSet.getString(2));
+    		album.setReleaseDate(resultSet.getDate(3));
+    		albums.add(album);
+    	}
+    	// Get the genres and artists for each album
+    	for (Album album : albums)
+    	{
+        	sql = "SELECT artists.* FROM artists, tr_albums_artists WHERE artists.artistId=tr_albums_artists.artistId AND tr_albums_artists.albumId=?;";
+        	stmt = conn.prepareStatement(sql);
+        	stmt.setInt(1, album.getId());
+        	resultSet = stmt.executeQuery();
+        	List<Artist> artists = new ArrayList<>();
+        	while (resultSet.next())
+        	{
+        		Artist a = new Artist(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3));
+        		artists.add(a);
+        	}
+        	album.setArtists(artists);
+        	sql = "SELECT genres.* FROM genres, tr_albums_genres WHERE genres.genreId=tr_albums_genres.genreId AND tr_albums_genres.albumId=?;";
+        	stmt = conn.prepareStatement(sql);
+        	stmt.setInt(1, album.getId());
+        	resultSet = stmt.executeQuery();
+        	List<Genre> genres = new ArrayList<>();
+        	while (resultSet.next())
+        	{
+        		Genre g = new Genre(resultSet.getInt(1), resultSet.getString(2));
+        		genres.add(g);
+        	}
+        	album.setGenres(genres);
+    	}
+    	return albums;
+	}
+
+	@Override
+	public void addAlbum(Album album) throws SQLException, NullPointerException {
+		try{
+			conn.setAutoCommit(false);
+			String sql = "INSERT INTO albums (albumName, albumReleaseDate) VALUES (?,?);";
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, album.getName());
+			stmt.setDate(2, album.getReleaseDate());
+			stmt.executeUpdate();
+			ResultSet keys = stmt.getGeneratedKeys();
+			keys.next();
+			int albumId = keys.getInt(1);
+			for (Artist a : album.getArtists())
+			{
+				sql = "INSERT INTO tr_albums_artists (artistId, albumId) VALUES (?,?);";
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, a.getId());
+				stmt.setInt(2, albumId);
+				stmt.executeUpdate();
+			}
+			for (Genre g : album.getGenres())
+			{
+				sql = "INSERT INTO tr_albums_genres (genreId, albumId) VALUES (?,?);";
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, g.getId());
+				stmt.setInt(2, albumId);
+				stmt.executeUpdate();
+			}
+			
+			conn.commit();
+		} 
+		catch (SQLException sqlex)
+		{
+			conn.rollback();
+		}
+		
+		finally {
+			conn.setAutoCommit(true);
+		}
+
+		
 	}
 
 }
