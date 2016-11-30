@@ -41,7 +41,17 @@ public class Albums extends JFrame {
 				
 			}
 		});
-		btnAddAlbum.setBounds(10, 11, 89, 23);
+		btnAddAlbum.setBounds(10, 11, 156, 23);
 		contentPane.add(btnAddAlbum);
+		
+		JButton btnSearch = new JButton("Search albums");
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ShowAlbums sa = new ShowAlbums(jvdb);
+				sa.show();
+			}
+		});
+		btnSearch.setBounds(10, 45, 156, 23);
+		contentPane.add(btnSearch);
 	}
 }
