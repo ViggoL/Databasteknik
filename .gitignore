@@ -3,7 +3,6 @@
 .metadata/
 .recommenders/
 *.class
-*.classpath
 Lab1/.classpath
 
 Lab1/.classpath
@@ -15,4 +14,17 @@ Lab1/.classpath
 Lab1/.classpath
 
 Lab1/bin/.classpath
-*.classpath
+
+*.xml
+
+Lab1/.classpath
+
+Lab1/.classpath
+
+Lab1/bin/.classpath
+
+Lab1/.classpath
+
+Lab1/.classpath
+
+Lab1/.classpath
