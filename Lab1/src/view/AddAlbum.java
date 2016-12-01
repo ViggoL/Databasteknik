@@ -34,6 +34,9 @@ import java.awt.event.ActionEvent;
 public class AddAlbum extends JFrame {
 
 	private JPanel contentPane;
+	private TextField txtName, txtReleaseDate;
+	private JScrollPane scrollPane, scrollPane_1;
+	private Label label, label_1, label_2, label_3;
 
 	/**
 	 * Create the frame.
@@ -47,19 +50,19 @@ public class AddAlbum extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		Label label = new Label("Name");
+		label = new Label("Name");
 		label.setBounds(10, 10, 41, 22);
 		contentPane.add(label);
 		
-		TextField txtName = new TextField();
+		txtName = new TextField();
 		txtName.setBounds(10, 38, 98, 22);
 		contentPane.add(txtName);
 		
-		Label label_1 = new Label("Release date");
+		label_1 = new Label("Release date");
 		label_1.setBounds(10, 66, 98, 22);
 		contentPane.add(label_1);
 		
-		TextField txtReleaseDate = new TextField();
+		txtReleaseDate = new TextField();
 		txtReleaseDate.setBounds(10, 94, 98, 22);
 		contentPane.add(txtReleaseDate);
 		DefaultListModel<Artist> alm = new DefaultListModel<Artist>();
@@ -78,13 +81,13 @@ public class AddAlbum extends JFrame {
 			e.printStackTrace();
 		}
 		
-		Label label_2 = new Label("Artists");
+		label_2 = new Label("Artists");
 		label_2.setBounds(114, 14, 98, 22);
 		contentPane.add(label_2);
 		
 
 		
-		Label label_3 = new Label("Genres");
+		label_3 = new Label("Genres");
 		label_3.setBounds(221, 14, 98, 22);
 		contentPane.add(label_3);
 		
@@ -93,14 +96,14 @@ public class AddAlbum extends JFrame {
 		btnOK.setBounds(226, 131, 89, 23);
 		contentPane.add(btnOK);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(114, 38, 98, 78);
 		contentPane.add(scrollPane);
 		JList<Artist> lstArtists = new JList();
 		scrollPane.setViewportView(lstArtists);
 		lstArtists.setModel(alm);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(221, 38, 98, 78);
 		contentPane.add(scrollPane_1);
 		JList<Genre> lstGenres = new JList();
