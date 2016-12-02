@@ -68,8 +68,35 @@ public class JVDB implements JvdbInterface {
     @Override
 	public List<Movie> getMovies(MovieAttributes attribute, String value) throws SQLException
     {
-    	// Get all movies
-    	String sql = "SELECT * FROM movies";
+    	//Create query
+    	String sql = new String();
+    	switch (attribute){
+    	case TITLE:
+    		sql = "SELECT * FROM movies WHERE movieName LIKE '%?%';";
+        	break;
+		case DIRECTOR:
+			sql = "SELECT movies.* "
+					+ "FROM movies,directors,tr_movies_directors "
+					+ "WHERE directors.directorName "
+					+ "LIKE '%?%' "
+					+ "AND directors.directorId=tr_movies_directors.directorId "
+					+ "AND movies.movieId=tr_movies_directors.movieId;";
+			break;
+		case RATING:
+			sql = "SELECT movies.* "
+					+ "FROM movies,movie_reviews "
+					+ "WHERE rating = '?' "
+					+ "AND movies.movieId=movie_reviews.movieId;";
+			break;
+		case RELEASE_DATE:
+			sql = "SELECT * FROM movies WHERE movieReleaseDate LIKE '%?%';";
+			break;
+		default:
+			break;
+    	}
+    	// Get movies
+    	stmt = conn.prepareStatement(sql);
+    	stmt.setString(1, value);
     	ResultSet resultSet = stmt.executeQuery(sql);
     	List<Movie> movies = new ArrayList<>();
     	while (resultSet.next())
