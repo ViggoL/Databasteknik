@@ -1,10 +1,11 @@
 package src.model;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
 public interface JvdbInterface {
-
+	
 	void close() throws SQLException;
 
 	boolean isOpen() throws SQLException;
@@ -21,8 +22,10 @@ public interface JvdbInterface {
 
 	List<Genre> getGenres() throws SQLException;
 
-	List<Album> getAlbums() throws SQLException;
+	List<Album> getAlbums(Operations operation, String values) throws SQLException;
 
 	void addAlbum(Album album) throws SQLException;
+
+	List<Album> getAlbumsByDate(Date date) throws SQLException;
 	
 }

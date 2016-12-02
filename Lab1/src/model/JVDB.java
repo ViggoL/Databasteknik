@@ -163,14 +163,15 @@ public class JVDB implements JvdbInterface {
 		return movies;
 	}
 
-	public List<Album> getAlbumByDate(Date date) throws SQLException
+	public List<Album> getAlbumsByDate(Date date) throws SQLException
 	{
 		// Get all Albums
     	String sql = "SELECT * FROM albums WHERE albumReleaseDate=?";
     	stmt = conn.prepareStatement(sql);
-    	stmt.setDate(1, date);
+    	stmt.setString(1, date.toString());
     	ResultSet resultSet = stmt.executeQuery();
     	List<Album> albums = new ArrayList<>();
+    	
     	while (resultSet.next())
     	{
     		Album album = new Album();
@@ -178,32 +179,13 @@ public class JVDB implements JvdbInterface {
     		album.setName(resultSet.getString(2));
     		album.setReleaseDate(resultSet.getDate(3));
     		albums.add(album);
+    		
     	}
-    	return albums;
-	}
-	
-	
-	@Override
-	public List<Album> getAlbums() throws SQLException {
-    	// Get all Albums
-    	String sql = "SELECT * FROM albums";
-    	ResultSet resultSet = stmt.executeQuery(sql);
-    	List<Album> albums = new ArrayList<>();
-    	while (resultSet.next())
-    	{
-    		Album album = new Album();
-    		album.setId(resultSet.getInt(1));
-    		album.setName(resultSet.getString(2));
-    		album.setReleaseDate(resultSet.getDate(3));
-    		album.setRating(resultSet.getInt(4));
-    		albums.add(album);
-    	}
-    	// Get the genres and artists for each album
-    	for (Album album : albums)
+    	for (Album alb : albums)
     	{
         	sql = "SELECT artists.* FROM artists, tr_albums_artists WHERE artists.artistId=tr_albums_artists.artistId AND tr_albums_artists.albumId=?;";
         	stmt = conn.prepareStatement(sql);
-        	stmt.setInt(1, album.getId());
+        	stmt.setInt(1, alb.getId());
         	resultSet = stmt.executeQuery();
         	List<Artist> artists = new ArrayList<>();
         	while (resultSet.next())
@@ -211,15 +193,154 @@ public class JVDB implements JvdbInterface {
         		Artist a = new Artist(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3));
         		artists.add(a);
         	}
-        	album.setArtists(artists);
+        	alb.setArtists(artists);
         	sql = "SELECT genres.* FROM genres, tr_albums_genres WHERE genres.genreId=tr_albums_genres.genreId AND tr_albums_genres.albumId=?;";
         	stmt = conn.prepareStatement(sql);
-        	stmt.setInt(1, album.getId());
+        	stmt.setInt(1, alb.getId());
         	resultSet = stmt.executeQuery();
         	List<Genre> genres = new ArrayList<>();
         	while (resultSet.next())
         	{
         		Genre g = new Genre(resultSet.getInt(1), resultSet.getString(2));
+        		genres.add(g);
+        	}
+        	alb.setGenres(genres);
+    	}
+    	
+    	return albums;
+	}
+	
+	
+	@Override
+	public List<Album> getAlbums(Operations operation, String value) throws SQLException {
+    	String sql = "SELECT * FROM albums";
+    	ResultSet rs;
+    	List<Album> albums = new ArrayList<>();
+    	switch (operation) {
+		case ALL:
+			sql = "SELECT * FROM albums";
+			rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				Album album = new Album();
+				album.setId(rs.getInt(1));
+				album.setName(rs.getString(2));
+				album.setReleaseDate(rs.getDate(3));
+				album.setRating(rs.getInt(4));
+				albums.add(album);
+			}
+			break;
+		case ARTIST:
+			String sqlId = "SELECT albumId FROM tr_albums_artists WHERE artistId = (SELECT artistId FROM artists WHERE artistName=? LIMIT 1)";
+			stmt = conn.prepareStatement(sqlId);
+			stmt.setString(1, value);
+			rs = stmt.executeQuery();
+			rs.next();
+			int albumId = rs.getInt(1);
+			sql = "SELECT * FROM albums WHERE albumId=?;";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, albumId);
+			rs = stmt.executeQuery();
+			while (rs.next())
+			{
+				Album album = new Album();
+				album.setId(rs.getInt(1));
+				album.setName(rs.getString(2));
+				album.setReleaseDate(rs.getDate(3));
+				album.setRating(rs.getInt(4));
+				albums.add(album);
+			}
+			break;
+		case GENRE:
+			String sqlId2 = "SELECT albumId FROM tr_albums_genres WHERE genreId = (SELECT genreId FROM genres WHERE genreName=? LIMIT 1);";
+			stmt = conn.prepareStatement(sqlId2);
+			stmt.setString(1, value);
+			rs = stmt.executeQuery();
+			rs.next();
+			int albumId2 = rs.getInt(1);
+			sql = "SELECT * FROM albums WHERE albumId=?;";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, albumId2);
+			rs = stmt.executeQuery();
+			while (rs.next())
+			{
+				Album album = new Album();
+				album.setId(rs.getInt(1));
+				album.setName(rs.getString(2));
+				album.setReleaseDate(rs.getDate(3));
+				album.setRating(rs.getInt(4));
+				albums.add(album);
+			}
+			break;
+		case NAME:
+			sql = "SELECT * FROM albums WHERE albumName=?;";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, value);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				Album album = new Album();
+				album.setId(rs.getInt(1));
+				album.setName(rs.getString(2));
+				album.setReleaseDate(rs.getDate(3));
+				album.setRating(rs.getInt(4));
+				albums.add(album);
+			}
+			break;
+		case RATING:
+			sql = "SELECT * FROM albums WHERE albumRating=?;";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, value);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				Album album = new Album();
+				album.setId(rs.getInt(1));
+				album.setName(rs.getString(2));
+				album.setReleaseDate(rs.getDate(3));
+				album.setRating(rs.getInt(4));
+				albums.add(album);
+			}
+			break;
+		case RELEASEDATE:
+			sql = "SELECT * FROM albums WHERE albumReleaseDate=?;";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, value);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				Album album = new Album();
+				album.setId(rs.getInt(1));
+				album.setName(rs.getString(2));
+				album.setReleaseDate(rs.getDate(3));
+				album.setRating(rs.getInt(4));
+				albums.add(album);
+			}
+			break;
+		default:
+			return null;
+    		
+    	}
+    	if (albums.size() < 1)
+    		return null;
+    	// Get the genres and artists for each album
+    	for (Album album : albums)
+    	{
+        	sql = "SELECT artists.* FROM artists, tr_albums_artists WHERE artists.artistId=tr_albums_artists.artistId AND tr_albums_artists.albumId=?;";
+        	stmt = conn.prepareStatement(sql);
+        	stmt.setInt(1, album.getId());
+        	rs = stmt.executeQuery();
+        	List<Artist> artists = new ArrayList<>();
+        	while (rs.next())
+        	{
+        		Artist a = new Artist(rs.getInt(1), rs.getString(2), rs.getString(3));
+        		artists.add(a);
+        	}
+        	album.setArtists(artists);
+        	sql = "SELECT genres.* FROM genres, tr_albums_genres WHERE genres.genreId=tr_albums_genres.genreId AND tr_albums_genres.albumId=?;";
+        	stmt = conn.prepareStatement(sql);
+        	stmt.setInt(1, album.getId());
+        	rs = stmt.executeQuery();
+        	List<Genre> genres = new ArrayList<>();
+        	while (rs.next())
+        	{
+        		Genre g = new Genre(rs.getInt(1), rs.getString(2));
         		genres.add(g);
         	}
         	album.setGenres(genres);
@@ -270,5 +391,6 @@ public class JVDB implements JvdbInterface {
 
 		
 	}
+
 
 }
