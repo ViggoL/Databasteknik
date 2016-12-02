@@ -42,7 +42,7 @@ public class AddAlbum extends JFrame {
 	 * Create the frame.
 	 * @param jvdb 
 	 */
-	public AddAlbum(JvdbInterface jvdb) {
+	public AddAlbum(final JvdbInterface jvdb) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 346, 206);
 		contentPane = new JPanel();
@@ -99,14 +99,14 @@ public class AddAlbum extends JFrame {
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(114, 38, 98, 78);
 		contentPane.add(scrollPane);
-		JList<Artist> lstArtists = new JList();
+		final JList<Artist> lstArtists = new JList();
 		scrollPane.setViewportView(lstArtists);
 		lstArtists.setModel(alm);
 		
 		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(221, 38, 98, 78);
 		contentPane.add(scrollPane_1);
-		JList<Genre> lstGenres = new JList();
+		final JList<Genre> lstGenres = new JList();
 		scrollPane_1.setViewportView(lstGenres);
 		lstGenres.setModel(glm);
 		
