@@ -36,8 +36,17 @@ public class Albums extends JFrame {
 		JButton btnAddAlbum = new JButton("Add album");
 		btnAddAlbum.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AddAlbum au = new AddAlbum(jvdb);
-				au.show();
+				
+				Thread t = new Thread()
+						{
+							public void run()
+							{
+								AddAlbum au = new AddAlbum(jvdb);
+								au.show();
+							}
+						};
+						t.start();
+
 				
 			}
 		});
@@ -55,3 +64,4 @@ public class Albums extends JFrame {
 		contentPane.add(btnSearch);
 	}
 }
+
