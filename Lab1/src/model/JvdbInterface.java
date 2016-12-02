@@ -14,8 +14,6 @@ public interface JvdbInterface {
 
 	boolean addUser(String userName, String password, String email) throws SQLException;
 
-	List<Movie> getMovies() throws SQLException;
-
 	List<Movie> getMoviesByName(String name) throws SQLException;
 	
 	List<Artist> getArtists() throws SQLException;
@@ -26,6 +24,9 @@ public interface JvdbInterface {
 
 	void addAlbum(Album album) throws SQLException;
 
+
 	List<Album> getAlbumsByDate(Date date) throws SQLException;
+
+	List<Movie> getMovies(MovieAttributes attribute, String value) throws SQLException;
 	
 }

@@ -3,11 +3,8 @@
  */
 package src.model;
 
-/**
- * @author jlipecki
- *
- */
-public enum movieAttributes {
+
+public enum MovieAttributes {
 	TITLE,RELEASE_DATE,DIRECTOR,GENRE,RATING;
 
 }

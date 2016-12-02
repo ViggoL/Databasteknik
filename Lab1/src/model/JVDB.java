@@ -63,9 +63,10 @@ public class JVDB implements JvdbInterface {
     }
     /* (non-Javadoc)
 	 * @see src.model.JvdbInterface#getMovies()
+	 * @return list of movies with movie
 	 */
     @Override
-	public List<Movie> getMovies() throws SQLException
+	public List<Movie> getMovies(MovieAttributes attribute, String value) throws SQLException
     {
     	// Get all movies
     	String sql = "SELECT * FROM movies";
