@@ -10,14 +10,23 @@ import javax.swing.border.TitledBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
+
+import src.model.Operations;
+
 import javax.swing.JButton;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 import java.awt.Color;
+import javax.swing.JInternalFrame;
+import java.awt.BorderLayout;
 
 public class AddMovie extends JFrame implements Runnable{
 
@@ -27,10 +36,10 @@ public class AddMovie extends JFrame implements Runnable{
 	private JTextField director2TextField;
 	private JTextField titleField;
 	private JTextField director3TextField;
-	private JSplitPane splitPane;
 	private JButton btnAdd;
-	private JButton btnCancel;
 	private AddMovie frame;
+	private JButton btnCancel;
+	private JPanel panel;
 
 	/**
 	 * Launch the application.
@@ -52,14 +61,15 @@ public class AddMovie extends JFrame implements Runnable{
 	 * Create the frame.
 	 */
 	public AddMovie() {
+		this.setTitle("Add Movie");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		int a = 300;
 		double c =  a*1.618;
 		int b = Integer.valueOf(String.valueOf(c).split("\\.")[0]);
 		
-		setBounds(100, 100, 300, 375);
+		setBounds(100, 100, a, b);
 		contentPane = new JPanel();
-		TitledBorder title = new TitledBorder("Add Movie ");
+		TitledBorder title = new TitledBorder("Movie Details ");
 		//title.setBorder(new EmptyBorder(20, 5, 40, 5));
 		contentPane.setBorder(title);
 		setContentPane(contentPane);
@@ -79,7 +89,15 @@ public class AddMovie extends JFrame implements Runnable{
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("30px"),}));
+				RowSpec.decode("30px"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,}));
 		
 		JLabel lblName = new JLabel("Title");
 		contentPane.add(lblName, "2, 2, fill, bottom");
@@ -110,16 +128,22 @@ public class AddMovie extends JFrame implements Runnable{
 		director3TextField.setColumns(10);
 		contentPane.add(director3TextField, "2, 9, fill, default");
 		
-		splitPane = new JSplitPane();
-		splitPane.setBorder(null);
-		contentPane.add(splitPane, "2, 13, right, default");
+		panel = new JPanel();
+		panel.setBorder(null);
+		contentPane.add(panel, "2, 21, right, fill");
+		btnCancel = new JButton("Clear");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		panel.add(btnCancel);
 		
 		btnAdd = new JButton("Add");
-		splitPane.setRightComponent(btnAdd);
-		
-		btnCancel = new JButton("Cancel");
-		btnCancel.setBackground(new Color(255, 255, 255));
-		splitPane.setLeftComponent(btnCancel);
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		panel.add(btnAdd);
 	}
 
 	@Override
@@ -130,7 +154,7 @@ public class AddMovie extends JFrame implements Runnable{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	finally{
-			frame.setVisible(false);
+			//frame
 		}
 		
 	}
