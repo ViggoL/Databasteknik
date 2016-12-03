@@ -38,7 +38,7 @@ public class AddMovie extends JFrame implements Runnable{
 	private JTextField director3TextField;
 	private JButton btnAdd;
 	private AddMovie frame;
-	private JButton btnCancel;
+	private JButton btnClearFields;
 	private JPanel panel;
 
 	/**
@@ -67,7 +67,7 @@ public class AddMovie extends JFrame implements Runnable{
 		double c =  a*1.618;
 		int b = Integer.valueOf(String.valueOf(c).split("\\.")[0]);
 		
-		setBounds(100, 100, a, b);
+		setBounds(100, 100, 300, 400);
 		contentPane = new JPanel();
 		TitledBorder title = new TitledBorder("Movie Details ");
 		//title.setBorder(new EmptyBorder(20, 5, 40, 5));
@@ -128,22 +128,22 @@ public class AddMovie extends JFrame implements Runnable{
 		director3TextField.setColumns(10);
 		contentPane.add(director3TextField, "2, 9, fill, default");
 		
-		panel = new JPanel();
-		panel.setBorder(null);
-		contentPane.add(panel, "2, 21, right, fill");
-		btnCancel = new JButton("Clear");
-		btnCancel.addActionListener(new ActionListener() {
+		
+		btnClearFields = new JButton("Clear");
+		btnClearFields.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		panel.add(btnCancel);
+		//panel.add(btnCancel);
 		
 		btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		panel.add(btnAdd);
+		
+		contentPane.add(btnAdd, "2, 15, right, fill");
+		contentPane.add(btnClearFields, "2, 15, center, fill");
 	}
 
 	@Override
