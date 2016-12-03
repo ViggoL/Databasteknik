@@ -4,14 +4,33 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import java.awt.GridLayout;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormSpecs;
+import com.jgoodies.forms.layout.RowSpec;
+import javax.swing.JButton;
+import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
+import java.awt.Color;
 
-public class AddMovie extends JFrame {
+public class AddMovie extends JFrame implements Runnable{
 
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField releaseDateTextField;
+	private JTextField director1TextField;
+	private JTextField director2TextField;
+	private JTextField titleField;
+	private JTextField director3TextField;
+	private JSplitPane splitPane;
+	private JButton btnAdd;
+	private JButton btnCancel;
+	private AddMovie frame;
 
 	/**
 	 * Launch the application.
@@ -33,24 +52,86 @@ public class AddMovie extends JFrame {
 	 * Create the frame.
 	 */
 	public AddMovie() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		int a = 300;
+		double c =  a*1.618;
+		int b = Integer.valueOf(String.valueOf(c).split("\\.")[0]);
+		
+		setBounds(100, 100, 300, 375);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		TitledBorder title = new TitledBorder("Add Movie ");
+		//title.setBorder(new EmptyBorder(20, 5, 40, 5));
+		contentPane.setBorder(title);
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new FormLayout(new ColumnSpec[] {
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("200px:grow"),},
+			new RowSpec[] {
+				FormSpecs.PARAGRAPH_GAP_ROWSPEC,
+				RowSpec.decode("30px"),
+				RowSpec.decode("30px"),
+				RowSpec.decode("30px"),
+				RowSpec.decode("30px"),
+				RowSpec.decode("30px"),
+				RowSpec.decode("30px"),
+				FormSpecs.DEFAULT_ROWSPEC,
+				RowSpec.decode("30px"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("30px"),}));
 		
-		JLabel lblName = new JLabel("Name");
-		lblName.setBounds(10, 11, 46, 14);
-		contentPane.add(lblName);
+		JLabel lblName = new JLabel("Title");
+		contentPane.add(lblName, "2, 2, fill, bottom");
 		
-		textField = new JTextField();
-		textField.setBounds(10, 29, 86, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		titleField = new JTextField();
+		titleField.setColumns(10);
+		contentPane.add(titleField, "2, 3, fill, default");
 		
 		JLabel lblReleaseDate = new JLabel("Release date");
-		lblReleaseDate.setBounds(106, 11, 86, 14);
-		contentPane.add(lblReleaseDate);
+		contentPane.add(lblReleaseDate, "2, 4, fill, bottom");
+		
+		releaseDateTextField = new JTextField();
+		contentPane.add(releaseDateTextField, "2, 5, fill, default");
+		releaseDateTextField.setColumns(10);
+		
+		JLabel label = new JLabel("Director(s)");
+		contentPane.add(label, "2, 6, fill, bottom");
+		
+		director1TextField = new JTextField();
+		director1TextField.setColumns(10);
+		contentPane.add(director1TextField, "2, 7, fill, default");
+		
+		director2TextField = new JTextField();
+		director2TextField.setColumns(10);
+		contentPane.add(director2TextField, "2, 8, fill, default");
+		
+		director3TextField = new JTextField();
+		director3TextField.setColumns(10);
+		contentPane.add(director3TextField, "2, 9, fill, default");
+		
+		splitPane = new JSplitPane();
+		splitPane.setBorder(null);
+		contentPane.add(splitPane, "2, 13, right, default");
+		
+		btnAdd = new JButton("Add");
+		splitPane.setRightComponent(btnAdd);
+		
+		btnCancel = new JButton("Cancel");
+		btnCancel.setBackground(new Color(255, 255, 255));
+		splitPane.setLeftComponent(btnCancel);
+	}
+
+	@Override
+	public void run() {
+		try {
+			frame = new AddMovie();
+			frame.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	finally{
+			frame.setVisible(false);
+		}
+		
 	}
 }
