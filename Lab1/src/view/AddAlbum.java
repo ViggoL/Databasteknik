@@ -1,4 +1,6 @@
 package src.view;
+
+import src.controller.AlbumController;
 import src.model.*;
 
 import java.awt.BorderLayout;
@@ -24,6 +26,7 @@ import java.awt.Component;
 
 import javax.swing.JToggleButton;
 import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
@@ -43,6 +46,7 @@ public class AddAlbum extends JFrame {
 	 * @param jvdb 
 	 */
 	public AddAlbum(final JvdbInterface jvdb) {
+		System.out.println("I'm open!");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 346, 206);
 		contentPane = new JPanel();
@@ -110,31 +114,9 @@ public class AddAlbum extends JFrame {
 		scrollPane_1.setViewportView(lstGenres);
 		lstGenres.setModel(glm);
 		
+		AlbumController ac = new AlbumController(jvdb);
 		
-		
-		btnOK.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Album album = new Album();
-				List<Artist> artists = new ArrayList<>();
-				List<Genre> genres = new ArrayList<>();
-				album.setName(txtName.getText());
-				album.setReleaseDate(Date.valueOf(txtReleaseDate.getText()));
-				for (Artist a : lstArtists.getSelectedValuesList())
-					album.getArtists().add(a);
-				for (Genre g : lstGenres.getSelectedValuesList())
-					album.getGenres().add(g);
-				try {
-					jvdb.addAlbum(album);
-					((JButton) e.getSource()).getParent().getParent().hide();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-
-
-		
-
+		btnOK.addActionListener(ac.new AddAlbum());
 	}
 }
+			
