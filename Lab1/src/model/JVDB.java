@@ -86,7 +86,7 @@ public class JVDB implements JvdbInterface {
 		String sql = new String();
 		switch (attribute) {
 		case TITLE:
-			sql = "SELECT * FROM movies WHERE movieTitle LIKE '%?%';";
+			sql = "SELECT * FROM movies WHERE movieName LIKE '%?%';";
 			break;
 		case DIRECTOR:
 			sql = "SELECT movies.* " + "FROM movies,directors,tr_movies_directors " + "WHERE directors.directorName "
@@ -253,10 +253,10 @@ public class JVDB implements JvdbInterface {
 	}
 
 	@Override
-	public List<Movie> getMoviesByName(String name) throws SQLException {
+	public List<Movie> getMoviesByTitle(String title) throws SQLException {
 		String sql = "SELECT * FROM movies WHERE movieTitle=?";
 		stmt = conn.prepareStatement(sql);
-		stmt.setString(1, name);
+		stmt.setString(1, title);
 		ResultSet rs = stmt.executeQuery();
 		List<Movie> movies = new ArrayList<>();
 		while (rs.next()) {

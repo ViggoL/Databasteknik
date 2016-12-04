@@ -52,10 +52,7 @@ public class Menu extends JFrame {
 						}
 						ShowAlbums a = new ShowAlbums(jvdb);
 						a.show();
-						
-						
 					}
-					
 				});
 			}
 		});

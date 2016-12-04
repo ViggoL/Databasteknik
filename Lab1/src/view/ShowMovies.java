@@ -12,6 +12,8 @@ import javax.swing.table.DefaultTableModel;
 
 import src.model.Album;
 import src.model.JvdbInterface;
+import src.model.Movie;
+import src.model.MovieAttributes;
 import src.model.Operations;
 
 import javax.swing.JTable;
@@ -32,38 +34,38 @@ import java.beans.PropertyChangeEvent;
 import java.sql.Date;
 
 
-public class ShowAlbums extends JFrame {
+public class ShowMovies extends JFrame {
 
 	private JPanel contentPane;
-	private JTable tblAlbums;
+	private JTable tblMovies;
 	private JTextField textField;
 	private Operations operations;
+	private String title;
 
-	private void Refresh(List<Album> albums) {
+	private void Refresh(List<Movie> movies) {
 		DefaultTableModel tmodel = new DefaultTableModel();
-		tmodel.addColumn("Name");
+		tmodel.addColumn("Title");
 		tmodel.addColumn("Release date");
-		tmodel.addColumn("Artists");
-		tmodel.addColumn("Genres");
-		tmodel.addColumn("Rating");
-		for (Album a : albums)
+		tmodel.addColumn("Director");
+
+		for (Movie a : movies)
 			tmodel.addRow(a.getArray());
-		tblAlbums.setModel(tmodel);
+		tblMovies.setModel(tmodel);
 	}
 	
 	/**
 	 * Create the frame.
 	 * @param jvdb 
 	 */
-	public ShowAlbums(final JvdbInterface jvdb) {
+	public ShowMovies(final JvdbInterface jvdb) {
 		setBounds(100, 100, 658, 422);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		tblAlbums = new JTable();
-		scrollPane.setViewportView(tblAlbums);
+		tblMovies = new JTable();
+		scrollPane.setViewportView(tblMovies);
 		
 		JPanel panel = new JPanel();
 		
@@ -102,10 +104,10 @@ public class ShowAlbums extends JFrame {
 				try {
 					if (textField.getText().equals(""))
 					{
-						Refresh(jvdb.getMovies(Operations.ALL, ""));
+						Refresh(jvdb.getMovies(MovieAttributes.ALL, ""));
 						return; 
 					}
-					Refresh(jvdb.getMovies(operations, textField.getText()));
+					Refresh(jvdb.getMovies(MovieAttributes.ALL, textField.getText()));
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -116,66 +118,57 @@ public class ShowAlbums extends JFrame {
 		panel.add(btnOK);
 		ButtonGroup btnGroup = new ButtonGroup();
 		
-		JRadioButton rdbtnName = new JRadioButton("Name");
-		rdbtnName.addActionListener(new ActionListener() {
+		JRadioButton rdbtnTitle = new JRadioButton("Title");
+		rdbtnTitle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = Operations.NAME;
+				//operations = Operations.NAME;
 			}
 		});
-		rdbtnName.setBounds(6, 147, 68, 23);
-		panel.add(rdbtnName);
-		rdbtnName.setSelected(true);
-		btnGroup.add(rdbtnName);
+		rdbtnTitle.setBounds(6, 147, 200, 23);
+		panel.add(rdbtnTitle);
+		rdbtnTitle.setSelected(true);
+		btnGroup.add(rdbtnTitle);
 		
-		JRadioButton rdbtnArtist = new JRadioButton("Artist");
-		rdbtnArtist.addActionListener(new ActionListener() {
+		JRadioButton rdbtnDirector = new JRadioButton("Director");
+		rdbtnDirector.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = Operations.ARTIST;
+				//operations = Operations.DIRECTOR;
 			}
 		});
-		rdbtnArtist.setBounds(6, 100, 75, 23);
-		panel.add(rdbtnArtist);
-		btnGroup.add(rdbtnArtist);
+		rdbtnDirector.setBounds(6, 100, 200, 23);
+		panel.add(rdbtnDirector);
+		btnGroup.add(rdbtnDirector);
 		
 		JRadioButton rdbtnReleaseDate = new JRadioButton("Release date");
 		rdbtnReleaseDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = Operations.RELEASEDATE;
+				//operations = Operations.RELEASEDATE;
 			}
 		});
-		rdbtnReleaseDate.setBounds(6, 53, 110, 23);
+		rdbtnReleaseDate.setBounds(6, 53, 200, 23);
 		panel.add(rdbtnReleaseDate);
 		btnGroup.add(rdbtnReleaseDate);
 		
-		JRadioButton rdbtnGenre = new JRadioButton("Genre");
-		rdbtnGenre.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				operations = Operations.GENRE;
-			}
-		});
-		rdbtnGenre.setBounds(6, 124, 68, 23);
-		panel.add(rdbtnGenre);
-		btnGroup.add(rdbtnGenre);
-		
-		JRadioButton rdbtnRating = new JRadioButton("Rating");
-		rdbtnRating.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				operations = Operations.RATING;
-			}
-		});
-		rdbtnRating.setBounds(6, 76, 72, 23);
-		panel.add(rdbtnRating);
-		btnGroup.add(rdbtnRating);
+//		JRadioButton rdbtnRating = new JRadioButton("Rating");
+//		rdbtnRating.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				operations = Operations.RATING;
+//			}
+//		});
+//		rdbtnRating.setBounds(6, 76, 72, 23);
+//		panel.add(rdbtnRating);
+//		btnGroup.add(rdbtnRating);
 		
 		
 		contentPane.setLayout(gl_contentPane);
 		
 		try {
-			Refresh(jvdb.getMovies(Operations.ALL, ""));
+			Refresh(jvdb.getMovies(MovieAttributes.ALL, title));
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
 	}
+
 }

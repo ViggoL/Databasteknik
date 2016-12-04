@@ -3,6 +3,7 @@ package src.model;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class Movie {
 	private int id;
@@ -55,5 +56,9 @@ public class Movie {
 
 	public void setDirectors(List<Director> directors) {
 		this.directors = directors;
+	}
+	public Vector getArray() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
