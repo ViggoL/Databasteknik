@@ -14,9 +14,8 @@ public class Main {
 		
 		
 		JvdbInterface jvdb = new JVDB();
-		List<Album> albums = jvdb.getAlbums(Operations.ALL, "");
-		Albums a = new Albums(jvdb);
-		a.show();
+		Menu menu = new Menu(jvdb);
+		menu.show();
 	}
 
 }
