@@ -61,16 +61,13 @@ public class MovieController {
 					java.sql.Date sqlDate;
 					if (s instanceof JTextField) {
 						String string = new String(((JTextComponent) s).getText());
-						System.out.println(string);
-						if (!string.contains("0123456789"))
+						if (!string.matches(".*\\d+.*") && string.length() > 0){
 							movie.add(string);
-						else {
-							m.setReleaseDate(Date.valueOf(string));
-							if (s instanceof JFormattedTextField) {
+						}
+						else if (s instanceof JFormattedTextField) {
 								sqlDate = new java.sql.Date(
 										((java.util.Date) ((JFormattedTextField) s).getValue()).getTime());
-								System.out.println("Date: " + sqlDate.toString());
-							}
+								m.setReleaseDate(sqlDate);
 						}
 					}
 
@@ -83,7 +80,7 @@ public class MovieController {
 					directors.add(d);
 				}
 				m.setDirectors(directors);
-
+				System.out.println(m.getTitle() + m.getReleaseDate().toString() + m.getDirectors());
 				SwingUtilities.invokeLater(new Runnable() {
 
 					@Override

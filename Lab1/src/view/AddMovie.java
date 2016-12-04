@@ -38,7 +38,7 @@ public class AddMovie extends JFrame implements Runnable {
 	private JButton btnCancel;
 	private JPanel panel;
 	private final JvdbInterface jvdb;
-	private JFormattedTextField formattedTextField;
+	private JFormattedTextField releaseDate_FormattedTextField;
 	private String formatString;
 
 	/**
@@ -94,9 +94,18 @@ public class AddMovie extends JFrame implements Runnable {
 		JLabel lblReleaseDate = new JLabel("Release date");
 		contentPane.add(lblReleaseDate, "2, 4, fill, bottom");
 
-		releaseDateTextField = new JTextField();
-		contentPane.add(releaseDateTextField, "2, 5, fill, default");
-		releaseDateTextField.setColumns(10);
+		formatString = "yyyy-MM-dd";
+
+		DateFormatter formatter = new DateFormatter(new SimpleDateFormat(formatString));
+		DateFormatter displayFormatter = new DateFormatter(new SimpleDateFormat("dd MMMM yyyy"));
+	    DefaultFormatterFactory factory = 
+	    		new DefaultFormatterFactory(displayFormatter, displayFormatter	,formatter );
+	    
+		releaseDate_FormattedTextField = new JFormattedTextField(factory);
+		releaseDate_FormattedTextField.setToolTipText("Year-Month-date: " + formatString.toLowerCase());
+		
+		contentPane.add(releaseDate_FormattedTextField, "2, 5, fill, default");
+		//releaseDateTextField.setColumns(10);
 
 		JLabel label = new JLabel("Director(s)");
 		contentPane.add(label, "2, 6, fill, bottom");
@@ -119,21 +128,7 @@ public class AddMovie extends JFrame implements Runnable {
 		btnCancel.addActionListener(mc.new HideWindow());
 		btnAdd = new JButton("Add");
 		btnAdd.addActionListener(mc.new AddMovie());
-		
-		formatString = "yyyy-mm-dd";
-		
-	 
-				
-		DateFormat format = new SimpleDateFormat(formatString);
-		DateFormatter formatter = new DateFormatter(format);
-		DateFormatter displayFormatter = new DateFormatter(new SimpleDateFormat("yyyy--MMMM--dd"));
-	    DefaultFormatterFactory factory = 
-	    		new DefaultFormatterFactory(displayFormatter, displayFormatter, formatter);
-		formattedTextField = new JFormattedTextField(factory);
-		formattedTextField.setToolTipText(formatString);
-		
-		//Testar att begränsa inmatningen till Date
-		contentPane.add(formattedTextField, "2, 11, default, center");
+
 		contentPane.add(btnAdd, "2, 15, right, fill");
 		contentPane.add(btnCancel, "2, 15, center, fill");
 	}

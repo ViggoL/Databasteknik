@@ -145,34 +145,45 @@ public class JVDB implements JvdbInterface {
 			stmt = conn.prepareStatement(sql);
 			ResultSet resultSet = stmt.executeQuery(sql);
 			ArrayList<Director> directors = new ArrayList<>();
+			
+			
 			while (resultSet.next()) {
 				Director d = new Director(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3));
 				directors.add(d);
 			}
+
 			ArrayList<Director> newDirs = (ArrayList<Director>) ((ArrayList<Director>) movie.getDirectors()).clone();
 			ArrayList<Director> dirs = new ArrayList<>();
-			//synchronized (newDirs) {
-				for (Director d : newDirs) {
-					for (Director dbDirector : directors) {
-						if (dbDirector.getName().equals(d.getName())) {
-							//newDirs.remove(d);
-							dirs.add(dbDirector);
-							break;
-						}
+			boolean directorExists=false;
+			for (Director d : newDirs) {
+				for (Director dbDirector : directors) {
+					if (dbDirector.getName().toString().equals(d.getName().toString())) {
+						d.setId(dbDirector.getId());
+						dirs.add(d);
+						directorExists = true;
+						break;
 					}
+
+				}
+				if (!directorExists) {
 					// Om regissören inte finns i databasen bör denne läggas
 					// till:
 					sql = "INSERT INTO directors (directorName,directorBio) VALUES (?,'');";
 					stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 					stmt.setString(1, d.getName());
-					stmt.executeUpdate();
+					int addedDirector = stmt.executeUpdate();
+					
+					// När tillfälle ges kan detta bli ett fönster som visar användaren tillägget
+					// System.out.print("\nDirector added: " + d.getName());
+
 					ResultSet keys = stmt.getGeneratedKeys();
 					keys.next();
 					int directorId = keys.getInt(1);
-					Director a = new Director(directorId,d.getName(),"");
+					Director a = new Director(directorId, d.getName(), "");
 					dirs.add(a);
 				}
-			//}
+			}
+			// }
 
 			// lägg till filmen och fånga upp IDt
 			sql = "INSERT INTO movies (movieName,movieReleaseDate) VALUES (?, ?);";
@@ -189,7 +200,9 @@ public class JVDB implements JvdbInterface {
 				stmt = conn.prepareStatement(sql);
 				stmt.setInt(1, d.getId());
 				stmt.setInt(2, movieId);
-				stmt.executeUpdate();
+				int addedDirectors = stmt.executeUpdate();
+
+				System.out.println("Director relations added: " + addedDirectors);
 			}
 
 			conn.commit();
