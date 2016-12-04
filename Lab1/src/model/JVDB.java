@@ -458,7 +458,7 @@ public class JVDB implements JvdbInterface {
 	public void addAlbum(Album album) throws SQLException, NullPointerException {
 		try {
 			conn.setAutoCommit(false);
-			String sql = "INSERT INTO albums (albumName, albumReleaseDate) VALUES (?,?,?);";
+			String sql = "INSERT INTO albums (albumName, albumReleaseDate, albumRating) VALUES (?,?,?);";
 			System.out.println(sql + "\n" + album.toString());
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, album.getName());
