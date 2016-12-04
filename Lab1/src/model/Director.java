@@ -5,15 +5,16 @@ public class Director {
 	private String name;
 	private String bio;
 	
-	public Director()
+	public Director(String name)
 	{
-		
+		this.name = name;
+		this.bio = "";
 	}
 	
 	public Director (int id, String name, String bio)
 	{
+		this(name);
 		this.id = id;
-		this.name = name;
 		this.bio = bio;
 	}
 	

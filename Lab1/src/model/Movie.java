@@ -6,24 +6,26 @@ import java.util.List;
 
 public class Movie {
 	private int id;
-	private String name;
+	private String title;
 	private Date releaseDate;
 	private List<Director> directors = new ArrayList<>();
 	
 	public Movie(){
 		
 	}
-	
-	public Movie(int id, String name, Date releaseDate, List<Director> directors)
-	{
-		this.setId(id);
-		this.setName(name);
+	public Movie(String title, Date releaseDate, List<Director> directors){
+		this.setTitle(title);
 		this.setReleaseDate(releaseDate);
 		this.setDirectors(directors);
 		
 	}
+	public Movie(int id, String title, Date releaseDate, List<Director> directors)
+	{
+		this(title,releaseDate,directors);
+		this.setId(id);
+	}
 
-	public int getId() {
+	public int getId() throws NullPointerException {
 		return id;
 	}
 
@@ -31,12 +33,12 @@ public class Movie {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public Date getReleaseDate() {

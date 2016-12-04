@@ -28,5 +28,7 @@ public interface JvdbInterface {
 	List<Album> getAlbumsByDate(Date date) throws SQLException;
 
 	List<Movie> getMovies(MovieAttributes attribute, String value) throws SQLException;
+
+	void AddMovie(Movie movie) throws SQLException;
 	
 }

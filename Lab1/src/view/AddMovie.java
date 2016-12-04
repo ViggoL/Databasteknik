@@ -19,6 +19,8 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
+import src.model.JVDB;
+import src.model.JvdbInterface;
 import src.model.Operations;
 
 import javax.swing.JButton;
@@ -40,27 +42,15 @@ public class AddMovie extends JFrame implements Runnable{
 	private AddMovie frame;
 	private JButton btnClearFields;
 	private JPanel panel;
+	private final JvdbInterface jvdb;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AddMovie frame = new AddMovie();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
 	 */
-	public AddMovie() {
+	public AddMovie(final JvdbInterface jvdb) {
+		this.jvdb = jvdb;
 		this.setTitle("Add Movie");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		int a = 300;
@@ -128,19 +118,14 @@ public class AddMovie extends JFrame implements Runnable{
 		director3TextField.setColumns(10);
 		contentPane.add(director3TextField, "2, 9, fill, default");
 		
+		MovieController mc = new MovieController(jvdb);
 		
 		btnClearFields = new JButton("Clear");
-		btnClearFields.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnClearFields.addActionListener(mc.new CloseWindow());
 		//panel.add(btnCancel);
 		
 		btnAdd = new JButton("Add");
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnAdd.addActionListener(mc.new AddMovie());
 		
 		contentPane.add(btnAdd, "2, 15, right, fill");
 		contentPane.add(btnClearFields, "2, 15, center, fill");
@@ -149,7 +134,7 @@ public class AddMovie extends JFrame implements Runnable{
 	@Override
 	public void run() {
 		try {
-			frame = new AddMovie();
+			frame = new AddMovie(jvdb);
 			frame.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -157,5 +142,21 @@ public class AddMovie extends JFrame implements Runnable{
 			//frame
 		}
 		
+	}
+	
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					AddMovie frame = new AddMovie(new JVDB());
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }
