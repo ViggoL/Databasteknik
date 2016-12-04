@@ -54,6 +54,7 @@ public class MovieController {
 			List<String> movie = new ArrayList<>();
 
 			if (e.getSource() instanceof JButton) {
+				Movie m = new Movie();
 				b = (JButton) e.getSource();
 				Component[] c = b.getParent().getComponents();
 				for (Component s : c) {
@@ -61,16 +62,21 @@ public class MovieController {
 					if (s instanceof JTextField) {
 						String string = new String(((JTextComponent) s).getText());
 						System.out.println(string);
-						movie.add(string);
+						if (!string.contains("0123456789"))
+							movie.add(string);
+						else {
+							m.setReleaseDate(Date.valueOf(string));
+							if (s instanceof JFormattedTextField) {
+								sqlDate = new java.sql.Date(
+										((java.util.Date) ((JFormattedTextField) s).getValue()).getTime());
+								System.out.println("Date: " + sqlDate.toString());
+							}
+						}
 					}
-					if(s instanceof JFormattedTextField){
-						sqlDate = new java.sql.Date(((java.util.Date) ((JFormattedTextField) s).getValue()).getTime());
-						System.out.println("Date: " + sqlDate.toString());
-					}
+
 				}
-				Movie m = new Movie();
+				
 				m.setTitle(movie.remove(0));
-				m.setReleaseDate(Date.valueOf(movie.remove(0)));
 				List<Director> directors = new ArrayList<>();
 				for (String s : movie) {
 					Director d = new Director(s);

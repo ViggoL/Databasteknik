@@ -121,10 +121,14 @@ public class AddMovie extends JFrame implements Runnable {
 		btnAdd.addActionListener(mc.new AddMovie());
 		
 		formatString = "yyyy-mm-dd";
+		
+	 
+				
 		DateFormat format = new SimpleDateFormat(formatString);
 		DateFormatter formatter = new DateFormatter(format);
+		DateFormatter displayFormatter = new DateFormatter(new SimpleDateFormat("yyyy--MMMM--dd"));
 	    DefaultFormatterFactory factory = 
-	    		new DefaultFormatterFactory(formatter, formatter, formatter);
+	    		new DefaultFormatterFactory(displayFormatter, displayFormatter, formatter);
 		formattedTextField = new JFormattedTextField(factory);
 		formattedTextField.setToolTipText(formatString);
 		
