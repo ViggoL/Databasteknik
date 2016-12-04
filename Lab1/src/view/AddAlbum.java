@@ -37,9 +37,9 @@ import java.awt.event.ActionEvent;
 public class AddAlbum extends JFrame {
 
 	private JPanel contentPane;
-	private TextField txtName, txtReleaseDate;
-	private JScrollPane scrollPane, scrollPane_1;
-	private Label label, label_1, label_2, label_3;
+	public TextField txtName, txtReleaseDate;
+	public JScrollPane scrollPane, scrollPane_1;
+	public Label label, label_1, label_2, label_3;
 
 	/**
 	 * Create the frame.

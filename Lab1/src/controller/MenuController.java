@@ -9,6 +9,8 @@ import src.view.ShowAlbums;
 
 public class MenuController {
 	private JvdbInterface jvdb;
+	
+	
 	public MenuController(JvdbInterface jvdb)
 	{
 		this.jvdb = jvdb;
