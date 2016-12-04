@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import src.controller.MenuController;
 import src.model.JVDB;
 import src.model.JvdbInterface;
 
@@ -16,7 +17,7 @@ public class Menu extends JFrame {
 
 	private JPanel contentPane;
 	private JvdbInterface jvdb;
-	
+	private MenuController controller;
 	
 	/**
 	 * Create the frame.
@@ -24,6 +25,7 @@ public class Menu extends JFrame {
 	 */
 	public Menu(JvdbInterface jvdb) {
 		this.jvdb = jvdb;
+		this.controller = new MenuController(jvdb);
 		setTitle("JVDB Menu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 318, 116);
@@ -47,5 +49,10 @@ public class Menu extends JFrame {
 		JButton btnAddMovie = new JButton("Add movie");
 		btnAddMovie.setBounds(153, 45, 133, 23);
 		contentPane.add(btnAddMovie);
+		
+		btnAddMovie.addActionListener(controller.new AddMovie());
+		btnAddAlbum.addActionListener(controller.new AddAlbum());
+		btnSearchAlbums.addActionListener(controller.new SearchAlbums());
+		btnSearchMovies.addActionListener(controller.new SearchMovies());
 	}
 }
