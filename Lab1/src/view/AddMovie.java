@@ -4,33 +4,28 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.DateFormatter;
+import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
+import src.controller.MovieController;
 import src.model.JVDB;
 import src.model.JvdbInterface;
-import src.model.Operations;
 
 import javax.swing.JButton;
-import javax.swing.JSplitPane;
-import javax.swing.SwingConstants;
-import java.awt.Color;
-import javax.swing.JInternalFrame;
-import java.awt.BorderLayout;
 
-public class AddMovie extends JFrame implements Runnable{
+import javax.swing.JFormattedTextField;
+
+public class AddMovie extends JFrame implements Runnable {
 
 	private JPanel contentPane;
 	private JTextField releaseDateTextField;
@@ -40,11 +35,11 @@ public class AddMovie extends JFrame implements Runnable{
 	private JTextField director3TextField;
 	private JButton btnAdd;
 	private AddMovie frame;
-	private JButton btnClearFields;
+	private JButton btnCancel;
 	private JPanel panel;
 	private final JvdbInterface jvdb;
-
-
+	private JFormattedTextField formattedTextField;
+	private String formatString;
 
 	/**
 	 * Create the frame.
@@ -54,13 +49,13 @@ public class AddMovie extends JFrame implements Runnable{
 		this.setTitle("Add Movie");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		int a = 300;
-		double c =  a*1.618;
+		double c = a * 1.618;
 		int b = Integer.valueOf(String.valueOf(c).split("\\.")[0]);
-		
+
 		setBounds(100, 100, 300, 400);
 		contentPane = new JPanel();
 		TitledBorder title = new TitledBorder("Movie Details ");
-		//title.setBorder(new EmptyBorder(20, 5, 40, 5));
+		// title.setBorder(new EmptyBorder(20, 5, 40, 5));
 		contentPane.setBorder(title);
 		setContentPane(contentPane);
 		contentPane.setLayout(new FormLayout(new ColumnSpec[] {
@@ -79,7 +74,7 @@ public class AddMovie extends JFrame implements Runnable{
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("30px"),
+				RowSpec.decode("30px:grow"),
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -88,47 +83,55 @@ public class AddMovie extends JFrame implements Runnable{
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,}));
-		
+
 		JLabel lblName = new JLabel("Title");
 		contentPane.add(lblName, "2, 2, fill, bottom");
-		
+
 		titleField = new JTextField();
 		titleField.setColumns(10);
 		contentPane.add(titleField, "2, 3, fill, default");
-		
+
 		JLabel lblReleaseDate = new JLabel("Release date");
 		contentPane.add(lblReleaseDate, "2, 4, fill, bottom");
-		
+
 		releaseDateTextField = new JTextField();
 		contentPane.add(releaseDateTextField, "2, 5, fill, default");
 		releaseDateTextField.setColumns(10);
-		
+
 		JLabel label = new JLabel("Director(s)");
 		contentPane.add(label, "2, 6, fill, bottom");
-		
+
 		director1TextField = new JTextField();
 		director1TextField.setColumns(10);
 		contentPane.add(director1TextField, "2, 7, fill, default");
-		
+
 		director2TextField = new JTextField();
 		director2TextField.setColumns(10);
 		contentPane.add(director2TextField, "2, 8, fill, default");
-		
+
 		director3TextField = new JTextField();
 		director3TextField.setColumns(10);
 		contentPane.add(director3TextField, "2, 9, fill, default");
-		
+
 		MovieController mc = new MovieController(jvdb);
-		
-		btnClearFields = new JButton("Clear");
-		btnClearFields.addActionListener(mc.new CloseWindow());
-		//panel.add(btnCancel);
-		
+
+		btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(mc.new HideWindow());
 		btnAdd = new JButton("Add");
 		btnAdd.addActionListener(mc.new AddMovie());
 		
+		formatString = "yyyy-mm-dd";
+		DateFormat format = new SimpleDateFormat(formatString);
+		DateFormatter formatter = new DateFormatter(format);
+	    DefaultFormatterFactory factory = 
+	    		new DefaultFormatterFactory(formatter, formatter, formatter);
+		formattedTextField = new JFormattedTextField(factory);
+		formattedTextField.setToolTipText(formatString);
+		
+		//Testar att begränsa inmatningen till Date
+		contentPane.add(formattedTextField, "2, 11, default, center");
 		contentPane.add(btnAdd, "2, 15, right, fill");
-		contentPane.add(btnClearFields, "2, 15, center, fill");
+		contentPane.add(btnCancel, "2, 15, center, fill");
 	}
 
 	@Override
@@ -138,12 +141,12 @@ public class AddMovie extends JFrame implements Runnable{
 			frame.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}	finally{
-			//frame
+		} finally {
+			// frame
 		}
-		
+
 	}
-	
+
 	/**
 	 * Launch the application.
 	 */
