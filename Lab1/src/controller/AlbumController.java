@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -32,6 +33,31 @@ public class AlbumController {
 		this.jvdb = jvdb;
 	}
 
+	public class ShowAlbum implements ActionListener {
+		private src.view.ShowAlbums view;
+		public ShowAlbum(src.view.ShowAlbums view)
+		{
+			this.view = view;
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new Thread(){
+				public void run()
+				{
+					try {
+						List<Album> albums = jvdb.getAlbums(view.operations, view.textField.getText());
+						view.Refresh(albums);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+			}.start();
+		}
+		
+	}
+	
 	public class AddAlbum implements ActionListener {
 
 		@Override

@@ -36,10 +36,10 @@ public class ShowAlbums extends JFrame {
 
 	private JPanel contentPane;
 	private JTable tblAlbums;
-	private JTextField textField;
-	private Operations operations;
+	public JTextField textField;
+	public Operations operations;
 
-	private void Refresh(List<Album> albums) {
+	public void Refresh(List<Album> albums) {
 		DefaultTableModel tmodel = new DefaultTableModel();
 		tmodel.addColumn("Name");
 		tmodel.addColumn("Release date");
@@ -112,7 +112,7 @@ public class ShowAlbums extends JFrame {
 				}
 			}
 		});
-		btnOK.setBounds(133, 26, 75, 29);
+		btnOK.setBounds(140, 26, 68, 28);
 		panel.add(btnOK);
 		ButtonGroup btnGroup = new ButtonGroup();
 		
@@ -170,12 +170,18 @@ public class ShowAlbums extends JFrame {
 		
 		contentPane.setLayout(gl_contentPane);
 		
-		try {
-			Refresh(jvdb.getAlbums(Operations.ALL, ""));
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		new Thread(){
+			public void run()
+			{
+				try {
+					Refresh(jvdb.getAlbums(Operations.ALL, ""));
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}.start();
+		
 		
 	}
 }
