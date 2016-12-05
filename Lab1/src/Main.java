@@ -6,6 +6,7 @@ import src.view.*;
 import java.sql.SQLException;
 import java.util.List;
 
+import src.controller.JVDB;
 import src.model.*;
 
 

@@ -22,8 +22,8 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
+import src.controller.JVDB;
 import src.controller.MovieController;
-import src.model.JVDB;
 import src.model.JvdbInterface;
 import src.model.MovieGenre;
 
