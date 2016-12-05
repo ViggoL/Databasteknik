@@ -40,7 +40,8 @@ public class ShowAlbums extends JFrame {
 	private JTextField textField;
 	private Operations operations = Operations.NAME;
 
-	private void Refresh(List<Album> albums) {
+
+	public void Refresh(List<Album> albums) {
 		DefaultTableModel tmodel = new DefaultTableModel();
 		tmodel.addColumn("Name");
 		tmodel.addColumn("Release date");

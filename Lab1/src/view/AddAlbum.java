@@ -33,6 +33,9 @@ import javax.swing.JList;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JSlider;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AddAlbum extends JFrame {
 
@@ -42,6 +45,7 @@ public class AddAlbum extends JFrame {
 	public Label label, label_1, label_2, label_3;
 	private final JList<Genre> lstGenres = new JList();
 	private final JList<Artist> lstArtists = new JList();
+	public JSlider sldrRating = new JSlider();
 
 	/**
 	 * Create the frame.
@@ -64,7 +68,7 @@ public class AddAlbum extends JFrame {
 	public AddAlbum(final JvdbInterface jvdb) {
 		System.out.println("I'm open!");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 346, 206);
+		setBounds(100, 100, 346, 274);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -111,24 +115,40 @@ public class AddAlbum extends JFrame {
 		
 		JButton btnOK = new JButton("OK");
 		
-		btnOK.setBounds(226, 131, 89, 23);
+		btnOK.setBounds(230, 189, 89, 23);
 		contentPane.add(btnOK);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(114, 38, 98, 78);
+		scrollPane.setBounds(114, 38, 98, 138);
 		contentPane.add(scrollPane);
 		
 		scrollPane.setViewportView(lstArtists);
 		
 		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(221, 38, 98, 78);
+		scrollPane_1.setBounds(221, 38, 99, 138);
 		contentPane.add(scrollPane_1);
 		
 		scrollPane_1.setViewportView(lstGenres);
 		
+		Label lblRating = new Label("Rating - 5");
+		lblRating.setBounds(10, 122, 98, 22);
+		contentPane.add(lblRating);
+		
+		
+		sldrRating.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				lblRating.setText("Rating - " + sldrRating.getValue());
+			}
+		});
+		sldrRating.setValue(5);
+		sldrRating.setMaximum(10);
+		sldrRating.setBounds(12, 150, 96, 26);
+		contentPane.add(sldrRating);
+		
 		AlbumController ac = new AlbumController(jvdb);
 		
-		btnOK.addActionListener(ac.new AddAlbum());
+		btnOK.addActionListener(ac.new AddAlbum(this));
 	}
 }
 			
