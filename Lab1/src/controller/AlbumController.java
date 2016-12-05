@@ -35,15 +35,15 @@ public class AlbumController {
 
 	public class ShowAlbum implements ActionListener {
 		private src.view.ShowAlbums view;
-		public ShowAlbum(src.view.ShowAlbums view)
-		{
+
+		public ShowAlbum(src.view.ShowAlbums view) {
 			this.view = view;
 		}
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new Thread(){
-				public void run()
-				{
+			new Thread() {
+				public void run() {
 					try {
 						List<Album> albums = jvdb.getAlbums(view.operations, view.textField.getText());
 						view.Refresh(albums);
@@ -51,13 +51,13 @@ public class AlbumController {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+
 				}
 			}.start();
 		}
-		
+
 	}
-	
+
 	public class AddAlbum implements ActionListener {
 
 		@Override
@@ -75,10 +75,10 @@ public class AlbumController {
 				Component[] ca = b.getParent().getComponents();
 				int i = 0;
 				for (Component c : ca) {
-					System.out.println("Komponent " + ++i + c.toString() +	 " ");
+					System.out.println("Komponent " + ++i + c.toString() + " ");
 					java.sql.Date sqlDate;
 					if (c instanceof TextField) {
-						
+
 						String string = ((TextField) c).getText();
 						albumValues.add(string);
 						System.out.println(string);
@@ -91,10 +91,13 @@ public class AlbumController {
 								for (Component c2 : port.getComponents()) {
 									if (c2 instanceof JList) {
 										JList<Object> tmpList = (JList<Object>) c2;
-										if (tmpList.getSelectedValuesList().get(0) instanceof Artist) {
-											aList = (ArrayList<Artist>) ((JList<Artist>) c2).getSelectedValuesList();
-										} else if (tmpList.getSelectedValuesList().get(0) instanceof Genre) {
-											gList = (ArrayList<Genre>) ((JList<Genre>) c2).getSelectedValuesList();
+										if (tmpList.getSelectedValuesList().size() > 0) {
+											if (tmpList.getSelectedValuesList().get(0) instanceof Artist) {
+												aList = (ArrayList<Artist>) ((JList<Artist>) c2)
+														.getSelectedValuesList();
+											} else if (tmpList.getSelectedValuesList().get(0) instanceof Genre) {
+												gList = (ArrayList<Genre>) ((JList<Genre>) c2).getSelectedValuesList();
+											}
 										}
 									}
 								}
@@ -103,29 +106,28 @@ public class AlbumController {
 					}
 				}
 			}
-			
-			 
+
 			album.setName(albumValues.remove(0));
-			album.setReleaseDate(Date.valueOf(albumValues.remove(0))); 
-			for(Artist a : aList)
-				album.getArtists().add(a); 
-			for (Genre g :gList) 
+			album.setReleaseDate(Date.valueOf(albumValues.remove(0)));
+			for (Artist a : aList)
+				album.getArtists().add(a);
+			for (Genre g : gList)
 				album.getGenres().add(g);
-			
+
 			System.out.println(album.toString());
-			
+
 			SwingUtilities.invokeLater(new Runnable() {
 
-				@Override public void run() { 
-					try { 
+				@Override
+				public void run() {
+					try {
 						jvdb.addAlbum(album);
-						} 
-					catch (SQLException e1) { 
-							e1.printStackTrace(); 
-						} 		
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
 				}
 			});
-			 
+
 		}
 
 	}

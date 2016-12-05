@@ -145,8 +145,7 @@ public class JVDB implements JvdbInterface {
 			stmt = conn.prepareStatement(sql);
 			ResultSet resultSet = stmt.executeQuery(sql);
 			ArrayList<Director> directors = new ArrayList<>();
-			
-			
+
 			while (resultSet.next()) {
 				Director d = new Director(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3));
 				directors.add(d);
@@ -154,7 +153,7 @@ public class JVDB implements JvdbInterface {
 
 			ArrayList<Director> newDirs = (ArrayList<Director>) ((ArrayList<Director>) movie.getDirectors()).clone();
 			ArrayList<Director> dirs = new ArrayList<>();
-			boolean directorExists=false;
+			boolean directorExists = false;
 			for (Director d : newDirs) {
 				for (Director dbDirector : directors) {
 					if (dbDirector.getName().toString().equals(d.getName().toString())) {
@@ -172,8 +171,9 @@ public class JVDB implements JvdbInterface {
 					stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 					stmt.setString(1, d.getName());
 					int addedDirector = stmt.executeUpdate();
-					
-					// När tillfälle ges kan detta bli ett fönster som visar användaren tillägget
+
+					// När tillfälle ges kan detta bli ett fönster som visar
+					// användaren tillägget
 					// System.out.print("\nDirector added: " + d.getName());
 
 					ResultSet keys = stmt.getGeneratedKeys();
@@ -341,27 +341,28 @@ public class JVDB implements JvdbInterface {
 			}
 			break;
 		case ARTIST:
-			String sqlId = "SELECT albumId FROM tr_albums_artists WHERE artistId = (SELECT artistId FROM artists WHERE artistName=? LIMIT 1)";
+			String sqlId = "SELECT albumId FROM tr_albums_artists WHERE artistId = (SELECT artistId FROM artists WHERE artistName LIKE ?)";
 			stmt = conn.prepareStatement(sqlId);
-			stmt.setString(1, value);
+			stmt.setString(1, "%" + value +"%");
 			rs = stmt.executeQuery();
-			rs.next();
-			int albumId = rs.getInt(1);
-			sql = "SELECT * FROM albums WHERE albumId=?;";
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, albumId);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				Album album = new Album();
-				album.setId(rs.getInt(1));
-				album.setName(rs.getString(2));
-				album.setReleaseDate(rs.getDate(3));
-				album.setRating(rs.getInt(4));
-				albums.add(album);
+			if (rs.next()) {
+				int albumId = rs.getInt(1);
+				sql = "SELECT * FROM albums WHERE albumId=?;";
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, albumId);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					Album album = new Album();
+					album.setId(rs.getInt(1));
+					album.setName(rs.getString(2));
+					album.setReleaseDate(rs.getDate(3));
+					album.setRating(rs.getInt(4));
+					albums.add(album);
+				}
 			}
 			break;
 		case GENRE:
-			String sqlId2 = "SELECT albumId FROM tr_albums_genres WHERE genreId = (SELECT genreId FROM genres WHERE genreName=? LIMIT 1);";
+			String sqlId2 = "SELECT albumId FROM tr_albums_genres WHERE genreId = (SELECT genreId FROM genres WHERE genreName=?);";
 			stmt = conn.prepareStatement(sqlId2);
 			stmt.setString(1, value);
 			rs = stmt.executeQuery();
@@ -381,9 +382,9 @@ public class JVDB implements JvdbInterface {
 			}
 			break;
 		case NAME:
-			sql = "SELECT * FROM albums WHERE albumName=?;";
+			sql = "SELECT * FROM albums WHERE albumName LIKE ?;";
 			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, value);
+			stmt.setString(1, "%" + value +"%");
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				Album album = new Album();

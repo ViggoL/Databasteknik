@@ -1,6 +1,7 @@
 package src.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.sql.SQLException;
 import java.util.List;
@@ -37,7 +38,7 @@ public class ShowAlbums extends JFrame {
 	private JPanel contentPane;
 	private JTable tblAlbums;
 	private JTextField textField;
-	private Operations operations;
+	private Operations operations = Operations.NAME;
 
 	private void Refresh(List<Album> albums) {
 		DefaultTableModel tmodel = new DefaultTableModel();
@@ -46,9 +47,13 @@ public class ShowAlbums extends JFrame {
 		tmodel.addColumn("Artists");
 		tmodel.addColumn("Genres");
 		tmodel.addColumn("Rating");
-		for (Album a : albums)
-			tmodel.addRow(a.getArray());
-		tblAlbums.setModel(tmodel);
+		if(albums != null){
+			for (Album a : albums)
+				tmodel.addRow(a.getArray());
+			tblAlbums.setBackground(Color.WHITE);
+			tblAlbums.setModel(tmodel);
+		}
+		
 	}
 	
 	/**
@@ -97,21 +102,7 @@ public class ShowAlbums extends JFrame {
 		textField.setColumns(10);
 		
 		JButton btnOK = new JButton("OK");
-		btnOK.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if (textField.getText().equals(""))
-					{
-						Refresh(jvdb.getAlbums(Operations.ALL, ""));
-						return; 
-					}
-					Refresh(jvdb.getAlbums(operations, textField.getText()));
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
+
 		btnOK.setBounds(133, 26, 75, 29);
 		panel.add(btnOK);
 		ButtonGroup btnGroup = new ButtonGroup();
@@ -169,6 +160,23 @@ public class ShowAlbums extends JFrame {
 		
 		
 		contentPane.setLayout(gl_contentPane);
+		
+		btnOK.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (textField.getText().equals(""))
+					{
+						Refresh(jvdb.getAlbums(Operations.ALL, ""));
+						return; 
+					}
+					
+					Refresh(jvdb.getAlbums(operations, textField.getText()));
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		
 		try {
 			Refresh(jvdb.getAlbums(Operations.ALL, ""));
