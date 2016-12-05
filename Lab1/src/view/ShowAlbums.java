@@ -102,10 +102,10 @@ public class ShowAlbums extends JFrame {
 				try {
 					if (textField.getText().equals(""))
 					{
-						Refresh(jvdb.getMovies(Operations.ALL, ""));
+						Refresh(jvdb.getAlbums(Operations.ALL, ""));
 						return; 
 					}
-					Refresh(jvdb.getMovies(operations, textField.getText()));
+					Refresh(jvdb.getAlbums(operations, textField.getText()));
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -171,7 +171,7 @@ public class ShowAlbums extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 		
 		try {
-			Refresh(jvdb.getMovies(Operations.ALL, ""));
+			Refresh(jvdb.getAlbums(Operations.ALL, ""));
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

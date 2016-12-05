@@ -37,14 +37,30 @@ import java.awt.event.ActionEvent;
 public class AddAlbum extends JFrame {
 
 	private JPanel contentPane;
-	private TextField txtName, txtReleaseDate;
-	private JScrollPane scrollPane, scrollPane_1;
-	private Label label, label_1, label_2, label_3;
+	public TextField txtName, txtReleaseDate;
+	public JScrollPane scrollPane, scrollPane_1;
+	public Label label, label_1, label_2, label_3;
+	private final JList<Genre> lstGenres = new JList();
+	private final JList<Artist> lstArtists = new JList();
 
 	/**
 	 * Create the frame.
 	 * @param jvdb 
 	 */
+	
+	private void refresh(List<Artist> artists, List<Genre> genres)
+	{
+		DefaultListModel<Artist> alm = new DefaultListModel<Artist>();
+		DefaultListModel<Genre> glm = new DefaultListModel<Genre>();
+		
+		for (Genre g : genres)
+			glm.addElement(g);
+		for (Artist a : artists) 
+			alm.addElement(a);
+		lstGenres.setModel(glm);
+		lstArtists.setModel(alm);
+	}
+	
 	public AddAlbum(final JvdbInterface jvdb) {
 		System.out.println("I'm open!");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -69,21 +85,19 @@ public class AddAlbum extends JFrame {
 		txtReleaseDate = new TextField();
 		txtReleaseDate.setBounds(10, 94, 98, 22);
 		contentPane.add(txtReleaseDate);
-		DefaultListModel<Artist> alm = new DefaultListModel<Artist>();
-		DefaultListModel<Genre> glm = new DefaultListModel<Genre>();
-		
-		try {
-			List<Artist> artists = jvdb.getArtists();
-			for (Artist a : artists) 
-				alm.addElement(a);
-			List<Genre> genres = jvdb.getGenres();
-			for (Genre g : genres)
-				glm.addElement(g);
+		new Thread(){
+			public void run()
+			{
+				try {
+					refresh(jvdb.getArtists(), jvdb.getGenres());
+						
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			}
+		}.start();
 		
 		label_2 = new Label("Artists");
 		label_2.setBounds(114, 14, 98, 22);
@@ -103,16 +117,14 @@ public class AddAlbum extends JFrame {
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(114, 38, 98, 78);
 		contentPane.add(scrollPane);
-		final JList<Artist> lstArtists = new JList();
+		
 		scrollPane.setViewportView(lstArtists);
-		lstArtists.setModel(alm);
 		
 		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(221, 38, 98, 78);
 		contentPane.add(scrollPane_1);
-		final JList<Genre> lstGenres = new JList();
+		
 		scrollPane_1.setViewportView(lstGenres);
-		lstGenres.setModel(glm);
 		
 		AlbumController ac = new AlbumController(jvdb);
 		

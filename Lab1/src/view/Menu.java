@@ -41,6 +41,7 @@ public class Menu extends JFrame {
 		
 		AlbumController bc = new AlbumController(jvdb);
 		JButton btnSearchAlbums = new JButton("Search albums");
+
 		btnSearchAlbums.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable(){
@@ -56,47 +57,67 @@ public class Menu extends JFrame {
 				});
 			}
 		});
+
+//		btnSearchAlbums.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				SwingUtilities.invokeLater(new Runnable(){
+//
+//					@Override
+//					public void run() {
+//						if (e.getSource() instanceof JButton) {
+//							JButton b = (JButton) e.getSource();
+//						}
+//						ShowAlbums a = new ShowAlbums(jvdb);
+//						a.show();
+//						
+//						
+//					}
+//					
+//				});
+//			}
+//		});
+
 		btnSearchAlbums.setBounds(10, 11, 133, 23);
 		contentPane.add(btnSearchAlbums);
 		
 		JButton btnAddAlbum = new JButton("Add album");
-		btnAddAlbum.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(new Runnable(){
-
-					@Override
-					public void run() {
-						if (e.getSource() instanceof JButton) {
-							JButton b = (JButton) e.getSource();
-						}
-						AddAlbum a = new AddAlbum(jvdb);
-						a.show();
-						
-						
-					}
-					
-				});
-			}
-		});
+//		btnAddAlbum.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				SwingUtilities.invokeLater(new Runnable(){
+//
+//					@Override
+//					public void run() {
+//						if (e.getSource() instanceof JButton) {
+//							JButton b = (JButton) e.getSource();
+//						}
+//						AddAlbum a = new AddAlbum(jvdb);
+//						a.show();
+//						
+//						
+//					}
+//					
+//				});
+//			}
+//		});
 		btnAddAlbum.setBounds(10, 45, 133, 23);
 		contentPane.add(btnAddAlbum);
 		
 		JButton btnSearchMovies = new JButton("Search movies");
-		btnSearchMovies.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+//		btnSearchMovies.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//			}
+//		});
 		btnSearchMovies.setBounds(154, 11, 132, 23);
 		contentPane.add(btnSearchMovies);
 		
 		JButton btnAddMovie = new JButton("Add movie");
-		btnAddMovie.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+//		btnAddMovie.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//			}
+//		});
 		btnAddMovie.setBounds(153, 45, 133, 23);
 		contentPane.add(btnAddMovie);
-		
+		this.addWindowListener(controller.new Close());
 		btnAddMovie.addActionListener(controller.new AddMovie());
 		btnAddAlbum.addActionListener(controller.new AddAlbum());
 		btnSearchAlbums.addActionListener(controller.new SearchAlbums());
