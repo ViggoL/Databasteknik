@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import src.controller.AlbumController;
+import src.controller.AlbumController.AddRating;
 import src.model.Album;
 import src.model.JvdbInterface;
 import src.model.Operations;
@@ -37,8 +39,8 @@ public class ShowAlbums extends JFrame {
 
 	private JPanel contentPane;
 	private JTable tblAlbums;
-	private JTextField textField;
-	private Operations operations = Operations.NAME;
+	public JTextField textField;
+	public Operations operations = Operations.NAME;
 
 
 	public void Refresh(List<Album> albums) {
@@ -63,6 +65,8 @@ public class ShowAlbums extends JFrame {
 	 */
 	public ShowAlbums(final JvdbInterface jvdb) {
 		setBounds(100, 100, 658, 422);
+		
+		AlbumController ac = new AlbumController(jvdb);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -158,6 +162,11 @@ public class ShowAlbums extends JFrame {
 		rdbtnRating.setBounds(6, 76, 72, 23);
 		panel.add(rdbtnRating);
 		btnGroup.add(rdbtnRating);
+		
+		JButton btnRateAlbum = new JButton("Rate Album");
+		btnRateAlbum.addActionListener(ac.new AddRating());
+		btnRateAlbum.setBounds(50, 220, 117, 29);
+		panel.add(btnRateAlbum);
 		
 		
 		contentPane.setLayout(gl_contentPane);

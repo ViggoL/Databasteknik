@@ -26,6 +26,16 @@ import src.model.JvdbInterface;
 
 public class AlbumController {
 
+	public class AddRating implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+	}
+
 	private JvdbInterface jvdb;
 	private JButton b;
 
