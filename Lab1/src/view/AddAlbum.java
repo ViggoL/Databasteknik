@@ -46,6 +46,7 @@ public class AddAlbum extends JFrame {
 	private final JList<AlbumGenre> lstGenres = new JList();
 	private final JList<Artist> lstArtists = new JList();
 	public JSlider sldrRating = new JSlider();
+	private AlbumController ac;
 
 	/**
 	 * Create the frame.
@@ -138,7 +139,7 @@ public class AddAlbum extends JFrame {
 		sldrRating.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				lblRating.setText("Rating - " + sldrRating.getValue());
+				lblRating.setText("Rating : " + sldrRating.getValue());
 			}
 		});
 		sldrRating.setValue(5);
@@ -146,7 +147,7 @@ public class AddAlbum extends JFrame {
 		sldrRating.setBounds(12, 150, 96, 26);
 		contentPane.add(sldrRating);
 		
-		AlbumController ac = new AlbumController(jvdb);
+		ac = new AlbumController(jvdb);
 		
 		btnOK.addActionListener(ac.new AddAlbum(this));
 	}
