@@ -16,7 +16,7 @@ public interface JvdbInterface {
 	
 	List<Artist> getArtists() throws SQLException;
 
-	List<AlbumGenre> getGenres() throws SQLException;
+	List<AlbumGenre> getAlbumGenres() throws SQLException;
 
 	void addAlbum(Album album) throws SQLException;
 
@@ -26,5 +26,7 @@ public interface JvdbInterface {
 	void AddMovie(Movie movie) throws SQLException;
 
 	List<Album> getAlbums(Operations operation, String value) throws SQLException;
+
+	List<MovieGenre> getMovieGenres() throws SQLException;
 	
 }

@@ -100,13 +100,27 @@ public class JVDB implements JvdbInterface {
 		case RELEASE_DATE:
 			sql = "SELECT * FROM movies WHERE movieReleaseDate LIKE '%?%';";
 			break;
-		default:
-			break;
+		case GENRE:
+			sql = "SELECT movies.* " + "FROM movies,movie_genres,tr_movies_genres " + "WHERE movies_genres.genreName "
+					+ "LIKE '%?%' " + "AND movies_genres.genreId=tr_movies_genres.genreId "
+					+ "AND movies.movieId=tr_movies_genres.movieId;";
+		case ALL:
+			sql = "SELECT * FROM movies;";
 		}
 		// Get movies
-		stmt = conn.prepareStatement(sql);
-		stmt.setString(1, value);
-		ResultSet resultSet = stmt.executeQuery(sql);
+		ResultSet resultSet;
+		
+		if (attribute == MovieAttributes.ALL)
+		{
+			resultSet = stmt.executeQuery(sql);
+		}
+		else {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, value);
+			resultSet = stmt.executeQuery();
+		}
+
+		
 		List<Movie> movies = new ArrayList<>();
 		while (resultSet.next()) {
 			Movie movie = new Movie();
@@ -165,7 +179,6 @@ public class JVDB implements JvdbInterface {
 						directorExists = true;
 						break;
 					}
-
 				}
 				if (!directorExists) {
 					// Om regissören inte finns i databasen bör denne läggas
@@ -245,8 +258,8 @@ public class JVDB implements JvdbInterface {
 	 * @see src.model.JvdbInterface#getGenres()
 	 */
 	@Override
-	public List<AlbumGenre> getGenres() throws SQLException {
-		String sql = "SELECT * FROM genres";
+	public List<AlbumGenre> getAlbumGenres() throws SQLException {
+		String sql = "SELECT * FROM album_genres;";
 		ResultSet rs = stmt.executeQuery(sql);
 		List<AlbumGenre> genres = new ArrayList<>();
 		while (rs.next()) {
@@ -256,6 +269,19 @@ public class JVDB implements JvdbInterface {
 		return genres;
 	}
 
+	@Override
+	public List<MovieGenre> getMovieGenres() throws SQLException {
+		String sql = "SELECT * FROM movie_genres";
+		ResultSet rs = stmt.executeQuery(sql);
+		List<MovieGenre> genres = new ArrayList<>();
+		while (rs.next()) {
+			MovieGenre g = new MovieGenre(rs.getInt(1), rs.getString(2));
+			genres.add(g);
+		}
+		return genres;
+	}
+	
+	
 	@Override
 	public List<Album> getAlbums(Operations operation, String value) throws SQLException {
 		String sql = "SELECT * FROM albums";

@@ -93,7 +93,7 @@ public class AddAlbum extends JFrame {
 			public void run()
 			{
 				try {
-					refresh(jvdb.getArtists(), jvdb.getGenres());
+					refresh(jvdb.getArtists(), jvdb.getAlbumGenres());
 						
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
