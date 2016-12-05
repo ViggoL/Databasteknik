@@ -61,10 +61,10 @@ public class Movie {
 	
 	public Object[] getArray() {
 		Object[] arr = new Object[4];
-		arr[0] = this.getTitle();
-		arr[1] = this.getReleaseDate();
-		arr[2] = this.getDirectors();
-		arr[3] = this.getGenres();
+		arr[0] = this.title;
+		arr[1] = this.releaseDate;
+		arr[2] = this.directors;
+		arr[3] = this.genres;
 		return arr;
 	}
 	public List<MovieGenre> getGenres() {

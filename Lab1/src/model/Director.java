@@ -36,4 +36,8 @@ public class Director {
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
+	public String toString()
+	{
+		return this.name;
+	}
 }
