@@ -19,6 +19,18 @@ public class JVDB implements JvdbInterface {
 		stmt = conn.prepareStatement("");
 	}
 
+	@Override
+	public void addAlbumReview(AlbumReview review) throws SQLException
+	{
+		String sql = "INSERT INTO album_reviews (userId, reviewText, rating, albumId) VALUES (?,?,?,?);";
+		stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, this.userId);
+		stmt.setString(2, review.getText());
+		stmt.setInt(3, review.getRating());
+		stmt.setInt(4, review.getAlbumId());
+		stmt.executeUpdate();
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -422,7 +434,7 @@ public class JVDB implements JvdbInterface {
 				artists.add(a);
 			}
 			album.setArtists(artists);
-			sql = "SELECT genres.* FROM genres, tr_albums_genres WHERE genres.genreId=tr_albums_genres.genreId AND tr_albums_genres.albumId=?;";
+			sql = "SELECT * FROM album_genres, tr_albums_genres WHERE album_genres.genreId=tr_albums_genres.genreId AND tr_albums_genres.albumId=?;";
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, album.getId());
 			rs = stmt.executeQuery();

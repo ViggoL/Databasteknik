@@ -6,13 +6,19 @@ public class AlbumReview {
 	private String text;
 	private int rating;
 	private User user;
+	private int albumId;
 	
-	public AlbumReview(int id, String text, int rating, User user)
+	public AlbumReview(int id, String text, int rating, User user, int albumId)
 	{
 		this.setId(id);
 		this.setText(text);
 		this.setRating(rating);
 		this.setUser(user);
+		this.albumId = albumId;
+	}
+
+	public AlbumReview() {
+		
 	}
 
 	public int getId() {
@@ -47,6 +53,14 @@ public class AlbumReview {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public int getAlbumId() {
+		return albumId;
+	}
+
+	public void setAlbumId(int albumId) {
+		this.albumId = albumId;
 	}
 
 	

@@ -71,6 +71,17 @@ public class Album {
 		arr[4] = this.rating;
 		return arr;
 	}
+	
+	public boolean compareArrays(Object[] other)
+	{
+		Object[] thisArr = this.getArray();
+		if (thisArr[0].equals(other[0]) &&
+			thisArr[1].equals(other[1]) &&
+			thisArr[2].equals(other[2]) &&
+			thisArr[3].equals(other[3]) &&
+			thisArr[4].equals(other[4])) return true;
+		return false;
+	}
 
 	public int getRating() {
 		return rating;

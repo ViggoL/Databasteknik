@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -38,13 +39,15 @@ import java.sql.Date;
 public class ShowAlbums extends JFrame {
 
 	private JPanel contentPane;
-	private JTable tblAlbums;
+	public JTable tblAlbums;
 	public JTextField textField;
 	public Operations operations = Operations.NAME;
+	public List<Album> allAlbums = new ArrayList<>();
 
 
 	public void Refresh(List<Album> albums) {
 		DefaultTableModel tmodel = new DefaultTableModel();
+		tmodel.addColumn("ID");
 		tmodel.addColumn("Name");
 		tmodel.addColumn("Release date");
 		tmodel.addColumn("Artists");
@@ -164,7 +167,7 @@ public class ShowAlbums extends JFrame {
 		btnGroup.add(rdbtnRating);
 		
 		JButton btnRateAlbum = new JButton("Rate Album");
-		btnRateAlbum.addActionListener(ac.new AddRating());
+		btnRateAlbum.addActionListener(ac.new ShowAddAlbumReview(this));
 		btnRateAlbum.setBounds(50, 220, 117, 29);
 		panel.add(btnRateAlbum);
 		
@@ -176,7 +179,8 @@ public class ShowAlbums extends JFrame {
 				try {
 					if (textField.getText().equals(""))
 					{
-						Refresh(jvdb.getAlbums(Operations.ALL, ""));
+						allAlbums = jvdb.getAlbums(Operations.ALL, "");
+						Refresh(allAlbums);
 						return; 
 					}
 					
@@ -189,7 +193,8 @@ public class ShowAlbums extends JFrame {
 		});
 		
 		try {
-			Refresh(jvdb.getAlbums(Operations.ALL, ""));
+			allAlbums = jvdb.getAlbums(Operations.ALL, "");
+			Refresh(allAlbums);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

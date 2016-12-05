@@ -11,23 +11,34 @@ import javax.swing.JTextArea;
 import javax.swing.JSlider;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import src.controller.AlbumController;
 import src.model.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 public class AddAlbumReview extends JFrame {
 
 	private JPanel contentPane;
+	public JTextArea txtComment = new JTextArea();
+	public final JSlider slider = new JSlider();
+	public Album album = null;
 	/**
 	 * Create the frame.
 	 */
-	public AddAlbumReview(JvdbInterface jvdb, Movie movie) {
+	public AddAlbumReview(JvdbInterface jvdb, Album album) {
+		AlbumController controller = new AlbumController(jvdb);
+		this.album = album;
+		this.setTitle("Reviewing " + album.getName());
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JTextArea txtComment = new JTextArea();
+		
 		txtComment.setBounds(6, 31, 438, 141);
 		contentPane.add(txtComment);
 
@@ -44,7 +55,7 @@ public class AddAlbumReview extends JFrame {
 		JLabel lblReview = new JLabel("Review text");
 		lblReview.setBounds(6, 6, 96, 16);
 		contentPane.add(lblReview);
-		final JSlider slider = new JSlider();
+		
 		slider.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -55,6 +66,11 @@ public class AddAlbumReview extends JFrame {
 		slider.setMaximum(10);
 		slider.setBounds(6, 205, 190, 29);
 		contentPane.add(slider);
+		
+		JButton btnSend = new JButton("Send");
+		btnSend.addActionListener(controller.new AddRating(this));
+		btnSend.setBounds(327, 233, 117, 29);
+		contentPane.add(btnSend);
 
 	}
 }

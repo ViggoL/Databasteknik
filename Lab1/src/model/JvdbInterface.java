@@ -30,4 +30,6 @@ public interface JvdbInterface {
 	List<MovieGenre> getMovieGenres() throws SQLException;
 	
 	int logIn(String userName, String passWord) throws SQLException;
+
+	void addAlbumReview(AlbumReview review) throws SQLException;
 }

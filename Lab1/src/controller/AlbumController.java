@@ -16,21 +16,48 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 
 import src.model.Album;
 import src.model.Artist;
 import src.model.AlbumGenre;
+import src.model.AlbumReview;
 import src.model.JvdbInterface;
+import src.view.AddAlbumReview;
+import src.view.ShowAlbums;
 
 public class AlbumController {
 
 	public class AddRating implements ActionListener {
 
+		private AddAlbumReview view;
+
+		public AddRating(AddAlbumReview view)
+		{
+			this.view = view;
+		}
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+			new Thread(){
+				public void run()
+				{
+					AlbumReview review = new AlbumReview();
+					review.setText(view.txtComment.getText());
+					review.setRating(view.slider.getValue());
+					review.setAlbumId(view.album.getId());
+					try {
+						jvdb.addAlbumReview(review);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					view.hide();
+				}
+			}.start();
 
 		}
 
@@ -69,6 +96,42 @@ public class AlbumController {
 
 	}
 
+	public class ShowAddAlbumReview implements ActionListener{
+
+		private ShowAlbums view;
+		
+		public ShowAddAlbumReview(ShowAlbums view)
+		{
+			this.view = view; 
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			Album album = null;
+			Object[] arr = new Object[5];
+			int row = view.tblAlbums.getSelectedRow();
+			int column = view.tblAlbums.getColumnCount();
+			arr[0] = view.tblAlbums.getValueAt(row, 0);
+			arr[1] = view.tblAlbums.getValueAt(row, 1);
+			arr[2] = view.tblAlbums.getValueAt(row, 2);
+			arr[3] = view.tblAlbums.getValueAt(row, 3);
+			arr[4] = view.tblAlbums.getValueAt(row, 4);
+			for (Album a : view.allAlbums)
+			{
+				if (a.compareArrays(arr)){
+					album = a;
+					break;
+				}
+					
+			}
+			
+			AddAlbumReview aar = new AddAlbumReview(jvdb, album);
+			aar.show();
+		}
+		
+	}
+	
 	public class AddAlbum implements ActionListener {
 
 		src.view.AddAlbum aa;
