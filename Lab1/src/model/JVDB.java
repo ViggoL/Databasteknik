@@ -465,4 +465,18 @@ public class JVDB implements JvdbInterface {
 
 	}
 
+	@Override
+	public int logIn(String userName, String passWord) throws SQLException {
+		String hashedPw = DigestUtils.sha1Hex(passWord);
+		String sql = "SELECT userId FROM users WHERE userName=? AND pwHash=?;";
+		stmt = conn.prepareStatement(sql);
+		stmt.setString(1, userName);
+		stmt.setString(2, hashedPw);
+		ResultSet rs = stmt.executeQuery();
+		rs.next();
+		int id = rs.getInt(1);
+		if (id < 1) return -1;
+		else return id;
+	}
+
 }

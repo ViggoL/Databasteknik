@@ -29,4 +29,5 @@ public interface JvdbInterface {
 
 	List<MovieGenre> getMovieGenres() throws SQLException;
 	
+	int logIn(String userName, String passWord) throws SQLException;
 }
