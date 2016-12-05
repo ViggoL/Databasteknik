@@ -6,6 +6,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 import src.model.JvdbInterface;
 import src.view.*;
 import src.view.ShowAlbums;
@@ -28,6 +30,42 @@ public class MenuController {
 		}
 		
 	}
+	
+	public class LogIn implements ActionListener
+	{
+
+		src.view.LogIn view;
+		public LogIn(src.view.LogIn view)
+		{
+			this.view = view;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new Thread(){
+				public void run() {
+					try {
+						int id = jvdb.logIn(view.txtUsername.getText(), view.txtPassword.getText());
+						if (id == -1)
+							JOptionPane.showMessageDialog(null, "Incorrect username or password.");
+						else
+						{
+							view.hide();
+							Menu menu = new Menu(jvdb);
+							menu.show();
+						}
+							
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}.start();
+			
+		}
+		
+	}
+	
 	public class SearchAlbums implements ActionListener
 	{
 

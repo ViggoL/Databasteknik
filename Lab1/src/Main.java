@@ -14,8 +14,8 @@ public class Main {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		
 		JvdbInterface jvdb = new JVDB();
-		Menu menu = new Menu(jvdb);
-		menu.show();
+		LogIn li = new LogIn(jvdb);
+		li.show();
 	}
 
 }

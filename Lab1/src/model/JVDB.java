@@ -10,6 +10,7 @@ public class JVDB implements JvdbInterface {
 	private Connection conn = null;
 	private PreparedStatement stmt = null;
 	private String db = "jvdb", usr = "client", pwd = "lab", port = "3306", host = "viggolunden.com";
+	private int userId;
 
 	public JVDB() throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.jdbc.Driver");
@@ -473,10 +474,14 @@ public class JVDB implements JvdbInterface {
 		stmt.setString(1, userName);
 		stmt.setString(2, hashedPw);
 		ResultSet rs = stmt.executeQuery();
+		if (!rs.isBeforeFirst()) return -1;
 		rs.next();
 		int id = rs.getInt(1);
 		if (id < 1) return -1;
-		else return id;
+		else {
+			this.userId = id;
+			return id;
+		}
 	}
 
 }
