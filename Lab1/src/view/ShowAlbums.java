@@ -36,10 +36,10 @@ public class ShowAlbums extends JFrame {
 
 	private JPanel contentPane;
 	private JTable tblAlbums;
-	private JTextField textField;
-	private Operations operations;
+	public JTextField textField;
+	public Operations operations;
 
-	private void Refresh(List<Album> albums) {
+	public void Refresh(List<Album> albums) {
 		DefaultTableModel tmodel = new DefaultTableModel();
 		tmodel.addColumn("Name");
 		tmodel.addColumn("Release date");
