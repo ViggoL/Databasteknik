@@ -66,8 +66,8 @@ public class Album {
 		Object[] arr = new Object[5];
 		arr[0] = this.name;
 		arr[1] = this.releaseDate;
-		arr[2] = this.artists;
-		arr[3] = this.genres;
+		arr[2] = this.artists.toString().replace("]", "").replace("[", "");;
+		arr[3] = this.genres.toString().replace("]", "").replace("[", "");;
 		arr[4] = this.rating;
 		return arr;
 	}

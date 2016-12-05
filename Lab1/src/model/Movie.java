@@ -63,8 +63,8 @@ public class Movie {
 		Object[] arr = new Object[4];
 		arr[0] = this.title;
 		arr[1] = this.releaseDate;
-		arr[2] = this.directors;
-		arr[3] = this.genres;
+		arr[2] = this.directors.toString().replace("]", "").replace("[", "");
+		arr[3] = this.genres.toString().replace("]", "").replace("[", "");
 		return arr;
 	}
 	public List<MovieGenre> getGenres() {
