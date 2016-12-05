@@ -24,6 +24,7 @@ import src.model.JvdbInterface;
 import javax.swing.JButton;
 
 import javax.swing.JFormattedTextField;
+import javax.swing.JList;
 
 public class AddMovie extends JFrame implements Runnable {
 
@@ -32,7 +33,6 @@ public class AddMovie extends JFrame implements Runnable {
 	private JTextField director1TextField;
 	private JTextField director2TextField;
 	private JTextField titleField;
-	private JTextField director3TextField;
 	private JButton btnAdd;
 	private AddMovie frame;
 	private JButton btnCancel;
@@ -40,6 +40,8 @@ public class AddMovie extends JFrame implements Runnable {
 	private final JvdbInterface jvdb;
 	private JFormattedTextField releaseDate_FormattedTextField;
 	private String formatString;
+	private JLabel lblGenre;
+	private JList list;
 
 	/**
 	 * Create the frame.
@@ -68,13 +70,13 @@ public class AddMovie extends JFrame implements Runnable {
 				RowSpec.decode("30px"),
 				RowSpec.decode("30px"),
 				RowSpec.decode("30px"),
-				RowSpec.decode("30px"),
-				FormSpecs.DEFAULT_ROWSPEC,
-				RowSpec.decode("30px"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("30px:grow"),
+				FormSpecs.DEFAULT_ROWSPEC,
+				RowSpec.decode("30px"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("30px"),
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -105,22 +107,6 @@ public class AddMovie extends JFrame implements Runnable {
 		releaseDate_FormattedTextField.setToolTipText("Year-Month-date: " + formatString.toLowerCase());
 		
 		contentPane.add(releaseDate_FormattedTextField, "2, 5, fill, default");
-		//releaseDateTextField.setColumns(10);
-
-		JLabel label = new JLabel("Director(s)");
-		contentPane.add(label, "2, 6, fill, bottom");
-
-		director1TextField = new JTextField();
-		director1TextField.setColumns(10);
-		contentPane.add(director1TextField, "2, 7, fill, default");
-
-		director2TextField = new JTextField();
-		director2TextField.setColumns(10);
-		contentPane.add(director2TextField, "2, 8, fill, default");
-
-		director3TextField = new JTextField();
-		director3TextField.setColumns(10);
-		contentPane.add(director3TextField, "2, 9, fill, default");
 
 		MovieController mc = new MovieController(jvdb);
 
@@ -128,6 +114,24 @@ public class AddMovie extends JFrame implements Runnable {
 		btnCancel.addActionListener(mc.new HideWindow());
 		btnAdd = new JButton("Add");
 		btnAdd.addActionListener(mc.new AddMovie());
+						
+						lblGenre = new JLabel("Genre");
+						contentPane.add(lblGenre, "2, 6");
+						
+						list = new JList();
+						contentPane.add(list, "2, 7, fill, default");
+						//releaseDateTextField.setColumns(10);
+
+						JLabel label = new JLabel("Director(s)");
+						contentPane.add(label, "2, 8, fill, bottom");
+				
+						director1TextField = new JTextField();
+						director1TextField.setColumns(10);
+						contentPane.add(director1TextField, "2, 9, fill, default");
+		
+				director2TextField = new JTextField();
+				director2TextField.setColumns(10);
+				contentPane.add(director2TextField, "2, 11, fill, default");
 
 		contentPane.add(btnAdd, "2, 15, right, fill");
 		contentPane.add(btnCancel, "2, 15, center, fill");
