@@ -22,6 +22,8 @@ import javax.swing.text.JTextComponent;
 import src.model.Director;
 import src.model.JvdbInterface;
 import src.model.Movie;
+import src.model.MovieAttributes;
+import src.view.ShowMovies;
 
 /**
  * @author jlipecki
@@ -47,6 +49,37 @@ public class MovieController {
 		}
 	}
 
+	public class SearchMovie implements ActionListener {
+
+		private ShowMovies view;
+		
+		public SearchMovie(ShowMovies view)
+		{
+			this.view = view;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new Thread(){
+				public void run()
+				{
+					try {
+						if (view.textField.getText().equals(""))
+						{
+							view.Refresh(jvdb.getMovies(MovieAttributes.ALL, ""));
+							return; 
+						}
+						view.Refresh(jvdb.getMovies(view.operations, view.textField.getText()));
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}.start();
+		}
+		
+	}
+	
 	public class AddMovie implements ActionListener {
 
 		@Override

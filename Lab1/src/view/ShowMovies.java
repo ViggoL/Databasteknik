@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import src.controller.MovieController;
 import src.model.Album;
 import src.model.JvdbInterface;
 import src.model.Movie;
@@ -38,11 +39,11 @@ public class ShowMovies extends JFrame {
 
 	private JPanel contentPane;
 	private JTable tblMovies;
-	private JTextField textField;
-	private MovieAttributes operations = MovieAttributes.TITLE;
+	public JTextField textField;
+	public MovieAttributes operations = MovieAttributes.TITLE;
 	private String title;
 
-	private void Refresh(List<Movie> movies) {
+	public void Refresh(List<Movie> movies) {
 		DefaultTableModel tmodel = new DefaultTableModel();
 		tmodel.addColumn("Title");
 		tmodel.addColumn("Release date");
@@ -61,6 +62,7 @@ public class ShowMovies extends JFrame {
 	 * @param jvdb 
 	 */
 	public ShowMovies(final JvdbInterface jvdb) {
+		MovieController controller = new MovieController(jvdb);
 		setBounds(100, 100, 658, 422);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -102,21 +104,7 @@ public class ShowMovies extends JFrame {
 		textField.setColumns(10);
 		
 		JButton btnOK = new JButton("OK");
-		btnOK.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if (textField.getText().equals(""))
-					{
-						Refresh(jvdb.getMovies(MovieAttributes.ALL, ""));
-						return; 
-					}
-					Refresh(jvdb.getMovies(operations, textField.getText()));
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
+		btnOK.addActionListener(controller.new SearchMovie(this));
 		btnOK.setBounds(133, 26, 75, 29);
 		panel.add(btnOK);
 		ButtonGroup btnGroup = new ButtonGroup();
@@ -165,12 +153,18 @@ public class ShowMovies extends JFrame {
 		
 		contentPane.setLayout(gl_contentPane);
 		
-		try {
-			Refresh(jvdb.getMovies(MovieAttributes.ALL, title));
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		new Thread(){
+			public void run()
+			{
+				try {
+					Refresh(jvdb.getMovies(MovieAttributes.ALL, title));
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}.start();
+		
 		
 	}
 
