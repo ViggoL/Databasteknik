@@ -28,7 +28,7 @@ public class Menu extends JFrame {
 	 * Create the frame.
 	 * @param jvdb 
 	 */
-	public Menu(JvdbInterface jvdb) {
+	public Menu(final JvdbInterface jvdb) {
 		this.jvdb = jvdb;
 		this.controller = new MenuController(jvdb);
 		setTitle("JVDB Menu");
@@ -43,7 +43,7 @@ public class Menu extends JFrame {
 		JButton btnSearchAlbums = new JButton("Search albums");
 
 		btnSearchAlbums.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable(){
 
 					@Override

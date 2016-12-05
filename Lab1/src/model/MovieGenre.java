@@ -1,15 +1,15 @@
 package src.model;
 
-public class Genre {
+public class MovieGenre {
 	private int id;
 	private String name;
 	
-	public Genre()
+	public MovieGenre()
 	{
 		
 	}
 	
-	public Genre(int id, String name) {
+	public MovieGenre(int id, String name) {
 		this.id = id;
 		this.name = name;
 	}

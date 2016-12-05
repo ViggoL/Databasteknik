@@ -21,7 +21,7 @@ import javax.swing.text.JTextComponent;
 
 import src.model.Album;
 import src.model.Artist;
-import src.model.Genre;
+import src.model.AlbumGenre;
 import src.model.JvdbInterface;
 
 public class AlbumController {
@@ -44,6 +44,7 @@ public class AlbumController {
 	}
 
 	public class ShowAlbum implements ActionListener {
+		
 		private src.view.ShowAlbums view;
 
 		public ShowAlbum(src.view.ShowAlbums view) {
@@ -79,12 +80,12 @@ public class AlbumController {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Album album = new Album();
+			final Album album = new Album();
 			List<Artist> artists = new ArrayList<>();
-			List<Genre> genres = new ArrayList<>();
+			List<AlbumGenre> genres = new ArrayList<>();
 			List<String> albumValues = new ArrayList<>();
 			ArrayList<Artist> aList = null;
-			ArrayList<Genre> gList = null;
+			ArrayList<AlbumGenre> gList = null;
 			
 
 			if (e.getSource() instanceof JButton) {
@@ -113,8 +114,8 @@ public class AlbumController {
 											if (tmpList.getSelectedValuesList().get(0) instanceof Artist) {
 												aList = (ArrayList<Artist>) ((JList<Artist>) c2)
 														.getSelectedValuesList();
-											} else if (tmpList.getSelectedValuesList().get(0) instanceof Genre) {
-												gList = (ArrayList<Genre>) ((JList<Genre>) c2).getSelectedValuesList();
+											} else if (tmpList.getSelectedValuesList().get(0) instanceof AlbumGenre) {
+												gList = (ArrayList<AlbumGenre>) ((JList<AlbumGenre>) c2).getSelectedValuesList();
 											}
 										}
 									}
@@ -129,7 +130,7 @@ public class AlbumController {
 			album.setReleaseDate(Date.valueOf(albumValues.remove(0)));
 			for (Artist a : aList)
 				album.getArtists().add(a);
-			for (Genre g : gList)
+			for (AlbumGenre g : gList)
 				album.getGenres().add(g);
 
 			album.setRating(aa.sldrRating.getValue());

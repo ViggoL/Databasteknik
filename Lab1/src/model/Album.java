@@ -9,7 +9,7 @@ public class Album {
 	private String name;
 	private Date releaseDate;
 	private List<Artist> artists = new ArrayList<Artist>();
-	private List<Genre> genres = new ArrayList<Genre>();
+	private List<AlbumGenre> genres = new ArrayList<AlbumGenre>();
 	private int rating;
 	
 	
@@ -53,11 +53,11 @@ public class Album {
 		this.artists = artists;
 	}
 
-	public List<Genre> getGenres() {
+	public List<AlbumGenre> getGenres() {
 		return genres;
 	}
 
-	public void setGenres(List<Genre> genres) {
+	public void setGenres(List<AlbumGenre> genres) {
 		this.genres = genres;
 	}
 	

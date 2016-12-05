@@ -43,7 +43,7 @@ public class AddAlbum extends JFrame {
 	public TextField txtName, txtReleaseDate;
 	public JScrollPane scrollPane, scrollPane_1;
 	public Label label, label_1, label_2, label_3;
-	private final JList<Genre> lstGenres = new JList();
+	private final JList<AlbumGenre> lstGenres = new JList();
 	private final JList<Artist> lstArtists = new JList();
 	public JSlider sldrRating = new JSlider();
 
@@ -52,12 +52,12 @@ public class AddAlbum extends JFrame {
 	 * @param jvdb 
 	 */
 	
-	private void refresh(List<Artist> artists, List<Genre> genres)
+	private void refresh(List<Artist> artists, List<AlbumGenre> genres)
 	{
 		DefaultListModel<Artist> alm = new DefaultListModel<Artist>();
-		DefaultListModel<Genre> glm = new DefaultListModel<Genre>();
+		DefaultListModel<AlbumGenre> glm = new DefaultListModel<AlbumGenre>();
 		
-		for (Genre g : genres)
+		for (AlbumGenre g : genres)
 			glm.addElement(g);
 		for (Artist a : artists) 
 			alm.addElement(a);
@@ -130,7 +130,7 @@ public class AddAlbum extends JFrame {
 		
 		scrollPane_1.setViewportView(lstGenres);
 		
-		Label lblRating = new Label("Rating - 5");
+		final Label lblRating = new Label("Rating - 5");
 		lblRating.setBounds(10, 122, 98, 22);
 		contentPane.add(lblRating);
 		

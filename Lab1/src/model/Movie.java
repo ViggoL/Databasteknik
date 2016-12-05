@@ -10,6 +10,7 @@ public class Movie {
 	private String title;
 	private Date releaseDate;
 	private List<Director> directors = new ArrayList<>();
+	private List<Movie> genres = new ArrayList<>();
 	
 	public Movie(){
 		
@@ -57,8 +58,15 @@ public class Movie {
 	public void setDirectors(List<Director> directors) {
 		this.directors = directors;
 	}
+	
 	public Vector getArray() {
-		// TODO Auto-generated method stub
+		
 		return null;
+	}
+	public List<Movie> getGenres() {
+		return genres;
+	}
+	public void setGenres(List<Movie> genres) {
+		this.genres = genres;
 	}
 }

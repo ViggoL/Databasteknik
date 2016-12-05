@@ -5,6 +5,6 @@ package src.model;
 
 
 public enum MovieAttributes {
-	TITLE,RELEASE_DATE,DIRECTOR,RATING,ALL;
+	GENRE,TITLE,RELEASE_DATE,DIRECTOR,RATING,ALL;
 
 }

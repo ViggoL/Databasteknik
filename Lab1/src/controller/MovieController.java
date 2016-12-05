@@ -54,7 +54,7 @@ public class MovieController {
 			List<String> movie = new ArrayList<>();
 
 			if (e.getSource() instanceof JButton) {
-				Movie m = new Movie();
+				final Movie m = new Movie();
 				b = (JButton) e.getSource();
 				Component[] c = b.getParent().getComponents();
 				for (Component s : c) {

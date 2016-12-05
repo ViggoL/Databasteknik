@@ -127,6 +127,9 @@ public class JVDB implements JvdbInterface {
 				directors.add(d);
 			}
 			m.setDirectors(directors);
+			
+			sql = "SELECT directors.* FROM directors, tr_movies_directors WHERE directors.directorId=tr_movies_directors.directorId AND tr_movies_directors.movieId=?;";
+			
 		}
 		return movies;
 
@@ -204,6 +207,7 @@ public class JVDB implements JvdbInterface {
 
 				System.out.println("Director relations added: " + addedDirectors);
 			}
+			
 
 			conn.commit();
 
@@ -241,85 +245,15 @@ public class JVDB implements JvdbInterface {
 	 * @see src.model.JvdbInterface#getGenres()
 	 */
 	@Override
-	public List<Genre> getGenres() throws SQLException {
+	public List<AlbumGenre> getGenres() throws SQLException {
 		String sql = "SELECT * FROM genres";
 		ResultSet rs = stmt.executeQuery(sql);
-		List<Genre> genres = new ArrayList<>();
+		List<AlbumGenre> genres = new ArrayList<>();
 		while (rs.next()) {
-			Genre g = new Genre(rs.getInt(1), rs.getString(2));
+			AlbumGenre g = new AlbumGenre(rs.getInt(1), rs.getString(2));
 			genres.add(g);
 		}
 		return genres;
-	}
-
-	@Override
-	public List<Movie> getMoviesByTitle(String title) throws SQLException {
-		String sql = "SELECT * FROM movies WHERE movieTitle=?";
-		stmt = conn.prepareStatement(sql);
-		stmt.setString(1, title);
-		ResultSet rs = stmt.executeQuery();
-		List<Movie> movies = new ArrayList<>();
-		while (rs.next()) {
-			Movie movie = new Movie();
-			movie.setId(rs.getInt(1));
-			movie.setTitle(rs.getString(2));
-			movie.setReleaseDate(rs.getDate(3));
-		}
-		for (Movie m : movies) {
-			sql = "SELECT directors.* FROM directors, tr_movies_directors WHERE directors.directorId=tr_movies_directors.directorId AND tr_movies_directors.movieId=?;";
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, m.getId());
-			rs = stmt.executeQuery();
-			List<Director> directors = new ArrayList<>();
-			while (rs.next()) {
-				Director d = new Director(rs.getInt(1), rs.getString(2), rs.getString(3));
-				directors.add(d);
-			}
-			m.setDirectors(directors);
-		}
-		return movies;
-	}
-
-	public List<Album> getAlbumsByDate(Date date) throws SQLException {
-		// Get all Albums
-		String sql = "SELECT * FROM albums WHERE albumReleaseDate=?";
-		stmt = conn.prepareStatement(sql);
-		stmt.setString(1, date.toString());
-		ResultSet resultSet = stmt.executeQuery();
-		List<Album> albums = new ArrayList<>();
-
-		while (resultSet.next()) {
-			Album album = new Album();
-			album.setId(resultSet.getInt(1));
-			album.setName(resultSet.getString(2));
-			album.setReleaseDate(resultSet.getDate(3));
-			albums.add(album);
-
-		}
-		for (Album alb : albums) {
-			sql = "SELECT artists.* FROM artists, tr_albums_artists WHERE artists.artistId=tr_albums_artists.artistId AND tr_albums_artists.albumId=?;";
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, alb.getId());
-			resultSet = stmt.executeQuery();
-			List<Artist> artists = new ArrayList<>();
-			while (resultSet.next()) {
-				Artist a = new Artist(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3));
-				artists.add(a);
-			}
-			alb.setArtists(artists);
-			sql = "SELECT genres.* FROM genres, tr_albums_genres WHERE genres.genreId=tr_albums_genres.genreId AND tr_albums_genres.albumId=?;";
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, alb.getId());
-			resultSet = stmt.executeQuery();
-			List<Genre> genres = new ArrayList<>();
-			while (resultSet.next()) {
-				Genre g = new Genre(resultSet.getInt(1), resultSet.getString(2));
-				genres.add(g);
-			}
-			alb.setGenres(genres);
-		}
-
-		return albums;
 	}
 
 	@Override
@@ -362,7 +296,7 @@ public class JVDB implements JvdbInterface {
 			}
 			break;
 		case GENRE:
-			String sqlId2 = "SELECT albumId FROM tr_albums_genres WHERE genreId = (SELECT genreId FROM genres WHERE genreName=?);";
+			String sqlId2 = "SELECT albumId FROM tr_albums_genres WHERE genreId = (SELECT genreId FROM album_genres WHERE genreName=?);";
 			stmt = conn.prepareStatement(sqlId2);
 			stmt.setString(1, value);
 			rs = stmt.executeQuery();
@@ -445,9 +379,9 @@ public class JVDB implements JvdbInterface {
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, album.getId());
 			rs = stmt.executeQuery();
-			List<Genre> genres = new ArrayList<>();
+			List<AlbumGenre> genres = new ArrayList<>();
 			while (rs.next()) {
-				Genre g = new Genre(rs.getInt(1), rs.getString(2));
+				AlbumGenre g = new AlbumGenre(rs.getInt(1), rs.getString(2));
 				genres.add(g);
 			}
 			album.setGenres(genres);
@@ -476,7 +410,7 @@ public class JVDB implements JvdbInterface {
 				stmt.setInt(2, albumId);
 				stmt.executeUpdate();
 			}
-			for (Genre g : album.getGenres()) {
+			for (AlbumGenre g : album.getGenres()) {
 				sql = "INSERT INTO tr_albums_genres (genreId, albumId) VALUES (?,?);";
 				stmt = conn.prepareStatement(sql);
 				stmt.setInt(1, g.getId());

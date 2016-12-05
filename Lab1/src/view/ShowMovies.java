@@ -46,7 +46,8 @@ public class ShowMovies extends JFrame {
 		DefaultTableModel tmodel = new DefaultTableModel();
 		tmodel.addColumn("Title");
 		tmodel.addColumn("Release date");
-		tmodel.addColumn("Director");
+		tmodel.addColumn("Directors");
+		tmodel.addColumn("Genres");
 
 		for (Movie a : movies)
 			tmodel.addRow(a.getArray());

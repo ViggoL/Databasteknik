@@ -23,7 +23,8 @@ public class MenuController {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			
+			ShowMovies sm = new ShowMovies(jvdb);
+			sm.show();
 		}
 		
 	}

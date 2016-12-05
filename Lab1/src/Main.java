@@ -13,7 +13,6 @@ public class Main {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		
-		
 		JvdbInterface jvdb = new JVDB();
 		Menu menu = new Menu(jvdb);
 		menu.show();
