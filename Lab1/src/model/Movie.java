@@ -59,9 +59,13 @@ public class Movie {
 		this.directors = directors;
 	}
 	
-	public Vector getArray() {
-		
-		return null;
+	public Object[] getArray() {
+		Object[] arr = new Object[4];
+		arr[0] = this.getTitle();
+		arr[1] = this.getReleaseDate();
+		arr[2] = this.getDirectors();
+		arr[3] = this.getGenres();
+		return arr;
 	}
 	public List<Movie> getGenres() {
 		return genres;
