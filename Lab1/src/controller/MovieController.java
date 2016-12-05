@@ -22,13 +22,19 @@ import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
+import src.model.Album;
 import src.model.AlbumGenre;
+import src.model.AlbumReview;
 import src.model.Artist;
 import src.model.Director;
 import src.model.JvdbInterface;
 import src.model.Movie;
 import src.model.MovieAttributes;
 import src.model.MovieGenre;
+import src.model.MovieReview;
+import src.view.AddAlbumReview;
+import src.view.AddMovieReview;
+import src.view.ShowAlbums;
 import src.view.ShowMovies;
 
 /**
@@ -55,6 +61,42 @@ public class MovieController {
 		}
 	}
 
+	public class ShowAddMovieReview implements ActionListener {
+
+		private ShowMovies view;
+		
+		public ShowAddMovieReview(ShowMovies view)
+		{
+			this.view = view; 
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			Movie movie = null;
+			Object[] arr = new Object[5];
+			int row = view.tblMovies.getSelectedRow();
+			int column = view.tblMovies.getColumnCount();
+			arr[0] = view.tblMovies.getValueAt(row, 0);
+			arr[1] = view.tblMovies.getValueAt(row, 1);
+			arr[2] = view.tblMovies.getValueAt(row, 2);
+			arr[3] = view.tblMovies.getValueAt(row, 3);
+			arr[4] = view.tblMovies.getValueAt(row, 4);
+			for (Movie m : view.allMovies)
+			{
+				if (m.compareArrays(arr)){
+					movie = m;
+					break;
+				}
+					
+			}
+			
+			AddMovieReview amr = new AddMovieReview(jvdb, movie);
+			amr.show();
+		}
+		
+	}
+	
 	public class SearchMovie implements ActionListener {
 
 		private ShowMovies view;
@@ -84,6 +126,38 @@ public class MovieController {
 			}.start();
 		}
 		
+	}
+	
+	public class AddRating implements ActionListener {
+
+		private AddMovieReview view;
+
+		public AddRating(AddMovieReview view)
+		{
+			this.view = view;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new Thread(){
+				public void run()
+				{
+					MovieReview review = new MovieReview();
+					review.setText(view.txtComment.getText());
+					review.setRating(view.slider.getValue());
+					review.setMovieId(view.movie.getId());
+					try {
+						jvdb.addMovieReview(review);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					view.hide();
+				}
+			}.start();
+
+		}
+
 	}
 	
 	public class AddMovie implements ActionListener {

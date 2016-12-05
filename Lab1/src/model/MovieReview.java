@@ -6,13 +6,19 @@ public class MovieReview {
 	private String text;
 	private int rating;
 	private User user;
+	private int movieId;
 	
-	public MovieReview(int id, String text, int rating, User user)
+	public MovieReview(int id, String text, int rating, User user, int movieId)
 	{
 		this.setId(id);
 		this.setText(text);
 		this.setRating(rating);
 		this.setUser(user);
+		this.setMovieId(movieId);
+	}
+
+	public MovieReview() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public int getId() {
@@ -47,6 +53,14 @@ public class MovieReview {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public int getMovieId() {
+		return movieId;
+	}
+
+	public void setMovieId(int movieId) {
+		this.movieId = movieId;
 	}
 
 	

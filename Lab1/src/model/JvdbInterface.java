@@ -32,4 +32,6 @@ public interface JvdbInterface {
 	int logIn(String userName, String passWord) throws SQLException;
 
 	void addAlbumReview(AlbumReview review) throws SQLException;
+
+	void addMovieReview(MovieReview review) throws SQLException;
 }

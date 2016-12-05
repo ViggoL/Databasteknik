@@ -19,6 +19,19 @@ public class JVDB implements JvdbInterface {
 		stmt = conn.prepareStatement("");
 	}
 
+	
+	@Override
+	public void addMovieReview(MovieReview review) throws SQLException
+	{
+		String sql = "INSERT INTO movie_reviews (userId, reviewText, rating, movieId) VALUES (?,?,?,?);";
+		stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, this.userId);
+		stmt.setString(2, review.getText());
+		stmt.setInt(3, review.getRating());
+		stmt.setInt(4, review.getMovieId());
+		stmt.executeUpdate();
+	}
+	
 	@Override
 	public void addAlbumReview(AlbumReview review) throws SQLException
 	{
@@ -142,6 +155,7 @@ public class JVDB implements JvdbInterface {
 			movie.setId(resultSet.getInt(1));
 			movie.setTitle(resultSet.getString(2));
 			movie.setReleaseDate(resultSet.getDate(3));
+			movie.setRating(resultSet.getInt(4));
 			movies.add(movie);
 		}
 		// Get the directors for each movie
@@ -157,7 +171,7 @@ public class JVDB implements JvdbInterface {
 			}
 			m.setDirectors(directors);
 			
-			sql = "SELECT album_genres.* FROM album_genres, tr_movies_genres WHERE album_genres.genreId=tr_movies_genres.genreId AND tr_movies_genres.movieId=?;";
+			sql = "SELECT movie_genres.* FROM movie_genres, tr_movies_genres WHERE movie_genres.genreId=tr_movies_genres.genreId AND tr_movies_genres.movieId=?;";
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, m.getId());
 			resultSet = stmt.executeQuery();

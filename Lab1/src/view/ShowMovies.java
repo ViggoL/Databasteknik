@@ -38,10 +38,11 @@ import java.sql.Date;
 public class ShowMovies extends JFrame {
 
 	private JPanel contentPane;
-	private JTable tblMovies;
+	public JTable tblMovies;
 	public JTextField textField;
 	public MovieAttributes operations = MovieAttributes.TITLE;
 	private String title;
+	public List<Movie> allMovies;
 
 	public void Refresh(List<Movie> movies) {
 		DefaultTableModel tmodel = new DefaultTableModel();
@@ -49,6 +50,7 @@ public class ShowMovies extends JFrame {
 		tmodel.addColumn("Release date");
 		tmodel.addColumn("Directors");
 		tmodel.addColumn("Genres");
+		tmodel.addColumn("Rating");
 		
 		if (movies != null)
 			for (Movie a : movies)
@@ -115,7 +117,7 @@ public class ShowMovies extends JFrame {
 				operations = MovieAttributes.TITLE;
 			}
 		});
-		rdbtnTitle.setBounds(6, 147, 200, 23);
+		rdbtnTitle.setBounds(6, 123, 200, 23);
 		panel.add(rdbtnTitle);
 		rdbtnTitle.setSelected(true);
 		btnGroup.add(rdbtnTitle);
@@ -146,9 +148,14 @@ public class ShowMovies extends JFrame {
 				operations = MovieAttributes.RATING;
 			}
 		});
-//		rdbtnRating.setBounds(6, 76, 72, 23);
-//		panel.add(rdbtnRating);
-//		btnGroup.add(rdbtnRating);
+		rdbtnRating.setBounds(6, 76, 72, 23);
+		panel.add(rdbtnRating);
+		btnGroup.add(rdbtnRating);
+		
+		JButton btnRateMovie = new JButton("Rate movie");
+		btnRateMovie.addActionListener(controller. new ShowAddMovieReview(this));
+		btnRateMovie.setBounds(6, 350, 133, 23);
+		panel.add(btnRateMovie);
 		
 		
 		contentPane.setLayout(gl_contentPane);
@@ -157,7 +164,8 @@ public class ShowMovies extends JFrame {
 			public void run()
 			{
 				try {
-					Refresh(jvdb.getMovies(MovieAttributes.ALL, title));
+					allMovies = jvdb.getMovies(MovieAttributes.ALL, title);
+					Refresh(allMovies);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -167,5 +175,4 @@ public class ShowMovies extends JFrame {
 		
 		
 	}
-
 }

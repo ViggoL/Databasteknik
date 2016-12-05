@@ -9,22 +9,20 @@ public class Movie {
 	private int id;
 	private String title;
 	private Date releaseDate;
+	private int rating;
 	private List<Director> directors = new ArrayList<>();
 	private List<MovieGenre> genres = new ArrayList<>();
 	
 	public Movie(){
 		
 	}
-	public Movie(String title, Date releaseDate, List<Director> directors){
-		this.setTitle(title);
-		this.setReleaseDate(releaseDate);
-		this.setDirectors(directors);
+	public Movie(String title, Date releaseDate, int rating, List<Director> directors, List<MovieGenre> genres){
+		this.title = title;
+		this.releaseDate = releaseDate;
+		this.directors = directors;
+		this.rating = rating;
+		this.genres = genres;
 		
-	}
-	public Movie(int id, String title, Date releaseDate, List<Director> directors)
-	{
-		this(title,releaseDate,directors);
-		this.setId(id);
 	}
 
 	public int getId() throws NullPointerException {
@@ -60,17 +58,35 @@ public class Movie {
 	}
 	
 	public Object[] getArray() {
-		Object[] arr = new Object[4];
+		Object[] arr = new Object[5];
 		arr[0] = this.title;
 		arr[1] = this.releaseDate;
 		arr[2] = this.directors.toString().replace("]", "").replace("[", "");
 		arr[3] = this.genres.toString().replace("]", "").replace("[", "");
+		arr[4] = this.rating;
 		return arr;
+	}
+	
+	public boolean compareArrays(Object[] other)
+	{
+		Object[] thisArr = this.getArray();
+		if (thisArr[0].equals(other[0]) &&
+			thisArr[1].equals(other[1]) &&
+			thisArr[2].equals(other[2]) &&
+			thisArr[3].equals(other[3]) &&
+			thisArr[4].equals(other[4])) return true;
+		return false;
 	}
 	public List<MovieGenre> getGenres() {
 		return genres;
 	}
 	public void setGenres(List<MovieGenre> genres) {
 		this.genres = genres;
+	}
+	public int getRating() {
+		return rating;
+	}
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 }

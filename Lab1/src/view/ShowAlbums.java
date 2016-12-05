@@ -34,6 +34,8 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.sql.Date;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 public class ShowAlbums extends JFrame {
@@ -47,7 +49,6 @@ public class ShowAlbums extends JFrame {
 
 	public void Refresh(List<Album> albums) {
 		DefaultTableModel tmodel = new DefaultTableModel();
-		tmodel.addColumn("ID");
 		tmodel.addColumn("Name");
 		tmodel.addColumn("Release date");
 		tmodel.addColumn("Artists");
@@ -167,11 +168,16 @@ public class ShowAlbums extends JFrame {
 		btnGroup.add(rdbtnRating);
 		
 		JButton btnRateAlbum = new JButton("Rate Album");
+		btnRateAlbum.setEnabled(false);
 		btnRateAlbum.addActionListener(ac.new ShowAddAlbumReview(this));
 		btnRateAlbum.setBounds(50, 220, 117, 29);
 		panel.add(btnRateAlbum);
-		
-		
+		tblAlbums.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnRateAlbum.setEnabled(true);
+			}
+		});
 		contentPane.setLayout(gl_contentPane);
 		
 		btnOK.addActionListener(new ActionListener() {
