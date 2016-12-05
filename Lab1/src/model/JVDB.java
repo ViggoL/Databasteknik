@@ -142,8 +142,16 @@ public class JVDB implements JvdbInterface {
 			}
 			m.setDirectors(directors);
 			
-			sql = "SELECT directors.* FROM directors, tr_movies_directors WHERE directors.directorId=tr_movies_directors.directorId AND tr_movies_directors.movieId=?;";
-			
+			sql = "SELECT album_genres.* FROM album_genres, tr_movies_genres WHERE album_genres.genreId=tr_movies_genres.genreId AND tr_movies_genres.movieId=?;";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, m.getId());
+			resultSet = stmt.executeQuery();
+			List<MovieGenre> genres = new ArrayList<>();
+			while (resultSet.next()){
+				MovieGenre mg = new MovieGenre(resultSet.getInt(1), resultSet.getString(2));
+				genres.add(mg);
+			}
+			m.setGenres(genres);
 		}
 		return movies;
 

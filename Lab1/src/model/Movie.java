@@ -10,7 +10,7 @@ public class Movie {
 	private String title;
 	private Date releaseDate;
 	private List<Director> directors = new ArrayList<>();
-	private List<Movie> genres = new ArrayList<>();
+	private List<MovieGenre> genres = new ArrayList<>();
 	
 	public Movie(){
 		
@@ -67,10 +67,10 @@ public class Movie {
 		arr[3] = this.getGenres();
 		return arr;
 	}
-	public List<Movie> getGenres() {
+	public List<MovieGenre> getGenres() {
 		return genres;
 	}
-	public void setGenres(List<Movie> genres) {
+	public void setGenres(List<MovieGenre> genres) {
 		this.genres = genres;
 	}
 }
