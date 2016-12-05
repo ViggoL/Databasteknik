@@ -39,7 +39,7 @@ public class ShowMovies extends JFrame {
 	private JPanel contentPane;
 	private JTable tblMovies;
 	private JTextField textField;
-	private Operations operations;
+	private MovieAttributes operations = MovieAttributes.TITLE;
 	private String title;
 
 	private void Refresh(List<Movie> movies) {
@@ -110,7 +110,7 @@ public class ShowMovies extends JFrame {
 						Refresh(jvdb.getMovies(MovieAttributes.ALL, ""));
 						return; 
 					}
-					Refresh(jvdb.getMovies(MovieAttributes.ALL, textField.getText()));
+					Refresh(jvdb.getMovies(operations, textField.getText()));
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -124,7 +124,7 @@ public class ShowMovies extends JFrame {
 		JRadioButton rdbtnTitle = new JRadioButton("Title");
 		rdbtnTitle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//operations = Operations.NAME;
+				operations = MovieAttributes.TITLE;
 			}
 		});
 		rdbtnTitle.setBounds(6, 147, 200, 23);
@@ -135,7 +135,7 @@ public class ShowMovies extends JFrame {
 		JRadioButton rdbtnDirector = new JRadioButton("Director");
 		rdbtnDirector.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//operations = Operations.DIRECTOR;
+				operations = MovieAttributes.DIRECTOR;
 			}
 		});
 		rdbtnDirector.setBounds(6, 100, 200, 23);
@@ -145,19 +145,19 @@ public class ShowMovies extends JFrame {
 		JRadioButton rdbtnReleaseDate = new JRadioButton("Release date");
 		rdbtnReleaseDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//operations = Operations.RELEASEDATE;
+				operations = MovieAttributes.RELEASE_DATE;
 			}
 		});
 		rdbtnReleaseDate.setBounds(6, 53, 200, 23);
 		panel.add(rdbtnReleaseDate);
 		btnGroup.add(rdbtnReleaseDate);
 		
-//		JRadioButton rdbtnRating = new JRadioButton("Rating");
-//		rdbtnRating.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				operations = Operations.RATING;
-//			}
-//		});
+		JRadioButton rdbtnRating = new JRadioButton("Rating");
+		rdbtnRating.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				operations = MovieAttributes.RATING;
+			}
+		});
 //		rdbtnRating.setBounds(6, 76, 72, 23);
 //		panel.add(rdbtnRating);
 //		btnGroup.add(rdbtnRating);

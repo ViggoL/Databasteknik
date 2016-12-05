@@ -86,26 +86,28 @@ public class JVDB implements JvdbInterface {
 		String sql = new String();
 		switch (attribute) {
 		case TITLE:
-			sql = "SELECT * FROM movies WHERE movieName LIKE '%?%';";
+			sql = "SELECT * FROM movies WHERE movieTitle LIKE ?;";
 			break;
 		case DIRECTOR:
 			sql = "SELECT movies.* " + "FROM movies,directors,tr_movies_directors " + "WHERE directors.directorName "
-					+ "LIKE '%?%' " + "AND directors.directorId=tr_movies_directors.directorId "
+					+ "LIKE ? " + "AND directors.directorId=tr_movies_directors.directorId "
 					+ "AND movies.movieId=tr_movies_directors.movieId;";
 			break;
 		case RATING:
-			sql = "SELECT movies.* " + "FROM movies,movie_reviews " + "WHERE rating = '?' "
+			sql = "SELECT movies.* " + "FROM movies,movie_reviews " + "WHERE rating = ? "
 					+ "AND movies.movieId=movie_reviews.movieId;";
 			break;
 		case RELEASE_DATE:
-			sql = "SELECT * FROM movies WHERE movieReleaseDate LIKE '%?%';";
+			sql = "SELECT * FROM movies WHERE movieReleaseDate LIKE ?;";
 			break;
 		case GENRE:
 			sql = "SELECT movies.* " + "FROM movies,movie_genres,tr_movies_genres " + "WHERE movies_genres.genreName "
-					+ "LIKE '%?%' " + "AND movies_genres.genreId=tr_movies_genres.genreId "
+					+ "LIKE ? " + "AND movies_genres.genreId=tr_movies_genres.genreId "
 					+ "AND movies.movieId=tr_movies_genres.movieId;";
+			break;
 		case ALL:
 			sql = "SELECT * FROM movies;";
+			break;
 		}
 		// Get movies
 		ResultSet resultSet;
@@ -116,7 +118,7 @@ public class JVDB implements JvdbInterface {
 		}
 		else {
 			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, value);
+			stmt.setString(1, "%" + value + "%");
 			resultSet = stmt.executeQuery();
 		}
 
