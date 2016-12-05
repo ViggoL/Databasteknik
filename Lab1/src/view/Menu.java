@@ -10,8 +10,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import src.controller.AlbumController;
+import src.controller.JVDB;
 import src.controller.MenuController;
-import src.model.JVDB;
 import src.model.JvdbInterface;
 
 import javax.swing.JButton;

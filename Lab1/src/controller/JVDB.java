@@ -1,10 +1,22 @@
-package src.model;
+package src.controller;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
+
+import src.model.Album;
+import src.model.AlbumGenre;
+import src.model.AlbumReview;
+import src.model.Artist;
+import src.model.Director;
+import src.model.JvdbInterface;
+import src.model.Movie;
+import src.model.MovieAttributes;
+import src.model.MovieGenre;
+import src.model.Operations;
+import src.model.User;
 
 public class JVDB implements JvdbInterface {
 	private Connection conn = null;

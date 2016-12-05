@@ -150,8 +150,14 @@ public class MenuController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			src.view.AddMovie am = new src.view.AddMovie(jvdb);
-			am.show();
+			src.view.AddMovie am = null;
+			try {
+				am = new src.view.AddMovie(jvdb);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			am.setVisible(true);;
 			
 		}
 		
