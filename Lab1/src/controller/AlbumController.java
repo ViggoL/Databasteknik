@@ -60,6 +60,13 @@ public class AlbumController {
 	
 	public class AddAlbum implements ActionListener {
 
+		src.view.AddAlbum aa;
+		
+		public AddAlbum(src.view.AddAlbum aa)
+		{
+			this.aa = aa;
+		}
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Album album = new Album();
@@ -68,6 +75,7 @@ public class AlbumController {
 			List<String> albumValues = new ArrayList<>();
 			ArrayList<Artist> aList = null;
 			ArrayList<Genre> gList = null;
+			
 
 			if (e.getSource() instanceof JButton) {
 				b = (JButton) e.getSource();
@@ -111,6 +119,7 @@ public class AlbumController {
 				album.getArtists().add(a); 
 			for (Genre g :gList) 
 				album.getGenres().add(g);
+			album.setRating(aa.sldrRating.getValue());
 			
 			System.out.println(album.toString());
 			
