@@ -213,7 +213,7 @@ public class JVDB implements JvdbInterface {
 			// }
 
 			// lägg till filmen och fånga upp IDt
-			sql = "INSERT INTO movies (movieName,movieReleaseDate) VALUES (?, ?);";
+			sql = "INSERT INTO movies (movieTitle,movieReleaseDate) VALUES (?, ?);";
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, movie.getTitle());
 			stmt.setDate(2, movie.getReleaseDate());
@@ -230,6 +230,16 @@ public class JVDB implements JvdbInterface {
 				int addedDirectors = stmt.executeUpdate();
 
 				System.out.println("Director relations added: " + addedDirectors);
+			}
+			
+			for (MovieGenre mg: movie.getGenres()){
+				sql = "INSERT INTO tr_movies_genres (movieId, genreId) VALUES (?,?);";
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, movieId);
+				stmt.setInt(2, mg.getId());
+				int addedGenre = stmt.executeUpdate();
+				
+				System.out.println("Genre relations added: " + addedGenre);
 			}
 			
 

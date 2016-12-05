@@ -1,18 +1,23 @@
 package src.view;
 
 import java.awt.EventQueue;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.common.collect.LinkedListModel;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
@@ -20,11 +25,14 @@ import com.jgoodies.forms.layout.RowSpec;
 import src.controller.MovieController;
 import src.model.JVDB;
 import src.model.JvdbInterface;
+import src.model.MovieGenre;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JList;
+import javax.swing.ListSelectionModel;
 
 public class AddMovie extends JFrame implements Runnable {
 
@@ -41,12 +49,15 @@ public class AddMovie extends JFrame implements Runnable {
 	private JFormattedTextField releaseDate_FormattedTextField;
 	private String formatString;
 	private JLabel lblGenre;
+	private JScrollPane scrollPane;
 	private JList list;
 
 	/**
 	 * Create the frame.
+	 * 
+	 * @throws SQLException
 	 */
-	public AddMovie(final JvdbInterface jvdb) {
+	public AddMovie(final JvdbInterface jvdb) throws SQLException {
 		this.jvdb = jvdb;
 		this.setTitle("Add Movie");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -54,7 +65,7 @@ public class AddMovie extends JFrame implements Runnable {
 		double c = a * 1.618;
 		int b = Integer.valueOf(String.valueOf(c).split("\\.")[0]);
 
-		setBounds(100, 100, 300, 400);
+		setBounds(100, 100, 300, 480);
 		contentPane = new JPanel();
 		TitledBorder title = new TitledBorder("Movie Details ");
 		// title.setBorder(new EmptyBorder(20, 5, 40, 5));
@@ -70,7 +81,7 @@ public class AddMovie extends JFrame implements Runnable {
 				RowSpec.decode("30px"),
 				RowSpec.decode("30px"),
 				RowSpec.decode("30px"),
-				RowSpec.decode("30px:grow"),
+				RowSpec.decode("70px:grow"),
 				FormSpecs.DEFAULT_ROWSPEC,
 				RowSpec.decode("30px"),
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -80,7 +91,7 @@ public class AddMovie extends JFrame implements Runnable {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
+				RowSpec.decode("30px"),
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -100,12 +111,11 @@ public class AddMovie extends JFrame implements Runnable {
 
 		DateFormatter formatter = new DateFormatter(new SimpleDateFormat(formatString));
 		DateFormatter displayFormatter = new DateFormatter(new SimpleDateFormat("dd MMMM yyyy"));
-	    DefaultFormatterFactory factory = 
-	    		new DefaultFormatterFactory(displayFormatter, displayFormatter	,formatter );
-	    
+		DefaultFormatterFactory factory = new DefaultFormatterFactory(displayFormatter, displayFormatter, formatter);
+
 		releaseDate_FormattedTextField = new JFormattedTextField(factory);
 		releaseDate_FormattedTextField.setToolTipText("Year-Month-date: " + formatString.toLowerCase());
-		
+
 		contentPane.add(releaseDate_FormattedTextField, "2, 5, fill, default");
 
 		MovieController mc = new MovieController(jvdb);
@@ -113,28 +123,39 @@ public class AddMovie extends JFrame implements Runnable {
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(mc.new HideWindow());
 		btnAdd = new JButton("Add");
-		btnAdd.addActionListener(mc.new AddMovie());
-						
-						lblGenre = new JLabel("Genre");
-						contentPane.add(lblGenre, "2, 6");
-						
-						list = new JList();
-						contentPane.add(list, "2, 7, fill, default");
-						//releaseDateTextField.setColumns(10);
+		btnAdd.addActionListener(mc.new AddMovie(this));
 
-						JLabel label = new JLabel("Director(s)");
-						contentPane.add(label, "2, 8, fill, bottom");
+		lblGenre = new JLabel("Genre");
+		contentPane.add(lblGenre, "2, 6, fill, bottom");
+		Object[] a1 = jvdb.getMovieGenres().toArray();
+		int i = a1.length;
+		String[] genreStrings = new String[i];
+
+		for (Object o : a1) {
+			genreStrings[--i] = o.toString();
+		}
+		DefaultListModel listModel = new DefaultListModel();
+
+		scrollPane = new JScrollPane();
+		contentPane.add(scrollPane, "2, 7, fill, default");
+
+		list = new JList(jvdb.getMovieGenres().toArray());
+
+		scrollPane.setViewportView(list);
+						
+								JLabel label = new JLabel("Director(s)");
+								contentPane.add(label, "2, 9, fill, bottom");
 				
 						director1TextField = new JTextField();
 						director1TextField.setColumns(10);
-						contentPane.add(director1TextField, "2, 9, fill, default");
+						contentPane.add(director1TextField, "2, 11, fill, default");
 		
 				director2TextField = new JTextField();
 				director2TextField.setColumns(10);
-				contentPane.add(director2TextField, "2, 11, fill, default");
+				contentPane.add(director2TextField, "2, 13, fill, default");
 
-		contentPane.add(btnAdd, "2, 15, right, fill");
-		contentPane.add(btnCancel, "2, 15, center, fill");
+		contentPane.add(btnAdd, "2, 17, right, fill");
+		contentPane.add(btnCancel, "2, 17, center, fill");
 	}
 
 	@Override

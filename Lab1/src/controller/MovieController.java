@@ -15,14 +15,20 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
+import src.model.AlbumGenre;
+import src.model.Artist;
 import src.model.Director;
 import src.model.JvdbInterface;
 import src.model.Movie;
 import src.model.MovieAttributes;
+import src.model.MovieGenre;
 import src.view.ShowMovies;
 
 /**
@@ -81,10 +87,17 @@ public class MovieController {
 	}
 	
 	public class AddMovie implements ActionListener {
+		
+		private src.view.AddMovie view;
+
+		public AddMovie(src.view.AddMovie view) {
+			this.view = view;
+		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			List<String> movie = new ArrayList<>();
+			ArrayList<MovieGenre> gList = null;
 
 			if (e.getSource() instanceof JButton) {
 				final Movie m = new Movie();
@@ -102,10 +115,30 @@ public class MovieController {
 										((java.util.Date) ((JFormattedTextField) s).getValue()).getTime());
 								m.setReleaseDate(sqlDate);
 						}
+					}else if (s instanceof JScrollPane) {
+						Component[] comps = ((JScrollPane) s).getComponents();
+						for (Component c1 : comps) {
+							if (c1 instanceof JViewport) {
+								JViewport port = (JViewport) c1;
+								for (Component c2 : port.getComponents()) {
+									if (c2 != null) {
+										if (c2 instanceof JList) {
+											JList<Object> tmpList = (JList<Object>) c2;
+											if (tmpList.getSelectedValuesList().size() > 0) {
+												if (tmpList.getSelectedValuesList().get(0) instanceof MovieGenre) {
+													gList = (ArrayList<MovieGenre>) ((JList<MovieGenre>) c2)
+															.getSelectedValuesList(); 
+												}
+											}
+										}
+									}
+								}
+							}
+						}
 					}
-
 				}
 				
+				m.setGenres(gList);
 				m.setTitle(movie.remove(0));
 				List<Director> directors = new ArrayList<>();
 				for (String s : movie) {

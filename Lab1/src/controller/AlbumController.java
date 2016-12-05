@@ -44,7 +44,7 @@ public class AlbumController {
 	}
 
 	public class ShowAlbum implements ActionListener {
-		
+
 		private src.view.ShowAlbums view;
 
 		public ShowAlbum(src.view.ShowAlbums view) {
@@ -72,12 +72,11 @@ public class AlbumController {
 	public class AddAlbum implements ActionListener {
 
 		src.view.AddAlbum aa;
-		
-		public AddAlbum(src.view.AddAlbum aa)
-		{
+
+		public AddAlbum(src.view.AddAlbum aa) {
 			this.aa = aa;
 		}
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			final Album album = new Album();
@@ -86,7 +85,6 @@ public class AlbumController {
 			List<String> albumValues = new ArrayList<>();
 			ArrayList<Artist> aList = null;
 			ArrayList<AlbumGenre> gList = null;
-			
 
 			if (e.getSource() instanceof JButton) {
 				b = (JButton) e.getSource();
@@ -108,14 +106,18 @@ public class AlbumController {
 							if (c1 instanceof JViewport) {
 								JViewport port = (JViewport) c1;
 								for (Component c2 : port.getComponents()) {
-									if (c2 instanceof JList) {
-										JList<Object> tmpList = (JList<Object>) c2;
-										if (tmpList.getSelectedValuesList().size() > 0) {
-											if (tmpList.getSelectedValuesList().get(0) instanceof Artist) {
-												aList = (ArrayList<Artist>) ((JList<Artist>) c2)
-														.getSelectedValuesList();
-											} else if (tmpList.getSelectedValuesList().get(0) instanceof AlbumGenre) {
-												gList = (ArrayList<AlbumGenre>) ((JList<AlbumGenre>) c2).getSelectedValuesList();
+									if (c2 != null) {
+										if (c2 instanceof JList) {
+											JList<Object> tmpList = (JList<Object>) c2;
+											if (tmpList.getSelectedValuesList().size() > 0) {
+												if (tmpList.getSelectedValuesList().get(0) instanceof Artist) {
+													aList = (ArrayList<Artist>) ((JList<Artist>) c2)
+															.getSelectedValuesList();
+												} else if (tmpList.getSelectedValuesList()
+														.get(0) instanceof AlbumGenre) {
+													gList = (ArrayList<AlbumGenre>) ((JList<AlbumGenre>) c2)
+															.getSelectedValuesList();
+												}
 											}
 										}
 									}
@@ -134,7 +136,6 @@ public class AlbumController {
 				album.getGenres().add(g);
 
 			album.setRating(aa.sldrRating.getValue());
-			
 
 			System.out.println(album.toString());
 
