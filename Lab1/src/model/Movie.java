@@ -12,16 +12,18 @@ public class Movie {
 	private int rating;
 	private List<Director> directors = new ArrayList<>();
 	private List<MovieGenre> genres = new ArrayList<>();
+	private User addedBy;
 	
 	public Movie(){
 		
 	}
-	public Movie(String title, Date releaseDate, int rating, List<Director> directors, List<MovieGenre> genres){
+	public Movie(String title, Date releaseDate, int rating, List<Director> directors, List<MovieGenre> genres, User addedBy){
 		this.title = title;
 		this.releaseDate = releaseDate;
 		this.directors = directors;
 		this.rating = rating;
 		this.genres = genres;
+		this.addedBy = addedBy;
 		
 	}
 
@@ -58,12 +60,13 @@ public class Movie {
 	}
 	
 	public Object[] getArray() {
-		Object[] arr = new Object[5];
+		Object[] arr = new Object[6];
 		arr[0] = this.title;
 		arr[1] = this.releaseDate;
 		arr[2] = this.directors.toString().replace("]", "").replace("[", "");
 		arr[3] = this.genres.toString().replace("]", "").replace("[", "");
 		arr[4] = this.rating;
+		arr[5] = this.addedBy;
 		return arr;
 	}
 	
@@ -74,7 +77,8 @@ public class Movie {
 			thisArr[1].equals(other[1]) &&
 			thisArr[2].equals(other[2]) &&
 			thisArr[3].equals(other[3]) &&
-			thisArr[4].equals(other[4])) return true;
+			thisArr[4].equals(other[4]) &&
+			thisArr[5].equals(other[5])) return true;
 		return false;
 	}
 	public List<MovieGenre> getGenres() {
@@ -88,5 +92,11 @@ public class Movie {
 	}
 	public void setRating(int rating) {
 		this.rating = rating;
+	}
+	public User getAddedBy() {
+		return addedBy;
+	}
+	public void setAddedBy(User addedBy) {
+		this.addedBy = addedBy;
 	}
 }

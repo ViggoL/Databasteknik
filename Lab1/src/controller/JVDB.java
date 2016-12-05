@@ -15,6 +15,7 @@ import src.model.JvdbInterface;
 import src.model.Movie;
 import src.model.MovieAttributes;
 import src.model.MovieGenre;
+import src.model.MovieReview;
 import src.model.Operations;
 import src.model.User;
 
@@ -30,7 +31,52 @@ public class JVDB implements JvdbInterface {
 				usr, pwd);
 		stmt = conn.prepareStatement("");
 	}
+	
+	@Override
+	public int getUserId()
+	{
+		return this.userId;
+	}
 
+	@Override
+	public boolean albumReviewExists(int userId, int albumId) throws SQLException
+	{
+		String sql = "SELECT * FROM album_reviews WHERE userId=? AND albumId=?;";
+		stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, userId);
+		stmt.setInt(2, albumId);
+		ResultSet rs = stmt.executeQuery();
+		return (rs.isBeforeFirst());
+	}
+	
+	@Override
+	public boolean movieReviewExists(int userId, int movieId) throws SQLException
+	{
+		String sql = "SELECT * FROM movie_reviews WHERE userId=? AND movieId=?;";
+		stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, userId);
+		stmt.setInt(2, movieId);
+		ResultSet rs = stmt.executeQuery();
+		return (rs.isBeforeFirst());
+	}
+	
+	@Override
+	public void addArtist(Artist artist) throws SQLException{
+		String sql = "INSERT INTO artists (artistName, artistBio) VALUES (?,?);";
+		stmt = conn.prepareStatement(sql);
+		stmt.setString(1, artist.getName());
+		stmt.setString(2, artist.getBio());
+		stmt.executeUpdate();
+	}
+
+	@Override
+	public void addDirector(Director director) throws SQLException{
+		String sql = "INSERT INTO directors (directorName, directorBio) VALUES (?,?);";
+		stmt = conn.prepareStatement(sql);
+		stmt.setString(1, director.getName());
+		stmt.setString(2, director.getBio());
+		stmt.executeUpdate();
+	}
 	
 	@Override
 	public void addMovieReview(MovieReview review) throws SQLException
@@ -159,7 +205,6 @@ public class JVDB implements JvdbInterface {
 			stmt.setString(1, "%" + value + "%");
 			resultSet = stmt.executeQuery();
 		}
-
 		
 		List<Movie> movies = new ArrayList<>();
 		while (resultSet.next()) {
@@ -168,8 +213,21 @@ public class JVDB implements JvdbInterface {
 			movie.setTitle(resultSet.getString(2));
 			movie.setReleaseDate(resultSet.getDate(3));
 			movie.setRating(resultSet.getInt(4));
+			
 			movies.add(movie);
 		}
+		// Get who added each movie
+		for (Movie m : movies)
+		{
+			sql = "SELECT * FROM users WHERE userId= (SELECT addedBy FROM movies WHERE movieId=? LIMIT 1); ";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, m.getId());
+			resultSet = stmt.executeQuery();
+			resultSet.next();
+			User user = new User(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
+			m.setAddedBy(user);
+		}
+		
 		// Get the directors for each movie
 		for (Movie m : movies) {
 			sql = "SELECT directors.* FROM directors, tr_movies_directors WHERE directors.directorId=tr_movies_directors.directorId AND tr_movies_directors.movieId=?;";
@@ -251,10 +309,11 @@ public class JVDB implements JvdbInterface {
 			// }
 
 			// lägg till filmen och fånga upp IDt
-			sql = "INSERT INTO movies (movieTitle,movieReleaseDate) VALUES (?, ?);";
+			sql = "INSERT INTO movies (movieTitle,movieReleaseDate,addedBy) VALUES (?, ?);";
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, movie.getTitle());
 			stmt.setDate(2, movie.getReleaseDate());
+			stmt.setInt(3, this.userId);
 			stmt.executeUpdate();
 			ResultSet keys = stmt.getGeneratedKeys();
 			keys.next();
@@ -470,6 +529,14 @@ public class JVDB implements JvdbInterface {
 				genres.add(g);
 			}
 			album.setGenres(genres);
+		
+			sql = "SELECT * FROM users WHERE userId= (SELECT addedBy FROM albums WHERE albumId=? LIMIT 1); ";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, album.getId());
+			rs = stmt.executeQuery();
+			rs.next();
+			User user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+			album.setAddedBy(user);
 		}
 		return albums;
 	}
@@ -478,12 +545,13 @@ public class JVDB implements JvdbInterface {
 	public void addAlbum(Album album) throws SQLException, NullPointerException {
 		try {
 			conn.setAutoCommit(false);
-			String sql = "INSERT INTO albums (albumName, albumReleaseDate, albumRating) VALUES (?,?,?);";
+			String sql = "INSERT INTO albums (albumName, albumReleaseDate, albumRating, addedBy) VALUES (?,?,?);";
 			System.out.println(sql + "\n" + album.toString());
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, album.getName());
 			stmt.setDate(2, album.getReleaseDate());
 			stmt.setInt(3, album.getRating());
+			stmt.setInt(4, this.userId);
 			stmt.executeUpdate();
 			ResultSet keys = stmt.getGeneratedKeys();
 			keys.next();

@@ -4,6 +4,7 @@
 package src.controller;
 
 import java.awt.Component;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -16,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
@@ -61,6 +63,40 @@ public class MovieController {
 		}
 	}
 
+	
+	
+	public class AddDirector implements ActionListener {
+
+		private src.view.AddDirector view;
+		
+		public AddDirector(src.view.AddDirector view)
+		{
+			this.view = view;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new Thread(){
+				public void run()
+				{
+					Director director = new Director();
+					director.setName(view.txtName.getText());
+					director.setBio(view.txtBio.getText());
+					try {
+						jvdb.addDirector(director);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					view.hide();
+				}
+				
+			}.start();
+		}
+		
+		
+	}
+	
 	public class ShowAddMovieReview implements ActionListener {
 
 		private ShowMovies view;
@@ -74,7 +110,7 @@ public class MovieController {
 		public void actionPerformed(ActionEvent e) {
 			
 			Movie movie = null;
-			Object[] arr = new Object[5];
+			Object[] arr = new Object[6];
 			int row = view.tblMovies.getSelectedRow();
 			int column = view.tblMovies.getColumnCount();
 			arr[0] = view.tblMovies.getValueAt(row, 0);
@@ -82,6 +118,7 @@ public class MovieController {
 			arr[2] = view.tblMovies.getValueAt(row, 2);
 			arr[3] = view.tblMovies.getValueAt(row, 3);
 			arr[4] = view.tblMovies.getValueAt(row, 4);
+			arr[5] = view.tblMovies.getValueAt(row, 5);
 			for (Movie m : view.allMovies)
 			{
 				if (m.compareArrays(arr)){
@@ -90,7 +127,16 @@ public class MovieController {
 				}
 					
 			}
-			
+			try {
+				if (jvdb.movieReviewExists(jvdb.getUserId(), movie.getId()))
+				{
+					JOptionPane.showMessageDialog(null, "You have already reviewed this movie.");
+					return;
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			AddMovieReview amr = new AddMovieReview(jvdb, movie);
 			amr.show();
 		}

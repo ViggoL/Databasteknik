@@ -54,6 +54,7 @@ public class ShowAlbums extends JFrame {
 		tmodel.addColumn("Artists");
 		tmodel.addColumn("Genres");
 		tmodel.addColumn("Rating");
+		tmodel.addColumn("Added by");
 		if(albums != null){
 			for (Album a : albums)
 				tmodel.addRow(a.getArray());

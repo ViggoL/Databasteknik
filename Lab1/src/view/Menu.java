@@ -33,7 +33,7 @@ public class Menu extends JFrame {
 		this.controller = new MenuController(jvdb);
 		setTitle("JVDB Menu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 300, 116);
+		setBounds(100, 100, 316, 155);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -56,6 +56,16 @@ public class Menu extends JFrame {
 		JButton btnAddMovie = new JButton("Add movie");
 		btnAddMovie.setBounds(153, 45, 133, 23);
 		contentPane.add(btnAddMovie);
+		
+		JButton btnAddArtist = new JButton("Add artist");
+		btnAddArtist.addActionListener(controller.new ShowAddArtist());
+		btnAddArtist.setBounds(10, 79, 133, 23);
+		contentPane.add(btnAddArtist);
+		
+		JButton btnAddDirector = new JButton("Add director");
+		btnAddDirector.addActionListener(controller.new ShowAddDirector());
+		btnAddDirector.setBounds(154, 79, 132, 23);
+		contentPane.add(btnAddDirector);
 		this.addWindowListener(controller.new Close());
 		btnAddMovie.addActionListener(controller.new AddMovie());
 		btnAddAlbum.addActionListener(controller.new AddAlbum());

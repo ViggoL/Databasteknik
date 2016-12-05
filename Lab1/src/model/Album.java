@@ -11,15 +11,17 @@ public class Album {
 	private List<Artist> artists = new ArrayList<Artist>();
 	private List<AlbumGenre> genres = new ArrayList<AlbumGenre>();
 	private int rating;
+	private User addedBy;
 	
 	
-	public Album(int id, String name, Date releaseDate, List<Artist> artists, int rating)
+	public Album(int id, String name, Date releaseDate, List<Artist> artists, int rating, User addedBy)
 	{
 		this.id = id;
 		this.name = name;
 		this.releaseDate = releaseDate;
 		this.setArtists(artists);
 		this.rating = rating;
+		this.setAddedBy(addedBy);
 	}
 	
 	public Album() {
@@ -63,12 +65,13 @@ public class Album {
 	
 	public Object[] getArray()
 	{
-		Object[] arr = new Object[5];
+		Object[] arr = new Object[6];
 		arr[0] = this.name;
 		arr[1] = this.releaseDate;
 		arr[2] = this.artists.toString().replace("]", "").replace("[", "");;
 		arr[3] = this.genres.toString().replace("]", "").replace("[", "");;
 		arr[4] = this.rating;
+		arr[5] = this.addedBy;
 		return arr;
 	}
 	
@@ -79,7 +82,8 @@ public class Album {
 			thisArr[1].equals(other[1]) &&
 			thisArr[2].equals(other[2]) &&
 			thisArr[3].equals(other[3]) &&
-			thisArr[4].equals(other[4])) return true;
+			thisArr[4].equals(other[4]) &&
+			thisArr[5].equals(other[5])) return true;
 		return false;
 	}
 
@@ -89,5 +93,13 @@ public class Album {
 
 	public void setRating(int rating) {
 		this.rating = rating;
+	}
+
+	public User getAddedBy() {
+		return addedBy;
+	}
+
+	public void setAddedBy(User addedBy) {
+		this.addedBy = addedBy;
 	}
 }

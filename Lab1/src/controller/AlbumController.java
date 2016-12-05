@@ -1,6 +1,7 @@
 package src.controller;
 
 import java.awt.Component;
+import java.awt.HeadlessException;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
@@ -31,6 +33,40 @@ import src.view.ShowAlbums;
 
 public class AlbumController {
 
+	
+	
+	public class AddArtist implements ActionListener {
+
+		private src.view.AddArtist view;
+		
+		public AddArtist(src.view.AddArtist view)
+		{
+			this.view = view;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new Thread(){
+				public void run()
+				{
+					Artist artist = new Artist();
+					artist.setName(view.txtName.getText());
+					artist.setBio(view.txtBio.getText());
+					try {
+						jvdb.addArtist(artist);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					view.hide();
+				}
+				
+			}.start();
+		}
+		
+		
+	}
+	
 	public class AddRating implements ActionListener {
 
 		private AddAlbumReview view;
@@ -100,6 +136,7 @@ public class AlbumController {
 
 		private ShowAlbums view;
 		
+		
 		public ShowAddAlbumReview(ShowAlbums view)
 		{
 			this.view = view; 
@@ -107,9 +144,8 @@ public class AlbumController {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
 			Album album = null;
-			Object[] arr = new Object[5];
+			Object[] arr = new Object[6];
 			int row = view.tblAlbums.getSelectedRow();
 			int column = view.tblAlbums.getColumnCount();
 			arr[0] = view.tblAlbums.getValueAt(row, 0);
@@ -117,6 +153,7 @@ public class AlbumController {
 			arr[2] = view.tblAlbums.getValueAt(row, 2);
 			arr[3] = view.tblAlbums.getValueAt(row, 3);
 			arr[4] = view.tblAlbums.getValueAt(row, 4);
+			arr[5] = view.tblAlbums.getValueAt(row, 5);
 			for (Album a : view.allAlbums)
 			{
 				if (a.compareArrays(arr)){
@@ -124,6 +161,16 @@ public class AlbumController {
 					break;
 				}
 					
+			}
+			try {
+				if (jvdb.albumReviewExists(jvdb.getUserId(), album.getId()))
+				{
+					JOptionPane.showMessageDialog(null, "You have already reviewed this album.");
+					return;
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			
 			AddAlbumReview aar = new AddAlbumReview(jvdb, album);
@@ -142,6 +189,7 @@ public class AlbumController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
 			final Album album = new Album();
 			List<Artist> artists = new ArrayList<>();
 			List<AlbumGenre> genres = new ArrayList<>();
@@ -197,8 +245,6 @@ public class AlbumController {
 				album.getArtists().add(a);
 			for (AlbumGenre g : gList)
 				album.getGenres().add(g);
-
-			album.setRating(aa.sldrRating.getValue());
 
 			System.out.println(album.toString());
 

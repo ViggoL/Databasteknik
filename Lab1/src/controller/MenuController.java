@@ -78,6 +78,27 @@ public class MenuController {
 		
 	}
 	
+	public class ShowAddArtist implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			AddArtist aa = new AddArtist(jvdb);
+			aa.show();
+		}
+		
+	}
+	
+	public class ShowAddDirector implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			AddDirector ad = new AddDirector(jvdb);
+			ad.show();
+		}
+	}
+	
+	
 	public class Close implements WindowListener
 	{
 

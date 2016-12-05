@@ -18,6 +18,10 @@ public class Director {
 		this.bio = bio;
 	}
 	
+	public Director() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getId() {
 		return id;
 	}

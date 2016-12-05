@@ -51,6 +51,7 @@ public class ShowMovies extends JFrame {
 		tmodel.addColumn("Directors");
 		tmodel.addColumn("Genres");
 		tmodel.addColumn("Rating");
+		tmodel.addColumn("Added by");
 		
 		if (movies != null)
 			for (Movie a : movies)
