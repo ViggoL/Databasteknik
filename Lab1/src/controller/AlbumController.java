@@ -120,6 +120,7 @@ public class AlbumController {
 				public void run() {
 					try {
 						List<Album> albums = jvdb.getAlbums(view.operations, view.textField.getText());
+						
 						view.Refresh(albums);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block

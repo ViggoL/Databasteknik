@@ -173,12 +173,12 @@ public class ShowAlbums extends JFrame {
 		btnRateAlbum.addActionListener(ac.new ShowAddAlbumReview(this));
 		btnRateAlbum.setBounds(50, 220, 117, 29);
 		panel.add(btnRateAlbum);
-		tblAlbums.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				btnRateAlbum.setEnabled(true);
-			}
-		});
+//		tblAlbums.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent arg0) {
+//				btnRateAlbum.setEnabled(true);
+//			}
+//		});
 		contentPane.setLayout(gl_contentPane);
 		
 		btnOK.addActionListener(new ActionListener() {

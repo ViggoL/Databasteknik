@@ -1,5 +1,9 @@
 package src.model;
-
+/**
+ * Represents an artist entity.
+ * @author Viggo
+ *
+ */
 public class Artist {
 	private int id;
 	private String name;

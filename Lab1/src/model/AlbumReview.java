@@ -1,5 +1,10 @@
 package src.model;
 
+/**
+ * Represents an album review entity.
+ * @author Viggo
+ *
+ */
 public class AlbumReview {
 	
 	private int id;

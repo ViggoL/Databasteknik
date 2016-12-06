@@ -1,7 +1,9 @@
 package src.model;
 
 /**
- * Created by Viggo on 2016-11-28.
+ * Represents the user entity.
+ * @author Viggo
+ *
  */
 public class User {
     private int id;

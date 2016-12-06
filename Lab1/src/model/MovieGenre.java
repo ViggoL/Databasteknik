@@ -1,5 +1,10 @@
 package src.model;
 
+/**
+ * Represents a movie genre entity.
+ * @author Viggo
+ *
+ */
 public class MovieGenre {
 	private int id;
 	private String name;

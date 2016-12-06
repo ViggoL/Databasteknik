@@ -102,30 +102,24 @@ public class JVDB implements JvdbInterface {
 		stmt.executeUpdate();
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see src.model.JvdbInterface#close()
+	/**
+	 * Closes the connection to the database.
 	 */
 	@Override
 	public void close() throws SQLException {
 		conn.close();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see src.model.JvdbInterface#isOpen()
+	/**
+	 * Returns wether the connection is open or not.
 	 */
 	@Override
 	public boolean isOpen() throws SQLException {
 		return !conn.isClosed();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see src.model.JvdbInterface#getUsers()
+	/**
+	 * Returns all users.
 	 */
 	@Override
 	public List<User> getUsers() throws SQLException {
@@ -140,11 +134,10 @@ public class JVDB implements JvdbInterface {
 		return users;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see src.model.JvdbInterface#addUser(java.lang.String, java.lang.String,
-	 * java.lang.String)
+
+
+	/**
+	 * Adds a user. The password parameter is hashed before inserted.
 	 */
 	@Override
 	public boolean addUser(String userName, String password, String email) throws SQLException {
@@ -157,12 +150,8 @@ public class JVDB implements JvdbInterface {
 		return stmt.executeUpdate() != 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see src.model.JvdbInterface#getMovies()
-	 * 
-	 * @return list of movies with movie
+	/**
+	 * Returns all movies with the specified filter
 	 */
 	@Override
 	public List<Movie> getMovies(MovieAttributes attribute, String value) throws SQLException {
@@ -421,35 +410,55 @@ public class JVDB implements JvdbInterface {
 		case ARTIST:
 			String sqlId = "SELECT albumId FROM tr_albums_artists WHERE artistId = (SELECT artistId FROM artists WHERE artistName LIKE ?)";
 			stmt = conn.prepareStatement(sqlId);
-			stmt.setString(1, "%" + value +"%");
+			List<Integer> albumIds = new ArrayList<>();
+			stmt.setString(1, value);
 			rs = stmt.executeQuery();
-			if (rs.next()) {
-				int albumId = rs.getInt(1);
-				sql = "SELECT * FROM albums WHERE albumId=?;";
-				stmt = conn.prepareStatement(sql);
-				stmt.setInt(1, albumId);
-				rs = stmt.executeQuery();
-				while (rs.next()) {
-					Album album = new Album();
-					album.setId(rs.getInt(1));
-					album.setName(rs.getString(2));
-					album.setReleaseDate(rs.getDate(3));
-					album.setRating(rs.getInt(4));
-					albums.add(album);
-				}
+			while (rs.next())
+			{
+				albumIds.add(new Integer(rs.getInt(1)));
 			}
+			sql = "SELECT * FROM albums WHERE albumId = ?;";
+			for (int i = 0; i < albumIds.size(); i++)
+			{
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, albumIds.get(i).intValue());
+				rs = stmt.executeQuery();
+				rs.next();
+				Album album = new Album();
+				album.setId(rs.getInt(1));
+				album.setName(rs.getString(2));
+				album.setReleaseDate(rs.getDate(3));
+				album.setRating(rs.getInt(4));
+				albums.add(album);
+			}
+			
+			
 			break;
 		case GENRE:
 			String sqlId2 = "SELECT albumId FROM tr_albums_genres WHERE genreId = (SELECT genreId FROM album_genres WHERE genreName=?);";
 			stmt = conn.prepareStatement(sqlId2);
 			stmt.setString(1, value);
 			rs = stmt.executeQuery();
-			rs.next();
-			int albumId2 = rs.getInt(1);
-			sql = "SELECT * FROM albums WHERE albumId=?;";
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, albumId2);
-			rs = stmt.executeQuery();
+			List<Integer> albumids = new ArrayList<>();
+			while (rs.next()) 
+				albumids.add(new Integer(rs.getInt(1)));
+			sql = "SELECT * FROM albums WHERE albumId = ?;";
+
+			for (int i = 0; i < albumids.size(); i++)
+			{
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, albumids.get(i).intValue());
+				rs = stmt.executeQuery();
+				rs.next();
+				Album album = new Album();
+				album.setId(rs.getInt(1));
+				album.setName(rs.getString(2));
+				album.setReleaseDate(rs.getDate(3));
+				album.setRating(rs.getInt(4));
+				albums.add(album);
+			}
+			
+			
 			while (rs.next()) {
 				Album album = new Album();
 				album.setId(rs.getInt(1));
@@ -545,7 +554,7 @@ public class JVDB implements JvdbInterface {
 	public void addAlbum(Album album) throws SQLException, NullPointerException {
 		try {
 			conn.setAutoCommit(false);
-			String sql = "INSERT INTO albums (albumName, albumReleaseDate, albumRating, addedBy) VALUES (?,?,?);";
+			String sql = "INSERT INTO albums (albumName, albumReleaseDate, albumRating, addedBy) VALUES (?,?,?,?);";
 			System.out.println(sql + "\n" + album.toString());
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, album.getName());
@@ -574,6 +583,7 @@ public class JVDB implements JvdbInterface {
 			conn.commit();
 		} catch (SQLException sqlex) {
 			conn.rollback();
+			throw sqlex;
 		}
 
 		finally {

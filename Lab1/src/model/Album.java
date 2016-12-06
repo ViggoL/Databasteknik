@@ -4,6 +4,11 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents an album entity.
+ * @author Viggo
+ *
+ */
 public class Album {
 	private int id;
 	private String name;

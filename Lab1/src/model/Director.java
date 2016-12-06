@@ -1,5 +1,9 @@
 package src.model;
-
+/**
+ * Represents a director entity.
+ * @author Viggo
+ *
+ */
 public class Director {
 	private int id;
 	private String name;

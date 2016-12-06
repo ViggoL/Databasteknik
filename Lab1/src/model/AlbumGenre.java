@@ -1,5 +1,9 @@
 package src.model;
-
+/**
+ * Represents an album genre entity.
+ * @author Viggo
+ *
+ */
 public class AlbumGenre {
 	private int id;
 	private String name;

@@ -1,5 +1,9 @@
 package src.model;
-
+/**
+ * Represents a movie review entity.
+ * @author Viggo
+ *
+ */
 public class MovieReview {
 	
 	private int id;
