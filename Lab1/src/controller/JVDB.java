@@ -369,10 +369,8 @@ public class JVDB implements JvdbInterface {
 			conn.commit();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			if (save1 != null)
-				conn.rollback(save1);
+			conn.rollback(save1);
+			throw e;
 		} finally {
 			conn.setAutoCommit(true);
 			stmt.close();

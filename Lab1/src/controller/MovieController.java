@@ -158,15 +158,21 @@ public class MovieController {
 				public void run()
 				{
 					try {
-						if (view.textField.getText().equals(""))
-						{
-							view.Refresh(jvdb.getMovies(MovieAttributes.ALL, ""));
-							return; 
+						final List<Movie> movies;
+						if (view.textField.getText().equals("")){
+							movies = jvdb.getMovies(MovieAttributes.ALL, "");
 						}
-						view.Refresh(jvdb.getMovies(view.operations, view.textField.getText()));
-					} catch (SQLException e1) {
+						else {
+							movies = jvdb.getMovies(view.operations, view.textField.getText());
+						}
+						SwingUtilities.invokeLater(new Runnable(){
+							public void run() {
+								view.Refresh(movies);
+							}
+						});
+					} catch (SQLException e) {
 						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						e.printStackTrace();
 					}
 				}
 			}.start();
@@ -198,7 +204,7 @@ public class MovieController {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					view.hide();
+					view.setVisible(false);
 				}
 			}.start();
 
@@ -267,8 +273,7 @@ public class MovieController {
 				}
 				m.setDirectors(directors);
 				System.out.println(m.getTitle() + m.getReleaseDate().toString() + m.getDirectors());
-				SwingUtilities.invokeLater(new Runnable() {
-
+				new Thread(){
 					@Override
 					public void run() {
 						try {
@@ -277,7 +282,7 @@ public class MovieController {
 							e.printStackTrace();
 						}
 					}
-				});
+				}.start();
 
 			}
 		}
