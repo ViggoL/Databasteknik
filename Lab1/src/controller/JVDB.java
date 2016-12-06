@@ -223,7 +223,8 @@ public class JVDB implements JvdbInterface {
 			// Get movies
 			ResultSet resultSet;
 			if (attribute == MovieAttributes.ALL) {
-				resultSet = stmt.executeQuery(sql);
+				stmt = conn.prepareStatement(sql);
+				resultSet = stmt.executeQuery();
 			} else {
 				stmt = conn.prepareStatement(sql);
 				stmt.setString(1, "%" + value + "%");
@@ -450,7 +451,8 @@ public class JVDB implements JvdbInterface {
 			switch (operation) {
 			case ALL:
 				sql = "SELECT * FROM albums";
-				rs = stmt.executeQuery(sql);
+				stmt = conn.prepareStatement(sql);
+				rs = stmt.executeQuery();
 				while (rs.next()) {
 					Album album = new Album();
 					album.setId(rs.getInt(1));
