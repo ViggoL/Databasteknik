@@ -119,9 +119,12 @@ public class AlbumController {
 			new Thread() {
 				public void run() {
 					try {
-						List<Album> albums = jvdb.getAlbums(view.operations, view.textField.getText());
-						
-						view.Refresh(albums);
+						final List<Album> albums = jvdb.getAlbums(view.operations, view.textField.getText());
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								view.Refresh(albums);
+							}
+						});
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -166,7 +169,13 @@ public class AlbumController {
 			try {
 				if (jvdb.albumReviewExists(jvdb.getUserId(), album.getId()))
 				{
-					JOptionPane.showMessageDialog(null, "You have already reviewed this album.");
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(null, "You have already reviewed this album.");
+						}
+						
+					});
 					return;
 				}
 			} catch (SQLException e1) {
@@ -248,9 +257,8 @@ public class AlbumController {
 				album.getGenres().add(g);
 
 			System.out.println(album.toString());
-
-			SwingUtilities.invokeLater(new Runnable() {
-
+			
+			new Thread() {
 				@Override
 				public void run() {
 					try {
@@ -259,7 +267,7 @@ public class AlbumController {
 						e1.printStackTrace();
 					}
 				}
-			});
+			}.start();
 
 		}
 
