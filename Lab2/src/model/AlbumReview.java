@@ -9,16 +9,17 @@ public class AlbumReview extends MediaReview {
 	
 	public AlbumReview(int id, String text, int rating, User user, int albumId)
 	{
-		this.setId(id);
-		this.setText(text);
-		this.setRating(rating);
-		this.setUser(user);
-		this.mediaId = albumId;
+		super(id,text,rating,user, albumId);
+
+	}
+	public int getAlbumId() {
+		return getMediaId();
 	}
 
-	public AlbumReview() {
-		
+	public void setMovieId(int movieId) {
+		setMediaId(movieId);
 	}
+	
 
 	
 }

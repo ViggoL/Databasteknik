@@ -8,8 +8,12 @@ public abstract class MediaReview {
 	private User user;
 	protected int mediaId;
 
-	public MediaReview() {
+	public MediaReview(int id, String text, int rating, User user, int mediaId) {
 		super();
+		this.setText(text);
+		this.setRating(rating);
+		this.setUser(user);
+		this.setMediaId(mediaId);
 	}
 
 	public int getId() {
