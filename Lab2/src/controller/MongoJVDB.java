@@ -1,5 +1,6 @@
 package src.controller;
 
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,25 +17,46 @@ import src.model.MediaPerson;
 import src.model.MediaReview;
 import src.model.MovieGenre;
 import src.model.MovieReview;
-import src.model.MediaAttributes;
 import src.model.Person;
 import src.model.PersonType;
 import src.model.User;
 
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
+import com.mongodb.client.MongoDatabase;	
+
 public class MongoJVDB implements JvdbInterface {
 	
-	public MongoJVDB(){
-		MongoClient mc = new MongoClient("localhost", 27017);
+	
+	private MongoClient client;
+	private MongoDatabase db;
+
+	public MongoJVDB() throws UnknownHostException{
+		//the new connection class MongoClient acknowledges all writes to MongoDB, 
+		//in contrast to the existing connection class Db
+		try{
+			this.client = new MongoClient("localhost", 27017);
+		}catch (MongoException me){
+			System.err.println(me.getMessage());
+			throw new MongoException("Can't connect!");
+			
+		}finally{
+			if(client != null) client.close();
+		}
+		
+		
 	}
 
 	@Override
 	public void close() throws SQLException {
 		// TODO Auto-generated method stub
+		client.close();
 	}
+	
 
-	@Override
 	public boolean isOpen() {
-		return jvdb.isOpen();;
+			return db != null;;
 	}
 
 	@Override
@@ -70,9 +92,10 @@ public class MongoJVDB implements JvdbInterface {
 	}
 
 	@Override
-	public int logIn(String userName, String passWord) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+	public boolean logIn(String dataBase, String userName, String passWord) throws SQLException {
+		db = client.getDatabase(dataBase);
+		return db != null;
+		
 	}
 
 	@Override

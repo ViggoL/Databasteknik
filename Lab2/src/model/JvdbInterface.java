@@ -74,7 +74,7 @@ public interface JvdbInterface {
 	 * @return Returns the userId.
 	 * @throws SQLException
 	 */
-	int logIn(String userName, String passWord) throws SQLException;
+	boolean logIn(String database, String userName, String passWord) throws SQLException;
 
 	
 	/**
@@ -104,5 +104,6 @@ public interface JvdbInterface {
 	 * 
 	 * @return The current userId for this JVDB session.
 	 */
-	int getUserId();
+	int getUserId(); 
+	
 }
