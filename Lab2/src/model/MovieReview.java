@@ -1,7 +1,7 @@
 package src.model;
 /**
  * Represents a movie review entity.
- * @author Viggo
+ * @author Viggo & Johan
  *
  */
 public class MovieReview extends MediaReview{

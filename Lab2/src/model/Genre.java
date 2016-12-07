@@ -5,8 +5,10 @@ public class Genre {
 	protected int id;
 	protected String name;
 
-	public Genre() {
+	public Genre(int id, String name) {
 		super();
+		this.id = id;
+		this.name = name;
 	}
 
 	public int getId() {
