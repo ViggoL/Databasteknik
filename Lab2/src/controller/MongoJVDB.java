@@ -22,6 +22,10 @@ import src.model.PersonType;
 import src.model.User;
 
 public class MongoJVDB implements JvdbInterface {
+	
+	public MongoJVDB(){
+		MongoClient mc = new MongoClient("localhost", 27017);
+	}
 
 	@Override
 	public void close() throws SQLException {
@@ -29,9 +33,8 @@ public class MongoJVDB implements JvdbInterface {
 	}
 
 	@Override
-	public boolean isOpen() throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isOpen() {
+		return jvdb.isOpen();;
 	}
 
 	@Override
