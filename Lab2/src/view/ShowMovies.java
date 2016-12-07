@@ -14,8 +14,8 @@ import src.controller.MovieController;
 import src.model.Album;
 import src.model.JvdbInterface;
 import src.model.Movie;
-import src.model.MovieAttributes;
-import src.model.Operations;
+import src.model.MediaAttributes;
+import src.model.MediaAttributes;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -40,7 +40,7 @@ public class ShowMovies extends JFrame {
 	private JPanel contentPane;
 	public JTable tblMovies;
 	public JTextField textField;
-	public MovieAttributes operations = MovieAttributes.TITLE;
+	public MediaAttributes operations = MediaAttributes.TITLE;
 	private String title;
 	public List<Movie> allMovies;
 
@@ -115,7 +115,7 @@ public class ShowMovies extends JFrame {
 		JRadioButton rdbtnTitle = new JRadioButton("Title");
 		rdbtnTitle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = MovieAttributes.TITLE;
+				operations = MediaAttributes.TITLE;
 			}
 		});
 		rdbtnTitle.setBounds(6, 123, 200, 23);
@@ -126,7 +126,7 @@ public class ShowMovies extends JFrame {
 		JRadioButton rdbtnDirector = new JRadioButton("Director");
 		rdbtnDirector.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = MovieAttributes.DIRECTOR;
+				operations = MediaAttributes.DIRECTOR;
 			}
 		});
 		rdbtnDirector.setBounds(6, 100, 200, 23);
@@ -136,7 +136,7 @@ public class ShowMovies extends JFrame {
 		JRadioButton rdbtnReleaseDate = new JRadioButton("Release date");
 		rdbtnReleaseDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = MovieAttributes.RELEASE_DATE;
+				operations = MediaAttributes.RELEASE_DATE;
 			}
 		});
 		rdbtnReleaseDate.setBounds(6, 53, 200, 23);
@@ -146,7 +146,7 @@ public class ShowMovies extends JFrame {
 		JRadioButton rdbtnRating = new JRadioButton("Rating");
 		rdbtnRating.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = MovieAttributes.RATING;
+				operations = MediaAttributes.RATING;
 			}
 		});
 		rdbtnRating.setBounds(6, 76, 72, 23);
@@ -165,7 +165,7 @@ public class ShowMovies extends JFrame {
 			public void run()
 			{
 				try {
-					allMovies = jvdb.getMovies(MovieAttributes.ALL, title);
+					allMovies = jvdb.getMedia(MediaAttributes.ALL, title);
 					Refresh(allMovies);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block

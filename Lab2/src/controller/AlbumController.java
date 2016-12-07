@@ -29,6 +29,8 @@ import src.model.AlbumGenre;
 import src.model.AlbumReview;
 import src.model.JvdbInterface;
 import src.model.Media;
+import src.model.MediaPerson;
+import src.model.MediaReview;
 import src.view.AddAlbumReview;
 import src.view.ShowAlbums;
 
@@ -50,11 +52,11 @@ public class AlbumController {
 			new Thread(){
 				public void run()
 				{
-					Artist artist = new Artist();
+					MediaPerson artist = new Artist();
 					artist.setName(view.txtName.getText());
 					artist.setBio(view.txtBio.getText());
 					try {
-						jvdb.addArtist(artist);
+						jvdb.addMediaPerson(artist);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -82,12 +84,12 @@ public class AlbumController {
 			new Thread(){
 				public void run()
 				{
-					AlbumReview review = new AlbumReview();
+					MediaReview review = new AlbumReview();
 					review.setText(view.txtComment.getText());
 					review.setRating(view.slider.getValue());
-					review.setAlbumId(view.album.getId());
+					review.setMediaId(view.album.getId());
 					try {
-						jvdb.addAlbumReview(review);
+						jvdb.addMediaReview(review);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -263,7 +265,7 @@ public class AlbumController {
 				@Override
 				public void run() {
 					try {
-						jvdb.addAlbum(album);
+						jvdb.addMedia(album);
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}

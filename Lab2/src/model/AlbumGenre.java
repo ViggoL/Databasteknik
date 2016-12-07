@@ -4,10 +4,7 @@ package src.model;
  * @author Viggo
  *
  */
-public class AlbumGenre {
-	private int id;
-	private String name;
-	
+public class AlbumGenre extends Genre {
 	public AlbumGenre()
 	{
 		
@@ -16,23 +13,5 @@ public class AlbumGenre {
 	public AlbumGenre(int id, String name) {
 		this.id = id;
 		this.name = name;
-	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@Override
-	public String toString()
-	{
-		return this.name;
 	}
 }

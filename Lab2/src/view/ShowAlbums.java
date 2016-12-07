@@ -17,7 +17,7 @@ import src.controller.AlbumController.AddRating;
 import src.model.Album;
 import src.model.JvdbInterface;
 import src.model.Media;
-import src.model.Operations;
+import src.model.MediaAttributes;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -44,7 +44,7 @@ public class ShowAlbums extends JFrame {
 	private JPanel contentPane;
 	public JTable tblAlbums;
 	public JTextField textField;
-	public Operations operations = Operations.NAME;
+	public MediaAttributes operations = MediaAttributes.NAME;
 	public List<Album> allAlbums = new ArrayList<>();
 
 
@@ -121,7 +121,7 @@ public class ShowAlbums extends JFrame {
 		JRadioButton rdbtnName = new JRadioButton("Name");
 		rdbtnName.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = Operations.NAME;
+				operations = MediaAttributes.NAME;
 			}
 		});
 		rdbtnName.setBounds(6, 147, 68, 23);
@@ -132,7 +132,7 @@ public class ShowAlbums extends JFrame {
 		JRadioButton rdbtnArtist = new JRadioButton("Artist");
 		rdbtnArtist.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = Operations.ARTIST;
+				operations = MediaAttributes.ARTIST;
 			}
 		});
 		rdbtnArtist.setBounds(6, 100, 75, 23);
@@ -142,7 +142,7 @@ public class ShowAlbums extends JFrame {
 		JRadioButton rdbtnReleaseDate = new JRadioButton("Release date");
 		rdbtnReleaseDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = Operations.RELEASEDATE;
+				operations = MediaAttributes.RELEASEDATE;
 			}
 		});
 		rdbtnReleaseDate.setBounds(6, 53, 110, 23);
@@ -152,7 +152,7 @@ public class ShowAlbums extends JFrame {
 		JRadioButton rdbtnGenre = new JRadioButton("Genre");
 		rdbtnGenre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = Operations.GENRE;
+				operations = MediaAttributes.GENRE;
 			}
 		});
 		rdbtnGenre.setBounds(6, 124, 68, 23);
@@ -162,7 +162,7 @@ public class ShowAlbums extends JFrame {
 		JRadioButton rdbtnRating = new JRadioButton("Rating");
 		rdbtnRating.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = Operations.RATING;
+				operations = MediaAttributes.RATING;
 			}
 		});
 		rdbtnRating.setBounds(6, 76, 72, 23);
@@ -187,7 +187,7 @@ public class ShowAlbums extends JFrame {
 				try {
 					if (textField.getText().equals(""))
 					{
-						allAlbums = jvdb.getAlbums(Operations.ALL, "");
+						allAlbums = jvdb.getAlbums(MediaAttributes.ALL, "");
 						Refresh(allAlbums);
 						return; 
 					}
@@ -201,7 +201,7 @@ public class ShowAlbums extends JFrame {
 		});
 		
 		try {
-			allAlbums = jvdb.getAlbums(Operations.ALL, "");
+			allAlbums = jvdb.getAlbums(MediaAttributes.ALL, "");
 			Refresh(allAlbums);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block

@@ -2,37 +2,34 @@ package src.model;
 
 /**
  * Represents the user entity.
- * @author Viggo
+ * @author Viggo & Johan
  *
  */
-public class User {
-    private int id;
-    private String name;
+public class User extends Person{
     private String pwHash;
     private String email;
 
-    public User(int userId, String userName, String pwHash, String email)
+    public User(int userId, String userName, String pwHash, String email) 
     {
-        this.id = userId;
-        this.name = userName;
+        super(userId,userName);
         this.pwHash = pwHash;
         this.email = email;
     }
 
     public int getUserId() {
-        return id;
+        return getId();
     }
 
     public void setUserId(int userId) {
-        this.id = userId;
+        setId(userId);
     }
 
     public String getUserName() {
-        return name;
+        return getName();
     }
 
     public void setUserName(String userName) {
-        this.name = userName;
+        setName(userName);
     }
 
     public String getPwHash() {
@@ -49,10 +46,5 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-    
-    public String toString()
-    {
-    	return this.name;
     }
 }

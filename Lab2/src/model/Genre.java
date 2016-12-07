@@ -1,14 +1,12 @@
 package src.model;
 
-public abstract class Person {
+public class Genre {
 
-	private int id;
-	private String name;
+	protected int id;
+	protected String name;
 
-	public Person(int id, String name) {
+	public Genre() {
 		super();
-		this.id = id;
-		this.name = name;
 	}
 
 	public int getId() {
