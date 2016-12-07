@@ -16,7 +16,7 @@ public class Main {
 		
 		JvdbInterface jvdb = new JVDB();
 		LogIn li = new LogIn(jvdb);
-		li.show();
+		li.setVisible(true);
 	}
 
 }
