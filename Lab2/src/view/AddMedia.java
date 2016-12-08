@@ -49,7 +49,6 @@ public class AddMedia extends JFrame {
 	private JComboBox comboBox_1;
 	private JTextField textField;
 	private JLabel titleLabel;
-	private final Action action = new SwingAction();
 	
 	public AddMedia(JvdbInterface jvdb) {
 		System.out.println("I'm open!");
@@ -89,7 +88,6 @@ public class AddMedia extends JFrame {
 		contentPane.add(genreLabel);
 		
 		JButton btnOK = new JButton("OK");
-		btnOK.setAction(action);
 		
 		btnOK.setBounds(230, 189, 89, 23);
 		contentPane.add(btnOK);
@@ -133,31 +131,5 @@ public class AddMedia extends JFrame {
 		MediaController ac = new MediaController(jvdb);
 		
 		btnOK.addActionListener(ac.new AddMedia(this));
-	}
-
-	/**
-	 * Create the frame.
-	 * @param jvdb 
-	 */
-	private void refresh(List<MediaPerson> plist, List<Genre> glist) {
-		ListModel<MediaPerson> alm = new DefaultListModel<>();
-		DefaultListModel<Genre> glm = new DefaultListModel<>();
-		
-		for (Genre g : glist)
-			glm.addElement(g);
-		for (MediaPerson a : plist) 
-			((DefaultListModel<MediaPerson>) alm).addElement(a);
-		lstGenres.setModel(glm);
-		lstMediaPersons.setModel(alm);
-	}
-	
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "OK");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-			
-		}
 	}
 }

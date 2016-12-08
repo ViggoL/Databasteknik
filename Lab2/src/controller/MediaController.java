@@ -14,9 +14,11 @@ import java.util.EventObject;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.JViewport;
 
 import javax.swing.SwingUtilities;
@@ -194,30 +196,30 @@ public class MediaController {
 
 		}
 
-//		@Override
-//		public void keyTyped(KeyEvent e) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//
-//		@Override
-//		public void keyPressed(KeyEvent e) {
-//			new SubmitFormEvent(new ActionEvent(e, 0, null));
-//			
-//		}
-//
-//		@Override
-//		public void keyReleased(KeyEvent e) {
-//			// TODO Auto-generated method stub
-//			
-//		}
+		// @Override
+		// public void keyTyped(KeyEvent e) {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		//
+		// @Override
+		// public void keyPressed(KeyEvent e) {
+		// new SubmitFormEvent(new ActionEvent(e, 0, null));
+		//
+		// }
+		//
+		// @Override
+		// public void keyReleased(KeyEvent e) {
+		// // TODO Auto-generated method stub
+		//
+		// }
 
 	}
 
 	public class SubmitFormEvent {
 
 		private ActionEvent e;
-		
+
 		public SubmitFormEvent(ActionEvent e) {
 			this.e = e;
 
@@ -236,9 +238,9 @@ public class MediaController {
 				for (Component c : ca) {
 					System.out.println("Komponent " + ++i + c.toString() + " ");
 					java.sql.Date sqlDate;
-					if (c instanceof TextField) {
+					if (c instanceof JTextField) {
 
-						String string = ((TextField) c).getText();
+						String string = ((JTextField) c).getText();
 						mediaValues.add(string);
 						System.out.println(string);
 
@@ -249,10 +251,11 @@ public class MediaController {
 								JViewport port = (JViewport) c1;
 								for (Component c2 : port.getComponents()) {
 									if (c2 != null) {
+										Object o = null;
 										if (c2 instanceof JList) {
 											JList<Object> tmpList = (JList<Object>) c2;
 											if (tmpList.getSelectedValuesList().size() > 0) {
-												Object o = tmpList.getSelectedValuesList().get(0);
+												o = tmpList.getSelectedValuesList().get(0);
 												if (o instanceof MediaPerson) {
 													aList = (ArrayList<MediaPerson>) ((JList<MediaPerson>) c2)
 															.getSelectedValuesList();
@@ -261,37 +264,47 @@ public class MediaController {
 															.getSelectedValuesList();
 												}
 											}
+										} else if (c2 instanceof JComboBox) {
+											o = (MediaPerson) ((JComboBox) c2).getSelectedItem();
+											if (o instanceof MediaPerson) {
+												if (aList == null) {
+													aList = new ArrayList();
+													aList.add((MediaPerson) o);
+												} else
+													aList.add((MediaPerson) o);
+
+											}
 										}
+
 									}
 								}
 							}
 						}
 					}
 				}
-			}
 
-			media.setTitle(mediaValues.remove(0));
-			media.setReleaseDate(Date.valueOf(mediaValues.remove(0)));
-			for (MediaPerson a : aList)
-				media.getMediaPersons().add(a);
-			for (Genre g : gList)
-				media.getGenres().add(g);
+				media.setTitle(mediaValues.remove(0));
+				media.setReleaseDate(Date.valueOf(mediaValues.remove(0)));
+				for (MediaPerson a : aList)
+					media.getMediaPersons().add(a);
+				for (Genre g : gList)
+					media.getGenres().add(g);
 
-			System.out.println(media.toString());
+				System.out.println(media.toString());
 
-			new Thread() {
-				@Override
-				public void run() {
-					try {
-						jvdb.addMedia(media);
-					} catch (SQLException e1) {
-						e1.printStackTrace();
+				new Thread() {
+					@Override
+					public void run() {
+						try {
+							jvdb.addMedia(media);
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						}
 					}
-				}
-			}.start();
+				}.start();
 
+			}
 		}
 	}
-
 
 }
