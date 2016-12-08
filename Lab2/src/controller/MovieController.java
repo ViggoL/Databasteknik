@@ -31,7 +31,7 @@ import src.model.Artist;
 import src.model.Director;
 import src.model.JvdbInterface;
 import src.model.Movie;
-import src.model.MovieAttributes;
+import src.model.MediaAttributes;
 import src.model.MovieGenre;
 import src.model.MovieReview;
 import src.view.AddAlbumReview;
@@ -133,7 +133,7 @@ public class MovieController {
 					@Override
 					public void run() {
 						try {
-							if (jvdb.movieReviewExists(jvdb.getUserId(), finalMovie.getId())) {
+							if (jvdb.mediaReviewExists(jvdb.getUserId(), finalMovie.getId())) {
 								JOptionPane.showMessageDialog(null, "You have already reviewed this movie.");
 							}
 							else{
@@ -168,31 +168,15 @@ public class MovieController {
 			new Thread() {
 				public void run() {
 					try {
-<<<<<<< HEAD
-						final List<Movie> movies;
-						if (view.textField.getText().equals("")){
-							movies = jvdb.getMovies(MovieAttributes.ALL, "");
-						}
-						else {
-							movies = jvdb.getMovies(view.operations, view.textField.getText());
-						}
-						SwingUtilities.invokeLater(new Runnable(){
-							public void run() {
-								view.Refresh(movies);
-							}
-						});
-					} catch (SQLException e) {
-=======
 						if (view.textField.getText().equals("")) {
-							view.Refresh(jvdb.getMovies(MovieAttributes.ALL, ""));
+							view.Refresh(jvdb.getMedia(MediaAttributes.ALL, ""));
 						
 						}
-						else view.Refresh(jvdb.getMovies(view.operations, view.textField.getText()));
+						else view.Refresh(jvdb.getMedia(view.operations, view.textField.getText()));
 						
 					} catch (SQLException e1) {
->>>>>>> origin/master
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						e1.printStackTrace();
 					}
 				}
 			}.start();
@@ -290,7 +274,8 @@ public class MovieController {
 				}
 				m.setDirectors(directors);
 				System.out.println(m.getTitle() + m.getReleaseDate().toString() + m.getDirectors());
-				new Thread(){
+				SwingUtilities.invokeLater(new Runnable() {
+
 					@Override
 					public void run() {
 						try {
@@ -299,7 +284,7 @@ public class MovieController {
 							e.printStackTrace();
 						}
 					}
-				}.start();
+				});
 
 			}
 		}
