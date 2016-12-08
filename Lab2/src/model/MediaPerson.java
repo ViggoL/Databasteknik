@@ -8,6 +8,16 @@ public abstract class MediaPerson extends Person {
 		super(id,name);
 		this.setBio(bio);
 	}
+	
+	public MediaPerson(String name, String bio){
+		this(name);
+		this.setBio(bio);
+	}
+	
+	public MediaPerson(String name){
+		super(name);
+	}
+	
 
 	public String getBio() {
 		return bio;

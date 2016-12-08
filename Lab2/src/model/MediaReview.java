@@ -9,11 +9,15 @@ public abstract class MediaReview {
 	protected int mediaId;
 
 	public MediaReview(int id, String text, int rating, User user, int mediaId) {
-		super();
-		this.setText(text);
-		this.setRating(rating);
-		this.setUser(user);
+		this(text,rating,user,mediaId);
 		this.setMediaId(mediaId);
+	}
+
+	public MediaReview(String text, int rating, User user, int albumId) {
+		this.text = text;
+		this.rating = rating;
+		this.user= user;
+		this.mediaId=albumId;
 	}
 
 	public int getId() {

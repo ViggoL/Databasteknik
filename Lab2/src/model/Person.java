@@ -6,8 +6,11 @@ public abstract class Person {
 	private String name;
 
 	public Person(int id, String name) {
-		super();
+		this(name);
 		this.id = id;
+	}
+
+	public Person(String name) {
 		this.name = name;
 	}
 

@@ -9,4 +9,12 @@ public class Artist extends MediaPerson {
 	{
 		super(id,name,bio);
 	}
+	public Artist(String name, String bio)
+	{
+		super(name,bio);
+	}
+	public Artist(String name)
+	{
+		super(name);
+	}
 }
