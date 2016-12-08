@@ -169,6 +169,7 @@ public class MovieController {
 				public void run() {
 					try {
 <<<<<<< HEAD
+<<<<<<< HEAD
 						final List<Movie> movies;
 						if (view.textField.getText().equals("")){
 							movies = jvdb.getMovies(MovieAttributes.ALL, "");
@@ -183,6 +184,8 @@ public class MovieController {
 						});
 					} catch (SQLException e) {
 =======
+=======
+>>>>>>> origin/master
 						if (view.textField.getText().equals("")) {
 							view.Refresh(jvdb.getMovies(MovieAttributes.ALL, ""));
 						
