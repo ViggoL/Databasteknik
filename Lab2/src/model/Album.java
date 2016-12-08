@@ -14,7 +14,7 @@ public class Album extends Media {
 	public Album(int id, String name, Date releaseDate, List<Artist> artists, int rating, User addedBy)
 	{
 		this.id = id;
-		this.name = name;
+		this.title = name;
 		this.releaseDate = releaseDate;
 		this.setArtists(artists);
 		this.rating = rating;

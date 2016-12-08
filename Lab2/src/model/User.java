@@ -15,6 +15,10 @@ public class User extends Person{
         this.pwHash = pwHash;
         this.email = email;
     }
+    
+    public User(String userName){
+    	super(userName);
+    }
 
     public int getUserId() {
         return getId();

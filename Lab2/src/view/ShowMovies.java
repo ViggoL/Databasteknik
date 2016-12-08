@@ -13,8 +13,10 @@ import javax.swing.table.DefaultTableModel;
 import src.controller.MovieController;
 import src.model.Album;
 import src.model.JvdbInterface;
+import src.model.Media;
 import src.model.Movie;
 import src.model.MediaAttributes;
+import src.model.MediaType;
 import src.model.MediaAttributes;
 
 import javax.swing.JTable;
@@ -42,9 +44,9 @@ public class ShowMovies extends JFrame {
 	public JTextField textField;
 	public MediaAttributes operations = MediaAttributes.TITLE;
 	private String title;
-	public List<Movie> allMovies;
+	public List<Media> allMovies;
 
-	public void Refresh(List<Movie> movies) {
+	public void Refresh(List<Media> list) {
 		DefaultTableModel tmodel = new DefaultTableModel();
 		tmodel.addColumn("Title");
 		tmodel.addColumn("Release date");
@@ -53,9 +55,9 @@ public class ShowMovies extends JFrame {
 		tmodel.addColumn("Rating");
 		tmodel.addColumn("Added by");
 		
-		if (movies != null)
-			for (Movie a : movies)
-				tmodel.addRow(a.getArray());
+		if (list != null)
+			for (Media a : list)
+				tmodel.addRow(a.toArray());
 		
 		tblMovies.setModel(tmodel);
 	}
@@ -165,7 +167,7 @@ public class ShowMovies extends JFrame {
 			public void run()
 			{
 				try {
-					allMovies = jvdb.getMedia(MediaAttributes.ALL, title);
+					allMovies = jvdb.getMedia(MediaAttributes.ALL,MediaType.MOVIE, title);
 					Refresh(allMovies);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block

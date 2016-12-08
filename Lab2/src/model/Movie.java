@@ -7,25 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-public class Movie {
+public class Movie extends Media{
 	private int id;
 	private String title;
 	private Date releaseDate;
 	private int rating;
 	private List<Director> directors = new ArrayList<>();
-	private List<MovieGenre> genres = new ArrayList<>();
+	private List<Genre> genres = new ArrayList<>();
 	private User addedBy;
 	
 	public Movie(){
-		
+		super();
 	}
-	public Movie(String title, Date releaseDate, int rating, List<Director> directors, List<MovieGenre> genres, User addedBy){
-		this.title = title;
-		this.releaseDate = releaseDate;
-		this.directors = directors;
-		this.rating = rating;
-		this.genres = genres;
-		this.addedBy = addedBy;
+	
+	public Movie(String title, Date releaseDate, int rating, List<MediaPerson> directors, List<Genre> genres, User addedBy){
+		super(title,releaseDate,rating,directors,genres,addedBy);
 		
 	}
 
@@ -83,10 +79,10 @@ public class Movie {
 			thisArr[5].equals(other[5])) return true;
 		return false;
 	}
-	public List<MovieGenre> getGenres() {
+	public List<Genre> getGenres() {
 		return genres;
 	}
-	public void setGenres(List<MovieGenre> genres) {
+	public void setGenres(List<Genre> genres) {
 		this.genres = genres;
 	}
 	public int getRating() {

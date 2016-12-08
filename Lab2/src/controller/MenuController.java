@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 
 import src.model.JvdbInterface;
 import src.view.*;
-import src.view.ShowAlbums;
 
 public class MenuController {
 	private JvdbInterface jvdb;
@@ -26,7 +25,7 @@ public class MenuController {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			ShowMovies sm = new ShowMovies(jvdb);
-			sm.show();
+			sm.setVisible(true);
 		}
 		
 	}
@@ -50,9 +49,9 @@ public class MenuController {
 							JOptionPane.showMessageDialog(null, "Incorrect username or password.");
 						else
 						{
-							view.hide();
+							view.setVisible(false);
 							Menu menu = new Menu(jvdb);
-							menu.show();
+							menu.setVisible(true);
 						}
 							
 					} catch (SQLException e1) {
@@ -71,8 +70,8 @@ public class MenuController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			ShowAlbums sa = new ShowAlbums(jvdb);
-			sa.show();
+			ShowMedia sa = new ShowMedia(jvdb);
+			sa.setVisible(true);
 			
 		}
 		
@@ -83,8 +82,8 @@ public class MenuController {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			AddArtist aa = new AddArtist(jvdb);
-			aa.show();
+			AddMediaPerson aa = new AddMediaPerson(jvdb);
+			aa.setVisible(true);
 		}
 		
 	}
@@ -94,7 +93,7 @@ public class MenuController {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			AddDirector ad = new AddDirector(jvdb);
-			ad.show();
+			ad.setVisible(true);
 		}
 	}
 	
@@ -161,8 +160,8 @@ public class MenuController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			src.view.AddAlbum aa = new src.view.AddAlbum(jvdb);
-			aa.show();
+			AddMedia aa = new src.view.AddAlbum(jvdb);
+			aa.setVisible(true);
 			
 		}
 	}
@@ -174,7 +173,7 @@ public class MenuController {
 			src.view.AddMovie am;
 			try {
 				am = new src.view.AddMovie(jvdb);
-				am.show();
+				am.setVisible(true);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

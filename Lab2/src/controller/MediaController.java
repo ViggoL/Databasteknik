@@ -25,24 +25,26 @@ import javax.swing.text.JTextComponent;
 
 import src.model.Album;
 import src.model.Artist;
+import src.model.Genre;
 import src.model.AlbumGenre;
 import src.model.AlbumReview;
 import src.model.JvdbInterface;
 import src.model.Media;
 import src.model.MediaPerson;
 import src.model.MediaReview;
-import src.view.AddAlbumReview;
-import src.view.ShowAlbums;
+import src.model.MediaType;
+import src.model.PersonType;
+import src.view.*;
 
-public class AlbumController {
+public class MediaController {
 
 	
 	
-	public class AddArtist implements ActionListener {
+	public class AddMediaPerson implements ActionListener {
 
-		private src.view.AddArtist view;
+		private src.view.AddMediaPerson view;
 		
-		public AddArtist(src.view.AddArtist view)
+		public AddMediaPerson(src.view.AddMediaPerson view)
 		{
 			this.view = view;
 		}
@@ -52,16 +54,14 @@ public class AlbumController {
 			new Thread(){
 				public void run()
 				{
-					MediaPerson artist = new Artist();
-					artist.setName(view.txtName.getText());
-					artist.setBio(view.txtBio.getText());
+					MediaPerson mediaPerson = new Artist(view.txtName.getText(),view.txtBio.getText());
 					try {
-						jvdb.addMediaPerson(artist);
+						jvdb.addMediaPerson(mediaPerson);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					view.hide();
+					view.setVisible(false);
 				}
 				
 			}.start();
@@ -72,9 +72,9 @@ public class AlbumController {
 	
 	public class AddRating implements ActionListener {
 
-		private AddAlbumReview view;
+		private AddMediaReview view;
 
-		public AddRating(AddAlbumReview view)
+		public AddRating(AddMediaReview view)
 		{
 			this.view = view;
 		}
@@ -84,17 +84,15 @@ public class AlbumController {
 			new Thread(){
 				public void run()
 				{
-					MediaReview review = new AlbumReview();
-					review.setText(view.txtComment.getText());
-					review.setRating(view.slider.getValue());
-					review.setMediaId(view.album.getId());
+					MediaReview review = new MediaReview(view.txtComment.getText(),view.slider.getValue(),view.getUser(),((Media) view.media).getId());
+
 					try {
 						jvdb.addMediaReview(review);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					view.hide();
+					view.setVisible(false);
 				}
 			}.start();
 
@@ -105,15 +103,15 @@ public class AlbumController {
 	private JvdbInterface jvdb;
 	private JButton b;
 
-	public AlbumController(JvdbInterface jvdb) {
+	public MediaController(JvdbInterface jvdb) {
 		this.jvdb = jvdb;
 	}
 
-	public class ShowAlbum implements ActionListener {
+	public class ShowMedia implements ActionListener {
 
 		private src.view.ShowAlbums view;
 
-		public ShowAlbum(src.view.ShowAlbums view) {
+		public ShowMedia(MediaType media, src.view.ShowAlbums view) {
 			this.view = view;
 		}
 
@@ -122,7 +120,7 @@ public class AlbumController {
 			new Thread() {
 				public void run() {
 					try {
-						final List<Album> albums = jvdb.getAlbums(view.operations, view.textField.getText());
+						final List<Media> albums = jvdb.getMedia(view.operations, view.textField.getText());
 						SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
 								view.Refresh(albums);
@@ -170,7 +168,7 @@ public class AlbumController {
 					
 			}
 			try {
-				if (jvdb.albumReviewExists(jvdb.getUserId(), album.getId()))
+				if (jvdb.mediaReviewExists(jvdb.getUserId(), album.getId()))
 				{
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
@@ -186,29 +184,29 @@ public class AlbumController {
 				e1.printStackTrace();
 			}
 			
-			AddAlbumReview aar = new AddAlbumReview(jvdb, album);
+			AddMediaReview aar = new AddAlbumReview(jvdb, album);
 			aar.show();
 		}
 		
 	}
 	
-	public class AddAlbum implements ActionListener {
+	public class AddMedia implements ActionListener {
 
-		src.view.AddAlbum aa;
+		src.view.AddMedia aa;
 
-		public AddAlbum(src.view.AddAlbum aa) {
+		public AddMedia(src.view.AddMedia aa) {
 			this.aa = aa;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			final Album album = new Album();
-			List<Artist> artists = new ArrayList<>();
-			List<AlbumGenre> genres = new ArrayList<>();
+			final Media album = new Album();
+			List<MediaPerson> artists = new ArrayList<>();
+			List<Genre> genres = new ArrayList<>();
 			List<String> albumValues = new ArrayList<>();
-			ArrayList<Artist> aList = null;
-			ArrayList<AlbumGenre> gList = null;
+			ArrayList<MediaPerson> aList = null;
+			ArrayList<Genre> gList = null;
 
 			if (e.getSource() instanceof JButton) {
 				b = (JButton) e.getSource();
@@ -235,11 +233,11 @@ public class AlbumController {
 											JList<Object> tmpList = (JList<Object>) c2;
 											if (tmpList.getSelectedValuesList().size() > 0) {
 												if (tmpList.getSelectedValuesList().get(0) instanceof Artist) {
-													aList = (ArrayList<Artist>) ((JList<Artist>) c2)
+													aList = (ArrayList<MediaPerson>) ((JList<MediaPerson>) c2)
 															.getSelectedValuesList();
 												} else if (tmpList.getSelectedValuesList()
 														.get(0) instanceof AlbumGenre) {
-													gList = (ArrayList<AlbumGenre>) ((JList<AlbumGenre>) c2)
+													gList = (ArrayList<Genre>) ((JList<Genre>) c2)
 															.getSelectedValuesList();
 												}
 											}
@@ -252,11 +250,11 @@ public class AlbumController {
 				}
 			}
 
-			album.setName(albumValues.remove(0));
+			album.setTitle(albumValues.remove(0));
 			album.setReleaseDate(Date.valueOf(albumValues.remove(0)));
-			for (Artist a : aList)
-				album.getArtists().add(a);
-			for (AlbumGenre g : gList)
+			for (MediaPerson a : aList)
+				album.getMediaPersons().add(a);
+			for (Genre g : gList)
 				album.getGenres().add(g);
 
 			System.out.println(album.toString());
@@ -265,7 +263,7 @@ public class AlbumController {
 				@Override
 				public void run() {
 					try {
-						jvdb.addMedia(album);
+						jvdb.addMedia(MediaType.ALBUM,album);
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}

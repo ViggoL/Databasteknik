@@ -3,35 +3,28 @@ package src.view;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JSlider;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import src.controller.AlbumController;
+import src.controller.MediaController;
 import src.model.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-public class AddAlbumReview extends JFrame {
+public class AddAlbumReview extends AddMediaReview {
 
-	private JPanel contentPane;
-	public JTextArea txtComment = new JTextArea();
-	public final JSlider slider = new JSlider();
-	public Media album = null;
 	/**
 	 * Create the frame.
 	 */
 	public AddAlbumReview(JvdbInterface jvdb, Media album) {
-		AlbumController controller = new AlbumController(jvdb);
-		this.album = album;
-		this.setTitle("Reviewing " + album.getName());
+		MediaController controller = new MediaController(jvdb);
+		this.media = album;
+		this.setTitle("Reviewing " + album.getTitle());
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

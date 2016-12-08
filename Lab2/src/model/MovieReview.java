@@ -11,7 +11,12 @@ public class MovieReview extends MediaReview{
 		super(id,text,rating,user, movieId);
 
 	}
+	
+	public MovieReview(String text, int rating, User user, int movieId)
+	{
+		super(text,rating,user, movieId);
 
+	}
 	public int getMovieId() {
 		return getMediaId();
 	}

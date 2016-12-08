@@ -12,8 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import src.controller.AlbumController;
-import src.controller.AlbumController.AddRating;
+import src.controller.MediaController;
+import src.controller.MediaController.AddRating;
 import src.model.Album;
 import src.model.JvdbInterface;
 import src.model.Media;
@@ -32,25 +32,20 @@ import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
-import java.sql.Date;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 
-public class ShowAlbums extends JFrame {
+public class ShowMedia extends JFrame {
 
 	private JPanel contentPane;
-	public JTable tblAlbums;
+	public JTable tblMedia;
 	public JTextField textField;
-	public MediaAttributes operations = MediaAttributes.NAME;
-	public List<Album> allAlbums = new ArrayList<>();
+	public MediaAttributes operations = MediaAttributes.TITLE;
+	public List<Media> allMedia = new ArrayList<>();
 
 
-	public void Refresh(List<Album> albums) {
+	public void Refresh(List<Media> albums) {
 		DefaultTableModel tmodel = new DefaultTableModel();
-		tmodel.addColumn("Name");
+		tmodel.addColumn("Title");
 		tmodel.addColumn("Release date");
 		tmodel.addColumn("Artists");
 		tmodel.addColumn("Genres");
@@ -59,8 +54,8 @@ public class ShowAlbums extends JFrame {
 		if(albums != null){
 			for (Media a : albums)
 				tmodel.addRow(a.toArray());
-			tblAlbums.setBackground(Color.WHITE);
-			tblAlbums.setModel(tmodel);
+			tblMedia.setBackground(Color.WHITE);
+			tblMedia.setModel(tmodel);
 		}
 		
 	}
@@ -69,17 +64,17 @@ public class ShowAlbums extends JFrame {
 	 * Create the frame.
 	 * @param jvdb 
 	 */
-	public ShowAlbums(final JvdbInterface jvdb) {
+	public ShowMedia(final JvdbInterface jvdb) {
 		setBounds(100, 100, 658, 422);
 		
-		AlbumController ac = new AlbumController(jvdb);
+		MediaController ac = new MediaController(jvdb);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		tblAlbums = new JTable();
-		scrollPane.setViewportView(tblAlbums);
+		tblMedia = new JTable();
+		scrollPane.setViewportView(tblMedia);
 		
 		JPanel panel = new JPanel();
 		
@@ -118,10 +113,10 @@ public class ShowAlbums extends JFrame {
 		panel.add(btnOK);
 		ButtonGroup btnGroup = new ButtonGroup();
 		
-		JRadioButton rdbtnName = new JRadioButton("Name");
+		JRadioButton rdbtnName = new JRadioButton("Title");
 		rdbtnName.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = MediaAttributes.NAME;
+				operations = MediaAttributes.TITLE;
 			}
 		});
 		rdbtnName.setBounds(6, 147, 68, 23);
@@ -132,7 +127,7 @@ public class ShowAlbums extends JFrame {
 		JRadioButton rdbtnArtist = new JRadioButton("Artist");
 		rdbtnArtist.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = MediaAttributes.ARTIST;
+				operations = MediaAttributes.MEDIA_PERSON;
 			}
 		});
 		rdbtnArtist.setBounds(6, 100, 75, 23);
@@ -142,7 +137,7 @@ public class ShowAlbums extends JFrame {
 		JRadioButton rdbtnReleaseDate = new JRadioButton("Release date");
 		rdbtnReleaseDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				operations = MediaAttributes.RELEASEDATE;
+				operations = MediaAttributes.RELEASE_DATE;
 			}
 		});
 		rdbtnReleaseDate.setBounds(6, 53, 110, 23);
@@ -187,12 +182,12 @@ public class ShowAlbums extends JFrame {
 				try {
 					if (textField.getText().equals(""))
 					{
-						allAlbums = jvdb.getAlbums(MediaAttributes.ALL, "");
-						Refresh(allAlbums);
+						allMedia = jvdb.getMedia(MediaAttributes.ALL, "");
+						Refresh(allMedia);
 						return; 
 					}
 					
-					Refresh(jvdb.getAlbums(operations, textField.getText()));
+					Refresh(jvdb.getMedia(operations, textField.getText()));
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -201,8 +196,8 @@ public class ShowAlbums extends JFrame {
 		});
 		
 		try {
-			allAlbums = jvdb.getAlbums(MediaAttributes.ALL, "");
-			Refresh(allAlbums);
+			allMedia = jvdb.getMedia(MediaAttributes.ALL, "");
+			Refresh(allMedia);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

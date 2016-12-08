@@ -1,12 +1,11 @@
 package src.view;
 
-import src.controller.AlbumController;
+import src.controller.MediaController;
 import src.model.*;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -20,16 +19,13 @@ import java.awt.Window;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.awt.Choice;
 import java.awt.Component;
 
 import javax.swing.JToggleButton;
-import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
-import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
-import javax.swing.JList;
+import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -37,33 +33,8 @@ import javax.swing.JSlider;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class AddAlbum extends JFrame {
+public class AddAlbum extends AddMedia {
 
-	private JPanel contentPane;
-	public TextField txtName, txtReleaseDate;
-	public JScrollPane scrollPane, scrollPane_1;
-	public Label label, label_1, label_2, label_3;
-	private final JList<AlbumGenre> lstGenres = new JList();
-	private final JList<Artist> lstArtists = new JList();
-
-	/**
-	 * Create the frame.
-	 * @param jvdb 
-	 */
-	
-	private void refresh(List<Artist> artists, List<AlbumGenre> genres)
-	{
-		DefaultListModel<Artist> alm = new DefaultListModel<Artist>();
-		DefaultListModel<AlbumGenre> glm = new DefaultListModel<AlbumGenre>();
-		
-		for (AlbumGenre g : genres)
-			glm.addElement(g);
-		for (Artist a : artists) 
-			alm.addElement(a);
-		lstGenres.setModel(glm);
-		lstArtists.setModel(alm);
-	}
-	
 	public AddAlbum(final JvdbInterface jvdb) {
 		System.out.println("I'm open!");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -92,7 +63,7 @@ public class AddAlbum extends JFrame {
 			public void run()
 			{
 				try {
-					refresh(jvdb.getArtists(), jvdb.getGenres());
+					refresh(jvdb.getMediaPersons(PersonType.ARTIST, jvdb.getGenres()));
 						
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -121,7 +92,7 @@ public class AddAlbum extends JFrame {
 		scrollPane.setBounds(114, 38, 98, 138);
 		contentPane.add(scrollPane);
 		
-		scrollPane.setViewportView(lstArtists);
+		scrollPane.setViewportView(lstMediaPersons);
 		
 		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(221, 38, 99, 138);
@@ -129,9 +100,9 @@ public class AddAlbum extends JFrame {
 		
 		scrollPane_1.setViewportView(lstGenres);
 		
-		AlbumController ac = new AlbumController(jvdb);
+		MediaController ac = new MediaController(jvdb);
 		
-		btnOK.addActionListener(ac.new AddAlbum(this));
+		btnOK.addActionListener(ac.new AddMedia(this));
 	}
 }
 			
