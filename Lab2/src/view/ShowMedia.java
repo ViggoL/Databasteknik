@@ -18,6 +18,7 @@ import src.model.Album;
 import src.model.JvdbInterface;
 import src.model.Media;
 import src.model.MediaAttributes;
+import src.model.Movie;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -43,11 +44,15 @@ public class ShowMedia extends JFrame {
 	public List<Media> allMedia = new ArrayList<>();
 
 
-	public void Refresh(List<Media> media) {
+	public void Refresh(List<Media> media) throws ClassNotFoundException {
 		DefaultTableModel tmodel = new DefaultTableModel();
 		tmodel.addColumn("Title");
 		tmodel.addColumn("Release date");
-		if(media instanceof List<Album>) tmodel.addColumn("Artists");
+		
+		if(media.get(0) instanceof Album) tmodel.addColumn("Artists");
+		else if(media.get(0) instanceof Movie) tmodel.addColumn("Directors");
+		else throw new ClassNotFoundException();
+		
 		tmodel.addColumn("Genres");
 		tmodel.addColumn("Rating");
 		tmodel.addColumn("Added by");
@@ -67,7 +72,7 @@ public class ShowMedia extends JFrame {
 	public ShowMedia(final JvdbInterface jvdb) {
 		setBounds(100, 100, 658, 422);
 		
-		MediaController ac = new MediaController(jvdb);
+		MediaController mc = new MediaController(jvdb);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -166,7 +171,7 @@ public class ShowMedia extends JFrame {
 		
 		JButton btnRateAlbum = new JButton("Rate Album");
 		btnRateAlbum.setEnabled(false);
-		btnRateAlbum.addActionListener(ac.new ShowAddAlbumReview(this));
+		btnRateAlbum.addActionListener(mc.new ShowAddMediaReview(this));
 		btnRateAlbum.setBounds(50, 220, 117, 29);
 		panel.add(btnRateAlbum);
 //		tblAlbums.addMouseListener(new MouseAdapter() {

@@ -82,7 +82,7 @@ public class MongoJVDB implements JvdbInterface {
 	}
 
 	@Override
-	public boolean addMedia(Media album) throws SQLException {
+	public boolean addMedia(Media media) throws SQLException {
 		// TODO Auto-generated method stub
 		return false;
 

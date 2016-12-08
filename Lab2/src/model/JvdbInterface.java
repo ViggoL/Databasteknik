@@ -56,7 +56,7 @@ public interface JvdbInterface {
 	 * @param album
 	 * @throws SQLException
 	 */
-	boolean addMedia(MediaType movie, Media album) throws SQLException;
+	boolean addMedia(Media media) throws SQLException;
 
 	/**
 	 * Returns all movies with matching values for the specified attribute.

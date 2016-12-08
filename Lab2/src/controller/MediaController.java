@@ -137,21 +137,21 @@ public class MediaController {
 
 	}
 
-	public class ShowAddAlbumReview implements ActionListener{
+	public class ShowAddMediaReview implements ActionListener{
 
 		private ShowMedia view;
 		
 		
-		public ShowAddAlbumReview(ShowMedia view)
+		public ShowAddMediaReview(ShowMedia showMedia)
 		{
-			this.view = view; 
+			this.view = showMedia; 
 		}
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Media album = null;
 			Object[] arr = new Object[6];
-			int row = view.tblAlbums.getSelectedRow();
+			int row = view.tblMedia.getSelectedRow();
 			int column = view.tblAlbums.getColumnCount();
 			arr[0] = view.tblAlbums.getValueAt(row, 0);
 			arr[1] = view.tblAlbums.getValueAt(row, 1);
