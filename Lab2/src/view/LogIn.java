@@ -23,11 +23,13 @@ public class LogIn extends JFrame {
 	private JPanel contentPane;
 	public JTextField txtUsername;
 	public JPasswordField txtPassword;
+	JvdbInterface jvdb;
 
 	/**
 	 * Create the frame.
 	 */
 	public LogIn(final JvdbInterface jvdb) {
+		this.jvdb = jvdb;
 		MenuController controller = new MenuController(jvdb);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 156, 173);

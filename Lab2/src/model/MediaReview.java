@@ -10,14 +10,14 @@ public abstract class MediaReview {
 
 	public MediaReview(int id, String text, int rating, User user, int mediaId) {
 		this(text,rating,user,mediaId);
-		this.setMediaId(mediaId);
+		this.id = id;
 	}
 
-	public MediaReview(String text, int rating, User user, int albumId) {
+	public MediaReview(String text, int rating, User user, int mediaId) {
 		this.text = text;
 		this.rating = rating;
 		this.user= user;
-		this.mediaId=albumId;
+		this.mediaId=mediaId;
 	}
 
 	public int getId() {

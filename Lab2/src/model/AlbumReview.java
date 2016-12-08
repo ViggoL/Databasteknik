@@ -12,6 +12,11 @@ public class AlbumReview extends MediaReview {
 		super(id,text,rating,user, albumId);
 
 	}
+	public AlbumReview(String text, int rating, User user, int albumId)
+	{
+		super(text,rating,user, albumId);
+
+	}
 	public int getAlbumId() {
 		return getMediaId();
 	}

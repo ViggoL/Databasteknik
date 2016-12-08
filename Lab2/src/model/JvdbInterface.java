@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface JvdbInterface {
 	
-	
 	/**
 	 * Closes the connection
 	 * @throws SQLException
@@ -53,10 +52,11 @@ public interface JvdbInterface {
 
 	/**
 	 * Adds an album
+	 * @param movie 
 	 * @param album
 	 * @throws SQLException
 	 */
-	boolean addMedia(Media album) throws SQLException;
+	boolean addMedia(MediaType movie, Media album) throws SQLException;
 
 	/**
 	 * Returns all movies with matching values for the specified attribute.
@@ -74,7 +74,7 @@ public interface JvdbInterface {
 	 * @return Returns the userId.
 	 * @throws SQLException
 	 */
-	boolean logIn(String database, String userName, String passWord) throws SQLException;
+	int logIn(String userName, String passWord) throws SQLException;
 
 	
 	/**
@@ -104,6 +104,12 @@ public interface JvdbInterface {
 	 * 
 	 * @return The current userId for this JVDB session.
 	 */
-	int getUserId(); 
+	int getUserId();
+	
+	User getUser();
+
+	List<Media> getMedia(MediaAttributes all, MediaType movie, String title);
+
+	List<MediaPerson> getMediaPersons(PersonType artist); 
 	
 }

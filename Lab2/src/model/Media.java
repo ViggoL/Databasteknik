@@ -7,15 +7,25 @@ import java.util.List;
 public class Media {
 
 	protected int id;
-	protected String name;
+	protected String title;
 	protected Date releaseDate;
-	private List<AlbumGenre> genres = new ArrayList<AlbumGenre>();
+	private List<Genre> genres = new ArrayList<Genre>();
 	protected int rating;
 	private User addedBy;
-	private Object persons;
+	private List<MediaPerson> mediaPersons;
 
 	public Media() {
 		super();
+	}
+	
+	public Media(String title, Date releaseDate, int rating, List<MediaPerson> mPersons, List<Genre> genres, User addedBy){
+		this.title = title;
+		this.releaseDate = releaseDate;
+		this.mediaPersons = mPersons;
+		this.rating = rating;
+		this.genres = genres;
+		this.addedBy = addedBy;
+		
 	}
 
 	public int getId() {
@@ -26,12 +36,12 @@ public class Media {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public Date getReleaseDate() {
@@ -42,19 +52,19 @@ public class Media {
 		this.releaseDate = releaseDate;
 	}
 
-	public List<AlbumGenre> getGenres() {
+	public List<Genre> getGenres() {
 		return genres;
 	}
 
-	public void setGenres(List<AlbumGenre> genres) {
+	public void setGenres(List<Genre> genres) {
 		this.genres = genres;
 	}
 
 	public Object[] toArray() {
 		Object[] arr = new Object[6];
-		arr[0] = this.name;
+		arr[0] = this.title;
 		arr[1] = this.releaseDate;
-		arr[2] = this.persons.toString().replace("]", "").replace("[", "");;
+		arr[2] = this.mediaPersons.toString().replace("]", "").replace("[", "");;
 		arr[3] = this.genres.toString().replace("]", "").replace("[", "");;
 		arr[4] = this.rating;
 		arr[5] = this.addedBy;
@@ -87,5 +97,10 @@ public class Media {
 	public void setAddedBy(User addedBy) {
 		this.addedBy = addedBy;
 	}
+	
+	public List<MediaPerson> getMediaPersons(){
+		return mediaPersons;
+	}
+
 
 }

@@ -15,6 +15,7 @@ import src.model.Movie;
 import src.model.MediaAttributes;
 import src.model.MediaPerson;
 import src.model.MediaReview;
+import src.model.MediaType;
 import src.model.MovieGenre;
 import src.model.MovieReview;
 import src.model.Person;
@@ -31,12 +32,14 @@ public class MongoJVDB implements JvdbInterface {
 	
 	private MongoClient client;
 	private MongoDatabase db;
+	private User currentUser;
 
-	public MongoJVDB() throws UnknownHostException{
+	public MongoJVDB(String databaseName) throws UnknownHostException{
 		//the new connection class MongoClient acknowledges all writes to MongoDB, 
 		//in contrast to the existing connection class Db
 		try{
 			this.client = new MongoClient("localhost", 27017);
+			db = client.getDatabase(databaseName);
 		}catch (MongoException me){
 			System.err.println(me.getMessage());
 			throw new MongoException("Can't connect!");
@@ -56,7 +59,7 @@ public class MongoJVDB implements JvdbInterface {
 	
 
 	public boolean isOpen() {
-			return db != null;;
+			return db != null;
 	}
 
 	@Override
@@ -92,10 +95,15 @@ public class MongoJVDB implements JvdbInterface {
 	}
 
 	@Override
-	public boolean logIn(String dataBase, String userName, String passWord) throws SQLException {
-		db = client.getDatabase(dataBase);
-		return db != null;
+	public int logIn(String userName, String passWord) throws SQLException {
+		currentUser = new User(userName);
+		return 0;
 		
+	}
+	
+	@Override
+	public User getUser() {
+		return currentUser;
 	}
 
 	@Override
@@ -129,5 +137,19 @@ public class MongoJVDB implements JvdbInterface {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<Media> getMedia(MediaAttributes all, MediaType movie, String title) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<MediaPerson> getMediaPersons(PersonType mediaPerson) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 
 }

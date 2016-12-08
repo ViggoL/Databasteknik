@@ -9,8 +9,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-import src.controller.AlbumController;
-import src.controller.JVDB;
+import src.controller.MediaController;
+import src.controller.MongoJVDB;
 import src.controller.MenuController;
 import src.model.JvdbInterface;
 
@@ -39,7 +39,7 @@ public class Menu extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		AlbumController bc = new AlbumController(jvdb);
+		MediaController bc = new MediaController(jvdb);
 		JButton btnSearchAlbums = new JButton("Search albums");
 
 		btnSearchAlbums.setBounds(10, 11, 133, 23);

@@ -5,9 +5,9 @@ package src.model;
  *
  */
 public class Director extends MediaPerson {
-	public Director(int id, String name, String bio)
+	public Director(String name, String bio)
 	{
-		super(id,name,bio);
+		super(name,bio);
 	}
 }
 

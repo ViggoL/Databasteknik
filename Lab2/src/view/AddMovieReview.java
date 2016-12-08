@@ -12,7 +12,7 @@ import javax.swing.JSlider;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import src.controller.AlbumController;
+import src.controller.MediaController;
 import src.controller.MovieController;
 import src.model.*;
 import java.awt.event.MouseAdapter;
@@ -25,11 +25,14 @@ public class AddMovieReview extends JFrame {
 	private JPanel contentPane;
 	public JTextArea txtComment = new JTextArea();
 	public final JSlider slider = new JSlider();
-	public Movie movie = null;
+	public Media movie = null;
+	private JvdbInterface jvdb;
+	
 	/**
 	 * Create the frame.
 	 */
-	public AddMovieReview(JvdbInterface jvdb, Movie movie) {
+	public AddMovieReview(JvdbInterface jvdb, Media movie) {
+		this.jvdb = jvdb;
 		MovieController controller = new MovieController(jvdb);
 		this.movie = movie;
 		this.setTitle("Reviewing " + movie.getTitle());
