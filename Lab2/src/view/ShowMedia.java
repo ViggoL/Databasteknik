@@ -43,16 +43,16 @@ public class ShowMedia extends JFrame {
 	public List<Media> allMedia = new ArrayList<>();
 
 
-	public void Refresh(List<Media> albums) {
+	public void Refresh(List<Media> media) {
 		DefaultTableModel tmodel = new DefaultTableModel();
 		tmodel.addColumn("Title");
 		tmodel.addColumn("Release date");
-		tmodel.addColumn("Artists");
+		if(media instanceof List<Album>) tmodel.addColumn("Artists");
 		tmodel.addColumn("Genres");
 		tmodel.addColumn("Rating");
 		tmodel.addColumn("Added by");
-		if(albums != null){
-			for (Media a : albums)
+		if(media != null){
+			for (Media a : media)
 				tmodel.addRow(a.toArray());
 			tblMedia.setBackground(Color.WHITE);
 			tblMedia.setModel(tmodel);

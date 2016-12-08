@@ -109,9 +109,9 @@ public class MediaController {
 
 	public class ShowMedia implements ActionListener {
 
-		private src.view.ShowAlbums view;
+		private src.view.ShowMedia view;
 
-		public ShowMedia(MediaType media, src.view.ShowAlbums view) {
+		public ShowMedia(MediaType media, src.view.ShowMedia view) {
 			this.view = view;
 		}
 
@@ -139,10 +139,10 @@ public class MediaController {
 
 	public class ShowAddAlbumReview implements ActionListener{
 
-		private ShowAlbums view;
+		private ShowMedia view;
 		
 		
-		public ShowAddAlbumReview(ShowAlbums view)
+		public ShowAddAlbumReview(ShowMedia view)
 		{
 			this.view = view; 
 		}

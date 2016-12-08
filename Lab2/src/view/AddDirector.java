@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import src.controller.MediaController;
 import src.controller.MovieController;
 import src.model.JvdbInterface;
 
@@ -30,7 +31,7 @@ public class AddDirector extends JFrame {
 	 * @param jvdb 
 	 */
 	public AddDirector(JvdbInterface jvdb) {
-		MovieController controller = new MovieController(jvdb);
+		MediaController controller = new MediaController(jvdb);
 		setBounds(100, 100, 192, 253);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -47,7 +48,7 @@ public class AddDirector extends JFrame {
 		txtName.setColumns(10);
 		
 		JButton btnAdd = new JButton("Add");
-		btnAdd.addActionListener(controller.new AddDirector(this));
+		btnAdd.addActionListener(controller.new AddMediaPerson(this));
 		btnAdd.setBounds(84, 181, 89, 23);
 		contentPane.add(btnAdd);
 		
