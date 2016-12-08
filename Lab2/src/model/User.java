@@ -18,6 +18,7 @@ public class User extends Person{
     
     public User(String userName){
     	super(userName);
+    	this.pwHash = "Incorrect";
     }
 
     public int getUserId() {

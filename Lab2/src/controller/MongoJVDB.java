@@ -4,25 +4,17 @@ import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.List;
 
-import src.model.Album;
-import src.model.AlbumGenre;
-import src.model.Artist;
-import src.model.Director;
 import src.model.Genre;
 import src.model.JvdbInterface;
 import src.model.Media;
-import src.model.Movie;
 import src.model.MediaAttributes;
 import src.model.MediaPerson;
 import src.model.MediaReview;
 import src.model.MediaType;
-import src.model.MovieGenre;
-import src.model.MovieReview;
 import src.model.Person;
 import src.model.PersonType;
 import src.model.User;
 
-import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoDatabase;	

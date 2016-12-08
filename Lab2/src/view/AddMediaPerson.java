@@ -31,7 +31,7 @@ public class AddMediaPerson extends JFrame {
 	 * Create the frame.
 	 * @param jvdb 
 	 */
-	public AddMediaPerson(PersonType mPerson, JvdbInterface jvdb) {
+	public AddMediaPerson(JvdbInterface jvdb) {
 		MediaController controller = new MediaController(jvdb);
 		
 		setBounds(100, 100, 192, 253);
@@ -40,7 +40,9 @@ public class AddMediaPerson extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblName = new JLabel(mPerson.toString() +" name");
+		
+		
+		JLabel lblName = new JLabel("name");
 		lblName.setBounds(10, 11, 97, 14);
 		contentPane.add(lblName);
 		
@@ -55,7 +57,7 @@ public class AddMediaPerson extends JFrame {
 		contentPane.add(btnAdd);
 		
 		
-		JLabel lblArtistBio = new JLabel(mPerson.toString() + " bio");
+		JLabel lblArtistBio = new JLabel("biography");
 		lblArtistBio.setBounds(10, 61, 156, 14);
 		contentPane.add(lblArtistBio);
 		

@@ -1,6 +1,6 @@
 package src.model;
 
-public abstract class MediaReview {
+public class MediaReview {
 
 	private int id;
 	private String text;

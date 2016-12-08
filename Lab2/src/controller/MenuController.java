@@ -1,5 +1,6 @@
 package src.controller;
 
+import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -14,18 +15,25 @@ import src.view.*;
 public class MenuController {
 	private JvdbInterface jvdb;
 	
-	
 	public MenuController(JvdbInterface jvdb)
 	{
 		this.jvdb = jvdb;
 	}
-	public class SearchMovies implements ActionListener
+	public class SearchMedia implements ActionListener
 	{
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			ShowMovies sm = new ShowMovies(jvdb);
-			sm.setVisible(true);
+			ShowMedia sm = null;
+			try {
+				sm = new ShowMedia(jvdb);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			finally {
+				if(sm != null) sm.setVisible(true);
+			}
 		}
 		
 	}
@@ -65,19 +73,8 @@ public class MenuController {
 		
 	}
 	
-	public class SearchAlbums implements ActionListener
-	{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			ShowMedia sa = new ShowMedia(jvdb);
-			sa.setVisible(true);
-			
-		}
-		
-	}
 	
-	public class ShowAddArtist implements ActionListener
+	public class ShowAddMediaPerson implements ActionListener
 	{
 
 		@Override
@@ -87,16 +84,6 @@ public class MenuController {
 		}
 		
 	}
-	
-	public class ShowAddDirector implements ActionListener
-	{
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			AddDirector ad = new AddDirector(jvdb);
-			ad.setVisible(true);
-		}
-	}
-	
 	
 	public class Close implements WindowListener
 	{
@@ -155,32 +142,22 @@ public class MenuController {
 		
 	}
 	
-	public class AddAlbum implements ActionListener
+	public class AddMedia implements ActionListener
 	{
-
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			AddMedia aa = new src.view.AddAlbum(jvdb);
+			src.view.AddMedia aa = new src.view.AddMedia(jvdb);
 			aa.setVisible(true);
 			
-		}
-	}
-	public class AddMovie implements ActionListener
-	{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			src.view.AddMovie am;
-			try {
-				am = new src.view.AddMovie(jvdb);
-				am.setVisible(true);
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			Object o = e.getSource();
+			Button b;
+			
+			if(o instanceof Button){
+				b = (Button) o;
+				b.getParent().getParent().setVisible(false);
 			}
 			
-			
 		}
-		
 	}
 }
