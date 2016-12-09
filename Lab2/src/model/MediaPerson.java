@@ -1,6 +1,6 @@
 package src.model;
 
-public abstract class MediaPerson extends Person {
+public class MediaPerson extends Person {
 
 	private String bio;
 	private PersonType profession;

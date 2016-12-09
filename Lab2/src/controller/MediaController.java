@@ -15,6 +15,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -31,11 +32,10 @@ import src.model.Media;
 import src.model.MediaPerson;
 import src.model.MediaReview;
 import src.model.MediaType;
+import src.model.PersonType;
 import src.view.*;
 
 public class MediaController {
-
-	src.view.AddMedia aa;
 
 	public class AddMediaPerson implements ActionListener {
 
@@ -185,110 +185,37 @@ public class MediaController {
 	}
 
 	public class AddMedia implements ActionListener {
-
+		src.view.AddMedia aa;
 		public AddMedia(src.view.AddMedia aa) {
 			super();
+			this.aa = aa;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new SubmitFormEvent(e);
+			new SubmitMediaFormEvent(e, aa);
 
 		}
-
-		// @Override
-		// public void keyTyped(KeyEvent e) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-		//
-		// @Override
-		// public void keyPressed(KeyEvent e) {
-		// new SubmitFormEvent(new ActionEvent(e, 0, null));
-		//
-		// }
-		//
-		// @Override
-		// public void keyReleased(KeyEvent e) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-
 	}
 
-	public class SubmitFormEvent {
+	public class SubmitMediaFormEvent {
 
 		private ActionEvent e;
+		private src.view.AddMedia view;
 
-		public SubmitFormEvent(ActionEvent e) {
+		public SubmitMediaFormEvent(ActionEvent e,src.view.AddMedia view) {
 			this.e = e;
-
-			final Media media = new Media();
-			List<MediaPerson> mediaPersons = new ArrayList<>();
-			List<Genre> genres = new ArrayList<>();
-			List<String> mediaValues = new ArrayList<>();
-			ArrayList<MediaPerson> aList = null;
-			ArrayList<Genre> gList = null;
-
-			if (((EventObject) e).getSource() instanceof JButton) {
-				b = (JButton) e.getSource();
-
-				Component[] ca = b.getParent().getComponents();
-				int i = 0;
-				for (Component c : ca) {
-					System.out.println("Komponent " + ++i + c.toString() + " ");
-					java.sql.Date sqlDate;
-					if (c instanceof JTextField) {
-
-						String string = ((JTextField) c).getText();
-						mediaValues.add(string);
-						System.out.println(string);
-
-					} else if (c instanceof JScrollPane) {
-						Component[] comps = ((JScrollPane) c).getComponents();
-						for (Component c1 : comps) {
-							if (c1 instanceof JViewport) {
-								JViewport port = (JViewport) c1;
-								for (Component c2 : port.getComponents()) {
-									if (c2 != null) {
-										Object o = null;
-										if (c2 instanceof JList) {
-											JList<Object> tmpList = (JList<Object>) c2;
-											if (tmpList.getSelectedValuesList().size() > 0) {
-												o = tmpList.getSelectedValuesList().get(0);
-												if (o instanceof MediaPerson) {
-													aList = (ArrayList<MediaPerson>) ((JList<MediaPerson>) c2)
-															.getSelectedValuesList();
-												} else if (o instanceof Genre) {
-													gList = (ArrayList<Genre>) ((JList<Genre>) c2)
-															.getSelectedValuesList();
-												}
-											}
-										} else if (c2 instanceof JComboBox) {
-											o = (MediaPerson) ((JComboBox) c2).getSelectedItem();
-											if (o instanceof MediaPerson) {
-												if (aList == null) {
-													aList = new ArrayList();
-													aList.add((MediaPerson) o);
-												} else
-													aList.add((MediaPerson) o);
-
-											}
-										}
-
-									}
-								}
-							}
-						}
-					}
-				}
-
-				media.setTitle(mediaValues.remove(0));
-				media.setReleaseDate(Date.valueOf(mediaValues.remove(0)));
-				for (MediaPerson a : aList)
-					media.getMediaPersons().add(a);
-				for (Genre g : gList)
-					media.getGenres().add(g);
+			this.view = view;
+			java.util.Date utilDate = (java.util.Date) view.releaseDate_FormattedTextField.getValue();
+			PersonType profession = Enum.valueOf(PersonType.class,((String) view.profComboBox.getSelectedItem()).toUpperCase());
+			
+			Media media = 
+					new Media(view.titleTextField.getText(),
+					new java.sql.Date(utilDate.getTime()),
+					new MediaPerson(profession, 
+							view.nameTextField.getText(),
+							""),
+					(List<Genre>) view.genreList.getSelectedValuesList());
 
 				System.out.println(media.toString());
 
@@ -303,8 +230,9 @@ public class MediaController {
 					}
 				}.start();
 
-			}
+//			}
 		}
 	}
+	
 
 }

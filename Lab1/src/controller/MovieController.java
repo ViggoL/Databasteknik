@@ -168,9 +168,7 @@ public class MovieController {
 			new Thread() {
 				public void run() {
 					try {
-<<<<<<< HEAD
-<<<<<<< HEAD
-						final List<Movie> movies;
+	final List<Movie> movies;
 						if (view.textField.getText().equals("")){
 							movies = jvdb.getMovies(MovieAttributes.ALL, "");
 						}
@@ -182,10 +180,7 @@ public class MovieController {
 								view.Refresh(movies);
 							}
 						});
-					} catch (SQLException e) {
-=======
-=======
->>>>>>> origin/master
+
 						if (view.textField.getText().equals("")) {
 							view.Refresh(jvdb.getMovies(MovieAttributes.ALL, ""));
 						
@@ -193,9 +188,8 @@ public class MovieController {
 						else view.Refresh(jvdb.getMovies(view.operations, view.textField.getText()));
 						
 					} catch (SQLException e1) {
->>>>>>> origin/master
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						e1.printStackTrace();
 					}
 				}
 			}.start();

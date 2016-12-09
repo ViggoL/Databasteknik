@@ -5,8 +5,8 @@ public enum PersonType {
 	
 	private final String name;
 	
-	PersonType(String ptype){
-		this.name = ptype;
+	private PersonType(String s){
+		this.name = s;
 	}
 	
 	public String toString(){

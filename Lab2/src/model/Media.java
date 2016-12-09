@@ -6,24 +6,37 @@ import java.util.List;
 
 public class Media {
 
-	protected int id;
+	protected int id, rating;
 	protected String title;
 	protected Date releaseDate;
-	private List<Genre> genres = new ArrayList<Genre>();
-	protected int rating;
 	private User addedBy;
 	private List<MediaPerson> mediaPersons;
+	private List<Genre> genres;
 
 	public Media() {
 		super();
+		id = -1; rating = 0;
+		title = null;
+		releaseDate = null;
+		addedBy = null;
+		genres = new ArrayList<Genre>();
+		mediaPersons = new ArrayList<MediaPerson>();
+		
+		
 	}
 	
-	public Media(String title, Date releaseDate, int rating, List<MediaPerson> mPersons, List<Genre> genres, User addedBy){
+	public Media(String title, Date releaseDate,MediaPerson mPerson, List<Genre> genres){
+		this();
 		this.title = title;
-		this.releaseDate = releaseDate;
-		this.mediaPersons = mPersons;
-		this.rating = rating;
+		if(mPerson != null) this.mediaPersons.add(mPerson);
 		this.genres = genres;
+		if(releaseDate != null) this.releaseDate = releaseDate;
+
+	}
+	
+	public Media(String title, Date releaseDate, List<MediaPerson> mPersons, List<Genre> genres, User addedBy){
+		this(title,releaseDate,mPersons.remove(0), genres);
+		this.mediaPersons.addAll(mPersons);
 		this.addedBy = addedBy;
 		
 	}
