@@ -200,6 +200,7 @@ public class MediaController {
 			}
 			catch(IllegalArgumentException illa){
 				illa.printStackTrace();
+				throw illa;
 			}
 
 		}

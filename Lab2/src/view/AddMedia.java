@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
@@ -105,8 +106,9 @@ public class AddMedia extends JFrame implements ActionListener {
 			profComboBox = new JComboBox();
 			profComboBox.setBackground(new Color(153, 204, 255));
 			profComboBox.setEditable(true);
-			profComboBox.setModel(new DefaultComboBoxModel(new String[] { "", "Artist", "Director" }));
+			profComboBox.setModel(new DefaultComboBoxModel(new String[] { "", "Artist","Band","Composer", "Director" }));
 			profComboBox.setBounds(157, 130, 135, 20);
+			profComboBox.setEditable(true);
 			contentPane.add(profComboBox);
 
 			releaseDate_FormattedTextField.setForeground(new Color(0, 0, 153));
@@ -124,12 +126,15 @@ public class AddMedia extends JFrame implements ActionListener {
 			contentPane.add(titleLabel);
 
 			movieGenreList = new JList();
+			movieGenreList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			albumGenreList = new JList();
+			albumGenreList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			genreList = new JList();
+			genreList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			genreList.setSelectionBackground(new Color(255, 255, 255));
 			
-			String [] movieGenres = new String []{"Comedy", "Horror", "Drama", "Action", "RomCom", "SciFi" };
-			String [] albumGenres = new String [] { "Rock", "Classical", "Funk","House","Electronica","HipHop"};
+			String [] movieGenres = new String []{"Comedy","Horror","Drama","Action","RomCom","SciFi","Crime","Mystery"};
+			String [] albumGenres = new String [] { "Rock","Pop","Classical", "Funk","House","Soul","Electronica","HipHop"};
 			
 			movieGenreList.setListData(movieGenres);
 			albumGenreList.setListData(albumGenres);

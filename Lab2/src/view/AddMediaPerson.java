@@ -40,8 +40,6 @@ public class AddMediaPerson extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		
-		
 		JLabel lblName = new JLabel("name");
 		lblName.setBounds(10, 11, 97, 14);
 		contentPane.add(lblName);

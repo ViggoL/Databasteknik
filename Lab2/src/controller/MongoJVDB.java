@@ -123,8 +123,18 @@ public class MongoJVDB implements JvdbInterface {
 				while(docs.hasNext()){
 					Media m = new Media();
 					Document doc = docs.next();
-					Document genres = (Document) doc.get("genres");
-					Document mediaPersons = (Document) doc.get("media persons");
+					m.setId(Integer.valueOf(doc.getObjectId("_id").toString()));
+					m.setTitle(doc.getString("title"));
+					m.setReleaseDate(Date.valueOf(doc.getString("release date")));
+					m.setType(MediaType.valueOf(doc.getString("media type")));
+					
+					List<String> genres = doc.get("genres", ArrayList.class);
+					List<Genre> mGenres = new ArrayList<>();
+					for(String s: genres){
+						mGenres.add(new Genre(s));
+					}
+					m.setGenres(mGenres);
+					for(String p: doc.getString("media person"))m.getMediaPersons().add(new MediaPerson(p));
 				}
 			}finally{
 				docs.close();
@@ -134,43 +144,38 @@ public class MongoJVDB implements JvdbInterface {
 		} catch (MongoException e) {
 			System.err.println("Failed to find media documents" + e.getLocalizedMessage());
 			throw new MongoException("Failed to find media documents", e);
-		}
-		
+		} 
 	}
-	// @Override
-	// public List<Schema> findSchemas(UserEntity owner) throws
-	// MetaStoreException {
-	// try {
-	// List<Schema> schemas = Lists.newArrayList();
-	//
-	// MongoCursor<Document> cursor = schemaCollection.find(eq("owner",
-	// owner.getId())).iterator();
-	// try {
-	// while (cursor.hasNext()) {
-	// Document doc = cursor.next();
-	//
-	// Schema schema = (Schema) Utils.deserialize(doc.get("desc",
-	// Binary.class).getData());
-	// schema.setId(doc.getObjectId("_id").toString());
-	// @SuppressWarnings("unchecked")
-	// List<String> topologies = doc.get("topologies", ArrayList.class);
-	// schema.setTopologies(topologies);
-	// schema.setOwner(owner);
-	// schema.setCreateTime(doc.getDate("createTime"));
-	// schema.setComment(doc.getString("comment"));
-	//
-	// schemas.add(schema);
-	// }
-	// } finally {
-	// cursor.close();
-	// }
-	//
-	// return schemas;
-	// } catch (MongoException e) {
-	// LOG.error("Failed to find schemas", e);
-	// throw new MetaStoreException("Failed to find schemas", e);
-	// }
-	// }
+		
+//	}
+//	@Override
+//	public List<UserEntity> findUserAccounts() throws MetaStoreException {
+//	  try {
+//	    List<UserEntity> users = Lists.newArrayList();
+//
+//	    MongoCursor<Document> cursor = userAccountCollection.find().iterator();
+//	    try {
+//	      while (cursor.hasNext()) {
+//	        Document doc = cursor.next();
+//	        UserEntity user = new UserEntity();
+//	        user.setId(doc.getObjectId("_id").toString());
+//	        user.setName(doc.getString("name"));
+//	        user.setPassword(doc.get("password", Binary.class).getData());
+//	        user.setCreateTime(doc.getDate("createTime"));
+//	        user.setLastModifyTime(doc.getDate("lastModifyTime"));
+//
+//	        users.add(user);
+//	      }
+//	    } finally {
+//	      cursor.close();
+//	    }
+//
+//	    return users;
+//	  } catch (MongoException e) {
+//	    LOG.error("Failed to find user accounts", e);
+//	    throw new MetaStoreException("Failed to find user accounts", e);
+//	  }
+//	}
 
 	@Override
 	public int logIn(String userName, String passWord) throws SQLException {
