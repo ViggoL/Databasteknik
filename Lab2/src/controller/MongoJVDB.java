@@ -23,6 +23,7 @@ import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.CreateCollectionOptions;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class MongoJVDB implements JvdbInterface {
 	
@@ -40,12 +41,12 @@ public class MongoJVDB implements JvdbInterface {
 			this.client = new MongoClient("localhost", 27017);
 			this.db = client.getDatabase(dbName);
 			
+			
 		}catch (MongoException me){
 			System.err.println(me.getMessage());
 			throw new MongoException("Can't connect!");
 			
 		}finally{
-			if(client != null) client.close();
 		}
 		
 		
@@ -84,13 +85,12 @@ public class MongoJVDB implements JvdbInterface {
 
 	@Override
 	public boolean addMedia(Media media) throws SQLException {
-		this.db = client.getDatabase(dbName);
 		MongoCollection<Document> coll = db.getCollection("media");
 		coll.insertOne(new Document("media type",media.getType().toString())
 				.append("title",media.getTitle())
-				.append("release date", ((Date) media.getReleaseDate()).toString())
-				.append("genres", media.getGenres())
-				.append("media persons", media.getMediaPersons()));
+				.append("release date", ((Date) media.getReleaseDate()).toString()));
+				//.append("genres", ("" + media.getGenres().toArray() + ""))
+				//.append("media persons", media.getMediaPersons().toArray()));
 		String s = coll.find().toString();
 		System.out.println(s);
 		return  s != null;
