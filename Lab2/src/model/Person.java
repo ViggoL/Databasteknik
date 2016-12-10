@@ -3,7 +3,7 @@ package src.model;
 public abstract class Person {
 
 	private int id;
-	private String name;
+	protected String name;
 
 	public Person(int id, String name) {
 		this(name);
@@ -12,6 +12,7 @@ public abstract class Person {
 
 	public Person(String name) {
 		this.name = name;
+		this.id = -1;
 	}
 
 	public int getId() {

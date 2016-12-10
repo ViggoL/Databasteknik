@@ -39,5 +39,9 @@ public class MediaPerson extends Person {
 	public PersonType getProfession() throws NullPointerException {
 		return this.profession;
 	}
+	@Override
+	public String toString(){
+		return "[" + String.valueOf(getId()) + "," + name + "," + profession + "," + bio + "]";
+	}
 
 }

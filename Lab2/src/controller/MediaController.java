@@ -24,6 +24,8 @@ import javax.swing.JViewport;
 
 import javax.swing.SwingUtilities;
 
+import com.mongodb.MongoException;
+
 import src.controller.MediaController.AddMedia;
 import src.model.Artist;
 import src.model.Genre;
@@ -192,8 +194,13 @@ public class MediaController {
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			new SubmitMediaFormEvent(e, aa);
+		public void actionPerformed(ActionEvent e) throws IllegalArgumentException{
+			try{
+				new SubmitMediaFormEvent(e, aa);
+			}
+			catch(IllegalArgumentException illa){
+				illa.printStackTrace();
+			}
 
 		}
 	}
@@ -203,14 +210,23 @@ public class MediaController {
 		private ActionEvent e;
 		private src.view.AddMedia view;
 
-		public SubmitMediaFormEvent(ActionEvent e,src.view.AddMedia view) {
+		public SubmitMediaFormEvent(ActionEvent e,src.view.AddMedia view) throws IllegalArgumentException{
 			this.e = e;
 			this.view = view;
 			java.util.Date utilDate = (java.util.Date) view.releaseDate_FormattedTextField.getValue();
+			if(utilDate == null) {SwingUtilities.invokeLater(new Runnable(){
+				@Override public void run(){
+					JOptionPane.showMessageDialog(null, "No date value entered!");
+					throw new IllegalArgumentException("No date value entered!");
+					
+				}});
+			return;
+			}
+			
 			PersonType profession = Enum.valueOf(PersonType.class,((String) view.profComboBox.getSelectedItem()).toUpperCase());
 			List<Genre> list = new ArrayList<>();
 			for(Object s: view.genreList.getSelectedValuesList()){
-				list.add(new Genre( (String) s));
+				if(s instanceof String && ((String) s).length() > 0) list.add(new Genre( (String) s));
 			}
 			Media media = new Media(
 					view.titleTextField.getText(),
@@ -231,6 +247,15 @@ public class MediaController {
 							jvdb.addMedia(media);
 						} catch (SQLException e1) {
 							e1.printStackTrace();
+						} catch (MongoException e2){
+							e2.getMessage();
+							SwingUtilities.invokeLater(new Runnable(){
+								
+								@Override 
+								public void run() {
+									JOptionPane.showMessageDialog(null, e2.getMessage());
+								}	
+							});
 						}
 					}
 				}.start();

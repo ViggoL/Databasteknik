@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
@@ -47,119 +48,123 @@ public class AddMedia extends JFrame implements ActionListener {
 	public JFormattedTextField releaseDate_FormattedTextField;
 
 	public AddMedia(JvdbInterface jvdb) {
-		setBackground(new Color(153, 204, 255));
-		this.me = this;
-		System.out.println("I'm open!");
-		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 310, 324);
-		contentPane = new JPanel();
-		contentPane.setBorder(UIManager.getBorder("Button.border"));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		try {
+			setBackground(new Color(153, 204, 255));
+			this.me = this;
+			System.out.println("I'm open!");
+			setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+			setBounds(100, 100, 310, 324);
+			contentPane = new JPanel();
+			contentPane.setBorder(UIManager.getBorder("Button.border"));
+			setContentPane(contentPane);
+			contentPane.setLayout(null);
 
-		nameLabel = new JLabel("Name");
-		nameLabel.setBounds(157, 55, 135, 22);
-		contentPane.add(nameLabel);
+			nameLabel = new JLabel("Name");
+			nameLabel.setBounds(157, 55, 135, 22);
+			contentPane.add(nameLabel);
 
-		relDateLabel = new JLabel("Release date");
-		relDateLabel.setBounds(10, 110, 100, 22);
-		contentPane.add(relDateLabel);
+			relDateLabel = new JLabel("Release date");
+			relDateLabel.setBounds(10, 110, 100, 22);
+			contentPane.add(relDateLabel);
 
-		String formatString = "yyyy-MM-dd";
+			String formatString = "yyyy-MM-dd";
 
-		DateFormatter formatter = new DateFormatter(new SimpleDateFormat(formatString));
-		DateFormatter displayFormatter = new DateFormatter(new SimpleDateFormat("dd MMMM yyyy"));
-		DefaultFormatterFactory factory = new DefaultFormatterFactory(displayFormatter, displayFormatter, formatter);
+			DateFormatter formatter = new DateFormatter(new SimpleDateFormat(formatString));
+			DateFormatter displayFormatter = new DateFormatter(new SimpleDateFormat("dd MMMM yyyy"));
+			DefaultFormatterFactory factory = new DefaultFormatterFactory(displayFormatter, displayFormatter, formatter);
 
-		releaseDate_FormattedTextField = new JFormattedTextField(factory);
-		releaseDate_FormattedTextField.setToolTipText("Year-Month-date: " + formatString.toLowerCase());
+			releaseDate_FormattedTextField = new JFormattedTextField(factory);
+			releaseDate_FormattedTextField.setToolTipText("Year-Month-date: " + formatString.toLowerCase());
 
-		contentPane.add(releaseDate_FormattedTextField);
+			contentPane.add(releaseDate_FormattedTextField);
 
-		profLabel = new JLabel("Profession");
-		profLabel.setBounds(157, 110, 100, 22);
-		contentPane.add(profLabel);
+			profLabel = new JLabel("Profession");
+			profLabel.setBounds(157, 110, 100, 22);
+			contentPane.add(profLabel);
 
-		genreLabel = new JLabel("Genres");
-		genreLabel.setBounds(10, 165, 98, 22);
-		contentPane.add(genreLabel);
-		
-		Color bg = new Color(153, 204, 255);
-		JButton btnOK = new JButton("OK");
-		btnOK.setForeground(new Color(0, 0, 153));
-		btnOK.setOpaque(true);
-		btnOK.setBackground(bg);
+			genreLabel = new JLabel("Genres");
+			genreLabel.setBounds(10, 165, 98, 22);
+			contentPane.add(genreLabel);
+			
+			Color bg = new Color(153, 204, 255);
+			JButton btnOK = new JButton("OK");
+			btnOK.setForeground(new Color(0, 0, 153));
+			btnOK.setOpaque(true);
+			btnOK.setBackground(bg);
 
-		btnOK.setBounds(157, 186, 135, 98);
-		contentPane.add(btnOK);
+			btnOK.setBounds(157, 186, 135, 98);
+			contentPane.add(btnOK);
 
-		titleTextField = new JTextField();
-		titleTextField.setForeground(Color.DARK_GRAY);
-		titleTextField.setText("title");
-		titleTextField.setBounds(10, 75, 135, 22);
-		contentPane.add(titleTextField);
-		titleTextField.setColumns(10);
+			titleTextField = new JTextField();
+			titleTextField.setForeground(Color.DARK_GRAY);
+			titleTextField.setText("title");
+			titleTextField.setBounds(10, 75, 135, 22);
+			contentPane.add(titleTextField);
+			titleTextField.setColumns(10);
 
-		profComboBox = new JComboBox();
-		profComboBox.setBackground(new Color(153, 204, 255));
-		profComboBox.setEditable(true);
-		profComboBox.setModel(new DefaultComboBoxModel(new String[] { "", "Artist", "Director" }));
-		profComboBox.setBounds(157, 130, 135, 20);
-		contentPane.add(profComboBox);
+			profComboBox = new JComboBox();
+			profComboBox.setBackground(new Color(153, 204, 255));
+			profComboBox.setEditable(true);
+			profComboBox.setModel(new DefaultComboBoxModel(new String[] { "", "Artist", "Director" }));
+			profComboBox.setBounds(157, 130, 135, 20);
+			contentPane.add(profComboBox);
 
-		releaseDate_FormattedTextField.setForeground(new Color(0, 0, 153));
-		releaseDate_FormattedTextField.setBounds(10, 130, 135, 22);
-		contentPane.add(releaseDate_FormattedTextField);
+			releaseDate_FormattedTextField.setForeground(new Color(0, 0, 153));
+			releaseDate_FormattedTextField.setBounds(10, 130, 135, 22);
+			contentPane.add(releaseDate_FormattedTextField);
 
-		nameTextField = new JTextField();
-		nameTextField.setForeground(Color.DARK_GRAY);
-		nameTextField.setColumns(10);
-		nameTextField.setBounds(157, 75, 135, 22);
-		contentPane.add(nameTextField);
+			nameTextField = new JTextField();
+			nameTextField.setForeground(Color.DARK_GRAY);
+			nameTextField.setColumns(10);
+			nameTextField.setBounds(157, 75, 135, 22);
+			contentPane.add(nameTextField);
 
-		titleLabel = new JLabel("Title");
-		titleLabel.setBounds(10, 55, 41, 22);
-		contentPane.add(titleLabel);
+			titleLabel = new JLabel("Title");
+			titleLabel.setBounds(10, 55, 41, 22);
+			contentPane.add(titleLabel);
 
-		movieGenreList = new JList();
-		albumGenreList = new JList();
-		genreList = new JList();
-		genreList.setSelectionBackground(new Color(255, 255, 255));
-		
-		String [] movieGenres = new String []{"Comedy", "Horror", "Drama", "Action", "RomCom", "SciFi" };
-		String [] albumGenres = new String [] { "Rock", "Classical", "Funk","House","Electronica","HipHop"};
-		
-		movieGenreList.setListData(movieGenres);
-		albumGenreList.setListData(albumGenres);
-		
-		port = new JViewport();
-		port.add(genreList, null);
-		port.setBackground(bg);
-		JScrollPane scrollPane = new JScrollPane(port);
-		scrollPane.setViewportBorder(UIManager.getBorder("Button.border"));
-		scrollPane.setBounds(10, 186, 135, 100);
-		contentPane.add(scrollPane);
+			movieGenreList = new JList();
+			albumGenreList = new JList();
+			genreList = new JList();
+			genreList.setSelectionBackground(new Color(255, 255, 255));
+			
+			String [] movieGenres = new String []{"Comedy", "Horror", "Drama", "Action", "RomCom", "SciFi" };
+			String [] albumGenres = new String [] { "Rock", "Classical", "Funk","House","Electronica","HipHop"};
+			
+			movieGenreList.setListData(movieGenres);
+			albumGenreList.setListData(albumGenres);
+			
+			port = new JViewport();
+			port.add(genreList, null);
+			port.setBackground(bg);
+			JScrollPane scrollPane = new JScrollPane(port);
+			scrollPane.setViewportBorder(UIManager.getBorder("Button.border"));
+			scrollPane.setBounds(10, 186, 135, 100);
+			contentPane.add(scrollPane);
 
-		rdbtnMovie = new JRadioButton("Movie");
-		rdbtnMovie.setMnemonic(KeyEvent.VK_M);
-		rdbtnMovie.addActionListener(this);
-		rdbtnMovie.setBounds(10, 20, 100, 23);
-		contentPane.add(rdbtnMovie);
+			rdbtnMovie = new JRadioButton("Movie");
+			rdbtnMovie.setMnemonic(KeyEvent.VK_M);
+			rdbtnMovie.addActionListener(this);
+			rdbtnMovie.setBounds(10, 20, 100, 23);
+			contentPane.add(rdbtnMovie);
 
-		rdbtnAlbum = new JRadioButton("Album");
-		rdbtnAlbum.setMnemonic(KeyEvent.VK_A);
-		rdbtnAlbum.addActionListener(this);
-		
-		rdbtnAlbum.setBounds(157, 20, 100, 23);
-		contentPane.add(rdbtnAlbum);
+			rdbtnAlbum = new JRadioButton("Album");
+			rdbtnAlbum.setMnemonic(KeyEvent.VK_A);
+			rdbtnAlbum.addActionListener(this);
+			
+			rdbtnAlbum.setBounds(157, 20, 100, 23);
+			contentPane.add(rdbtnAlbum);
 
-		ButtonGroup mediaButtonGroup = new ButtonGroup();
-		mediaButtonGroup.add(rdbtnAlbum);
-		mediaButtonGroup.add(rdbtnMovie);
+			ButtonGroup mediaButtonGroup = new ButtonGroup();
+			mediaButtonGroup.add(rdbtnAlbum);
+			mediaButtonGroup.add(rdbtnMovie);
 
-		MediaController ac = new MediaController(jvdb);
+			MediaController ac = new MediaController(jvdb);
 
-		btnOK.addActionListener(ac.new AddMedia(this));
+			btnOK.addActionListener(ac.new AddMedia(this));
+		} catch (IllegalArgumentException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage());
+		}
 	}
 
 	@Override
