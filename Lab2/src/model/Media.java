@@ -12,6 +12,7 @@ public class Media {
 	private User addedBy;
 	private List<MediaPerson> mediaPersons;
 	private List<Genre> genres;
+	private MediaType mediaType;
 
 	public Media() {
 		super();
@@ -113,6 +114,32 @@ public class Media {
 	
 	public List<MediaPerson> getMediaPersons(){
 		return mediaPersons;
+	}
+
+	public MediaType getType() {
+		return this.mediaType;
+	}
+	
+	public void setType(MediaType type){
+		this.mediaType = type;
+	}
+	
+	@Override
+	public String toString(){
+		String sep = ";";
+		StringBuilder string = new StringBuilder();
+		string.append(String.valueOf(this.id)).append(sep); // Mongo index
+		string.append(this.mediaType.toString()).append(sep).append(this.getTitle()).append(sep);
+		string.append(this.releaseDate.toString()).append(sep);
+		string.append("Genre(s):");
+		for(Genre g: genres){
+			string.append(g.getName() + " ");
+		}
+		string.append(sep);
+		for(MediaPerson mp: mediaPersons){
+			string.append(mp.getProfession().toString() + ":" + mp.getName()).append(sep);
+		}
+		return string.toString();
 	}
 
 

@@ -208,14 +208,19 @@ public class MediaController {
 			this.view = view;
 			java.util.Date utilDate = (java.util.Date) view.releaseDate_FormattedTextField.getValue();
 			PersonType profession = Enum.valueOf(PersonType.class,((String) view.profComboBox.getSelectedItem()).toUpperCase());
-			
-			Media media = 
-					new Media(view.titleTextField.getText(),
+			List<Genre> list = new ArrayList<>();
+			for(Object s: view.genreList.getSelectedValuesList()){
+				list.add(new Genre( (String) s));
+			}
+			Media media = new Media(
+					view.titleTextField.getText(),
 					new java.sql.Date(utilDate.getTime()),
-					new MediaPerson(profession, 
-							view.nameTextField.getText(),
-							""),
-					(List<Genre>) view.genreList.getSelectedValuesList());
+					new MediaPerson(profession, view.nameTextField.getText(),""),
+					list
+					);
+			
+			if(this.view.rdbtnAlbum.isSelected()) media.setType(MediaType.ALBUM);
+			else if(this.view.rdbtnMovie.isSelected()) media.setType(MediaType.MOVIE);
 
 				System.out.println(media.toString());
 

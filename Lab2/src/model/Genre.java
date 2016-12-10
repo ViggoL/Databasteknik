@@ -11,6 +11,10 @@ public class Genre {
 		this.name = name;
 	}
 
+	public Genre(String s) {
+		this(0,s);
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -25,11 +29,6 @@ public class Genre {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@Override
-	public String toString() {
-		return this.name;
 	}
 
 }
