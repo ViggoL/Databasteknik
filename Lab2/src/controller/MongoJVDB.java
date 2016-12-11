@@ -4,10 +4,19 @@ import java.net.UnknownHostException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
+
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.CreateCollectionOptions;
 
 import src.model.Genre;
 import src.model.JvdbInterface;
@@ -19,15 +28,6 @@ import src.model.MediaType;
 import src.model.Person;
 import src.model.PersonType;
 import src.model.User;
-
-import com.mongodb.MongoClient;
-import com.mongodb.MongoException;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.CreateCollectionOptions;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class MongoJVDB implements JvdbInterface {
 
@@ -96,7 +96,9 @@ public class MongoJVDB implements JvdbInterface {
 		MongoCollection<Document> coll = db.getCollection("media");
 		coll.insertOne(new Document("media type", media.getType().toString()).append("title", media.getTitle())
 				.append("release date", ((Date) media.getReleaseDate()).toString()).append("genre", genres)
-				.append("media person", persons));
+				.append("media person", persons)
+				.append("rating", media.getRating())
+				.append("adding user", this.currentUser));
 
 		FindIterable<Document> fi = coll.find();
 		for (Object o : fi) {
@@ -134,7 +136,9 @@ public class MongoJVDB implements JvdbInterface {
 						mGenres.add(new Genre(s));
 					}
 					m.setGenres(mGenres);
-					for(String p: doc.getString("media person"))m.getMediaPersons().add(new MediaPerson(p));
+					for(String p: doc.getString("media person").split(",")) m.getMediaPersons().add(new MediaPerson(p));
+					m.setRating(doc.getInteger("rating", 0));
+					m.setAddedBy((User) doc.get("adding user"));
 				}
 			}finally{
 				docs.close();
@@ -179,7 +183,35 @@ public class MongoJVDB implements JvdbInterface {
 
 	@Override
 	public int logIn(String userName, String passWord) throws SQLException {
+		String username = userName;
 		currentUser = new User(userName);
+		String pw = org.apache.commons.codec.digest.DigestUtils.sha1Hex(passWord);
+		currentUser.setPwHash(pw);
+		Document user = null;
+		try{
+			MongoCollection<Document> doc = db.getCollection("users");
+		    Document andQuery = new Document();
+		    List<Document> obj = new ArrayList<Document>();
+		    obj.add(new Document("username", userName));
+		    obj.add(new Document("hashed password", pw));
+		    andQuery.put("$and", obj);
+		    
+		    System.out.println(andQuery.toString());
+		    FindIterable<Document> c = doc.find(andQuery);
+					
+
+			
+			if((user = doc.find(andQuery).first()) == null)
+				currentUser = new User(
+						Integer.valueOf(user.getString("_id")).intValue(), 
+						user.getString("user name"), 
+						user.getString("hashed password"),
+						user.getString("email"));
+		} catch (MongoException e){
+			e.printStackTrace(System.err);
+		} finally{
+			if(user != null) user.clear();
+		}
 		return 0;
 
 	}
