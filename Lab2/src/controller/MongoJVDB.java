@@ -181,21 +181,21 @@ public class MongoJVDB implements JvdbInterface {
 				while (docs.hasNext()) {
 					Media m = new Media();
 					Document doc = docs.next();
-					m.setId(Integer.valueOf(doc.getObjectId("_id").toString()));
+					m.setId(doc.getObjectId("_id").toString());
 					m.setTitle(doc.getString("title"));
 					m.setReleaseDate(Date.valueOf(doc.getString("release date")));
-					m.setType(MediaType.valueOf(doc.getString("media type")));
+					m.setType(MediaType.valueOf(doc.getString("media type").toUpperCase()));
 
-					List<String> genres = doc.get("genres", ArrayList.class);
+					List<String> genres = new ArrayList<>(doc.get("genre", ArrayList.class));
 					List<Genre> mGenres = new ArrayList<>();
 					for (String s : genres) {
 						mGenres.add(new Genre(s));
 					}
 					m.setGenres(mGenres);
-					for (String p : doc.getString("media person").split(","))
+					for (String p : new ArrayList<String>(doc.get("media person", ArrayList.class)))
 						m.getMediaPersons().add(new MediaPerson(p));
-					m.setRating(doc.getInteger("rating", 0));
-					m.setAddedBy((User) doc.get("adding user"));
+					m.setRating(doc.getInteger("rating", 1));
+					m.setAddedBy(doc.getString("adding user"));
 				}
 			} finally {
 				docs.close();
@@ -258,7 +258,7 @@ public class MongoJVDB implements JvdbInterface {
 
 	@Override
 	public boolean mediaReviewExists(int userId, int movieId) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 

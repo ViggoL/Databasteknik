@@ -6,14 +6,14 @@ public class MediaReview {
 	private String text;
 	private int rating;
 	private User user;
-	protected int mediaId;
+	protected String mediaId;
 
-	public MediaReview(int id, String text, int rating, User user, int mediaId) {
+	public MediaReview(int id, String text, int rating, User user, String mediaId) {
 		this(text,rating,user,mediaId);
 		this.id = id;
 	}
 
-	public MediaReview(String text, int rating, User user, int mediaId) {
+	public MediaReview(String text, int rating, User user, String mediaId) {
 		this.text = text;
 		this.rating = rating;
 		this.user= user;
@@ -54,11 +54,11 @@ public class MediaReview {
 		this.user = user;
 	}
 
-	public int getMediaId() {
+	public String getMediaId() {
 		return mediaId;
 	}
 
-	public void setMediaId(int mediaId) {
+	public void setMediaId(String mediaId) {
 		this.mediaId = mediaId;
 	}
 

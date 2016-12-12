@@ -6,17 +6,26 @@ import java.util.List;
 
 public class Media {
 
-	protected int id, rating;
-	protected String title;
-	protected Date releaseDate;
-	private User addedBy;
+	private String id;
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	private int rating;
+	private String title;
+	private Date releaseDate;
+	private String addedBy;
 	private List<MediaPerson> mediaPersons;
 	private List<Genre> genres;
 	private MediaType mediaType;
 
 	public Media() {
 		super();
-		id = -1; rating = 0;
+		id = "-1"; rating = 0;
 		title = null;
 		releaseDate = null;
 		addedBy = null;
@@ -35,25 +44,18 @@ public class Media {
 
 	}
 	
-	public Media(String title, Date releaseDate, List<MediaPerson> mPersons, List<Genre> genres, User addedBy){
+	public Media(String title, Date releaseDate, List<MediaPerson> mPersons, List<Genre> genres, String addedBy){
 		this(title,releaseDate,mPersons.remove(0), genres);
 		this.mediaPersons.addAll(mPersons);
 		this.addedBy = addedBy;
 		
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getTitle() {
 		return title;
 	}
-
+	
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -104,12 +106,12 @@ public class Media {
 		this.rating = rating;
 	}
 
-	public User getAddedBy() {
+	public String getAddedBy() {
 		return addedBy;
 	}
 
-	public void setAddedBy(User addedBy) {
-		this.addedBy = addedBy;
+	public void setAddedBy(String string) {
+		this.addedBy = string;
 	}
 	
 	public List<MediaPerson> getMediaPersons(){

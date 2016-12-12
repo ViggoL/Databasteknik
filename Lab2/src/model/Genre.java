@@ -12,7 +12,7 @@ public class Genre {
 	}
 
 	public Genre(String s) {
-		this(0,s);
+		this(-1,s);
 	}
 
 	public int getId() {
