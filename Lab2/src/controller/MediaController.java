@@ -56,14 +56,15 @@ public class MediaController {
 		public void actionPerformed(ActionEvent e) {
 			new Thread() {
 				public void run() {
-					MediaPerson mediaPerson = new Artist(view.txtName.getText(), view.txtBio.getText());
+					MediaPerson mediaPerson = new MediaPerson(view.txtName.getText(), MediaPersonType.valueOf(view.profComboBox.getSelectedItem().toString().toUpperCase()),view.txtBio.getText());
 					try {
-						jvdb.addMediaPerson(mediaPerson);
+						if (!jvdb.addMediaPerson(mediaPerson)) SwingUtilities.invokeLater(new ErrorDialogue("Person not added"));
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					view.setVisible(false);
+					finally{
+						view.setVisible(false);
+					}
 				}
 
 			}.start();
@@ -225,7 +226,7 @@ public class MediaController {
 			final Media media = new Media(
 					view.titleTextField.getText(),
 					new java.sql.Date(utilDate.getTime()),
-					new MediaPerson(profession, view.nameTextField.getText(),""),
+					new MediaPerson(view.nameTextField.getText(), profession, ""),
 					list
 					);
 			

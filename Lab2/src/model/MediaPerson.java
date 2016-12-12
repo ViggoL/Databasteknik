@@ -15,7 +15,7 @@ public class MediaPerson extends Person {
 		this.setBio(bio);
 	}
 	
-	public MediaPerson(MediaPersonType profession, String name, String bio) {
+	public MediaPerson(String name, MediaPersonType profession, String bio) {
 		this(name,bio);
 		this.profession = profession;
 	}
