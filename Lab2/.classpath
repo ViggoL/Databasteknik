@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path=""/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_101]"/>
+	<classpathentry kind="lib" path="/Users/Viggo/Documents/Databasteknik/mongo-java-driver-3.4.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Viggo/Documents/Databasteknik/Lab1/commons-codec-1.10.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

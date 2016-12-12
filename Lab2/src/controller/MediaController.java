@@ -229,7 +229,7 @@ public class MediaController {
 			for(Object s: view.genreList.getSelectedValuesList()){
 				if(s instanceof String && ((String) s).length() > 0) list.add(new Genre( (String) s));
 			}
-			Media media = new Media(
+			final Media media = new Media(
 					view.titleTextField.getText(),
 					new java.sql.Date(utilDate.getTime()),
 					new MediaPerson(profession, view.nameTextField.getText(),""),
@@ -248,7 +248,7 @@ public class MediaController {
 							jvdb.addMedia(media);
 						} catch (SQLException e1) {
 							e1.printStackTrace();
-						} catch (MongoException e2){
+						} catch (final MongoException e2){
 							e2.getMessage();
 							SwingUtilities.invokeLater(new Runnable(){
 								
