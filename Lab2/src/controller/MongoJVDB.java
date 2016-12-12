@@ -4,6 +4,7 @@ import java.net.UnknownHostException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.naming.AuthenticationException;
@@ -15,7 +16,9 @@ import org.bson.conversions.Bson;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -52,7 +55,25 @@ public class MongoJVDB implements JvdbInterface {
 		} catch (MongoException me) {
 			System.err.println(me.getMessage());
 			throw new MongoException("Can't connect!");
+		} finally {
+		}
 
+	}
+	public MongoJVDB(String host, String databaseName) throws UnknownHostException, MongoException {
+		// the new connection class MongoClient acknowledges all writes to
+		// MongoDB,
+		// in contrast to the existing connection class Db
+		dbName = databaseName;
+		try {
+			ServerAddress sa = new ServerAddress(host, 27017);
+			MongoCredential mc = MongoCredential.createCredential("client", "jvdb", "lab".toCharArray());
+			
+			this.client = new MongoClient(sa, Arrays.asList(mc));
+			this.db = client.getDatabase(dbName);
+			
+		} catch (MongoException me) {
+			System.err.println(me.getMessage());
+			throw new MongoException("Can't connect!");
 		} finally {
 		}
 

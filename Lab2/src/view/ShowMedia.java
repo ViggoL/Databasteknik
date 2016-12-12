@@ -13,11 +13,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import src.controller.MediaController;
-import src.model.Album;
 import src.model.JvdbInterface;
 import src.model.Media;
 import src.model.MediaAttributes;
-import src.model.Movie;
+import src.model.MediaType;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -48,9 +47,9 @@ public class ShowMedia extends JFrame {
 		tmodel.addColumn("Release date");
 
 		if (media != null) {
-			if (media.get(0) instanceof Album)
+			if (media.get(0).getType() == MediaType.ALBUM)
 				tmodel.addColumn("Artists");
-			else if (media.get(0) instanceof Movie)
+			else if (media.get(0).getType() == MediaType.MOVIE)
 				tmodel.addColumn("Directors");
 			else
 				throw new ClassNotFoundException();
