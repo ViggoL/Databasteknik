@@ -8,12 +8,22 @@ package src.model;
 public class User extends Person{
     private String pwHash;
     private String email;
+	private String userStringId;
 
     public User(int userId, String userName, String pwHash, String email) 
     {
         super(userId,userName);
         this.pwHash = pwHash;
         this.email = email;
+        this.userStringId = "";
+    }
+    
+    public User(String userId, String userName, String pwHash, String email) 
+    {
+        super(0,userName);
+        this.pwHash = pwHash;
+        this.email = email;
+        this.userStringId = userId;
     }
     
     public User(String userName){
@@ -27,6 +37,10 @@ public class User extends Person{
 
     public void setUserId(int userId) {
         setId(userId);
+    }
+    
+    public void setUserId(String userId) {
+        this.userStringId = userId;
     }
 
     public String getUserName() {

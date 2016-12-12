@@ -187,11 +187,12 @@ public class MongoJVDB implements JvdbInterface {
 			
 			if((user = doc.find(andQuery).first()) != null){
 				currentUser = new User(
-						0, 
+						user.get("_id").toString(), 
 						user.getString("username"), 
 						user.getString("hashed password"),
 						user.getString("email"));
-			System.out.println("User: " + user.getObjectId("username"));
+			System.out.println("User: ");
+					
 			}
 			else {
 				throw new LoginException();
