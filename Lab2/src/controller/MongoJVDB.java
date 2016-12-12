@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.login.LoginException;
+import javax.swing.SwingUtilities;
+
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -72,8 +75,19 @@ public class MongoJVDB implements JvdbInterface {
 
 	@Override
 	public boolean addUser(String userName, String password, String email) throws SQLException {
-		db.createCollection("User", new CreateCollectionOptions().autoIndex(true));
-		return false;
+		boolean userAdded = true;
+		MongoCollection<Document> coll = db.getCollection("media_users");
+		String pwHash = org.apache.commons.codec.digest.DigestUtils.sha1Hex(password);;
+		coll.insertOne(new Document("username",userName)
+				.append("hashed password",pwHash)
+				.append("email", email));
+		try {
+			logIn(userName,pwHash);
+		} catch (LoginException e) {
+			SwingUtilities.invokeLater(new ErrorDialogue("User not added"));
+			userAdded = false;
+		}
+		return userAdded;
 	}
 
 	@Override
@@ -150,46 +164,16 @@ public class MongoJVDB implements JvdbInterface {
 			throw new MongoException("Failed to find media documents", e);
 		} 
 	}
-		
-//	}
-//	@Override
-//	public List<UserEntity> findUserAccounts() throws MetaStoreException {
-//	  try {
-//	    List<UserEntity> users = Lists.newArrayList();
-//
-//	    MongoCursor<Document> cursor = userAccountCollection.find().iterator();
-//	    try {
-//	      while (cursor.hasNext()) {
-//	        Document doc = cursor.next();
-//	        UserEntity user = new UserEntity();
-//	        user.setId(doc.getObjectId("_id").toString());
-//	        user.setName(doc.getString("name"));
-//	        user.setPassword(doc.get("password", Binary.class).getData());
-//	        user.setCreateTime(doc.getDate("createTime"));
-//	        user.setLastModifyTime(doc.getDate("lastModifyTime"));
-//
-//	        users.add(user);
-//	      }
-//	    } finally {
-//	      cursor.close();
-//	    }
-//
-//	    return users;
-//	  } catch (MongoException e) {
-//	    LOG.error("Failed to find user accounts", e);
-//	    throw new MetaStoreException("Failed to find user accounts", e);
-//	  }
-//	}
 
 	@Override
-	public int logIn(String userName, String passWord) throws SQLException {
+	public int logIn(String userName, String passWord) throws SQLException, LoginException {
 		String username = userName;
 		currentUser = new User(userName);
 		String pw = org.apache.commons.codec.digest.DigestUtils.sha1Hex(passWord);
 		currentUser.setPwHash(pw);
 		Document user = null;
 		try{
-			MongoCollection<Document> doc = db.getCollection("users");
+			MongoCollection<Document> doc = db.getCollection("media_users");
 		    Document andQuery = new Document();
 		    List<Document> obj = new ArrayList<Document>();
 		    obj.add(new Document("username", userName));
@@ -201,12 +185,17 @@ public class MongoJVDB implements JvdbInterface {
 					
 
 			
-			if((user = doc.find(andQuery).first()) == null)
+			if((user = doc.find(andQuery).first()) != null){
 				currentUser = new User(
-						Integer.valueOf(user.getString("_id")).intValue(), 
-						user.getString("user name"), 
+						0, 
+						user.getString("username"), 
 						user.getString("hashed password"),
 						user.getString("email"));
+			System.out.println("User: " + user.getObjectId("username"));
+			}
+			else {
+				throw new LoginException();
+			}
 		} catch (MongoException e){
 			e.printStackTrace(System.err);
 		} finally{

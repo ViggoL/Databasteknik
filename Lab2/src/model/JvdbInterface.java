@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.security.auth.login.LoginException;
+
 public interface JvdbInterface {
 	
 	/**
@@ -73,8 +75,9 @@ public interface JvdbInterface {
 	 * @param passWord
 	 * @return Returns the userId.
 	 * @throws SQLException
+	 * @throws LoginException 
 	 */
-	int logIn(String userName, String passWord) throws SQLException;
+	int logIn(String userName, String passWord) throws SQLException, LoginException;
 
 	
 	/**

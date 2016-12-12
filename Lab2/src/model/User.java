@@ -18,7 +18,7 @@ public class User extends Person{
     
     public User(String userName){
     	super(userName);
-    	this.pwHash = "Incorrect";
+    	this.pwHash = org.apache.commons.codec.digest.DigestUtils.sha1Hex("Incorrect");;
     }
 
     public int getUserId() {

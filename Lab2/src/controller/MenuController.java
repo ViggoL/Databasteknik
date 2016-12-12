@@ -7,7 +7,9 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.SQLException;
 
+import javax.security.auth.login.LoginException;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import src.model.JvdbInterface;
 import src.view.*;
@@ -54,7 +56,8 @@ public class MenuController {
 					try {
 						int id = jvdb.logIn(view.txtUsername.getText(), view.txtPassword.getText());
 						if (id == -1)
-							JOptionPane.showMessageDialog(null, "Incorrect username or password.");
+							throw new LoginException();
+									
 						else
 						{
 							view.setVisible(false);
@@ -65,6 +68,9 @@ public class MenuController {
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
+					} catch (LoginException e) {
+						SwingUtilities.invokeLater(new ErrorDialogue("Incorrect username or password."));
+						e.printStackTrace();
 					}
 				}
 			}.start();
