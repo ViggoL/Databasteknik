@@ -5,5 +5,5 @@ package src.model;
  *
  */
 public enum MediaAttributes {
-	ALL, TITLE, RATING, MEDIA_PERSON, GENRE, DIRECTOR, RELEASE_DATE
+	ALL, TITLE, RATING, MEDIA_PERSON, GENRE, RELEASE_DATE
 }

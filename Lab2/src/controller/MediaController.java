@@ -213,7 +213,7 @@ public class MediaController {
 			this.view = view;
 			java.util.Date utilDate = (java.util.Date) view.releaseDate_FormattedTextField.getValue();
 			if(utilDate == null) {
-				SwingUtilities.invokeLater(new ErrorDialogue("No date value entered!"));
+				SwingUtilities.invokeLater(new src.view.ErrorDialogue("No date value entered!"));
 				return;
 			}
 			

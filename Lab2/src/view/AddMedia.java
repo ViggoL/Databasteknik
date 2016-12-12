@@ -79,10 +79,6 @@ public class AddMedia extends JFrame implements ActionListener {
 
 			contentPane.add(releaseDate_FormattedTextField);
 
-			profLabel = new JLabel("Profession");
-			profLabel.setBounds(157, 110, 100, 22);
-			contentPane.add(profLabel);
-
 			genreLabel = new JLabel("Genres");
 			genreLabel.setBounds(10, 165, 98, 22);
 			contentPane.add(genreLabel);
@@ -102,6 +98,10 @@ public class AddMedia extends JFrame implements ActionListener {
 			titleTextField.setBounds(10, 75, 135, 22);
 			contentPane.add(titleTextField);
 			titleTextField.setColumns(10);
+			
+			profLabel = new JLabel("Profession");
+			profLabel.setBounds(157, 110, 100, 22);
+			contentPane.add(profLabel);
 
 			profComboBox = new JComboBox();
 			profComboBox.setBackground(new Color(153, 204, 255));

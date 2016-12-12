@@ -35,6 +35,7 @@ import src.model.MediaType;
 import src.model.Person;
 import src.model.MediaPersonType;
 import src.model.User;
+import src.view.ErrorDialogue;
 
 public class MongoJVDB implements JvdbInterface {
 
