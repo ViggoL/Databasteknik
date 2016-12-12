@@ -8,20 +8,20 @@ public class Artist extends MediaPerson {
 	public Artist(int id, String name, String bio)
 	{
 		super(id,name,bio);
-		this.setProfession(PersonType.ARTIST);
+		this.setProfession(MediaPersonType.ARTIST);
 	}
 	public Artist(String name, String bio)
 	{
 		super(name,bio);
-		this.setProfession(PersonType.ARTIST);
+		this.setProfession(MediaPersonType.ARTIST);
 	}
 	public Artist(String name)
 	{
 		super(name);
-		this.setProfession(PersonType.ARTIST);
+		this.setProfession(MediaPersonType.ARTIST);
 	}
-	public Artist(PersonType artist, String name, String bio) {
+	public Artist(MediaPersonType artist, String name, String bio) {
 		super(artist,name,bio);
-		this.setProfession(PersonType.ARTIST);
+		this.setProfession(MediaPersonType.ARTIST);
 	}
 }

@@ -34,7 +34,7 @@ import src.model.Media;
 import src.model.MediaPerson;
 import src.model.MediaReview;
 import src.model.MediaType;
-import src.model.PersonType;
+import src.model.MediaPersonType;
 import src.view.*;
 
 public class MediaController {
@@ -224,7 +224,7 @@ public class MediaController {
 			return;
 			}
 			
-			PersonType profession = Enum.valueOf(PersonType.class,((String) view.profComboBox.getSelectedItem()).toUpperCase());
+			MediaPersonType profession = Enum.valueOf(MediaPersonType.class,((String) view.profComboBox.getSelectedItem()).toUpperCase());
 			List<Genre> list = new ArrayList<>();
 			for(Object s: view.genreList.getSelectedValuesList()){
 				if(s instanceof String && ((String) s).length() > 0) list.add(new Genre( (String) s));

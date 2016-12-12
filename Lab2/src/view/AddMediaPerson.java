@@ -11,7 +11,7 @@ import src.controller.MediaController;
 import src.controller.MenuController;
 import src.model.JvdbInterface;
 import src.model.MediaPerson;
-import src.model.PersonType;
+import src.model.MediaPersonType;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;

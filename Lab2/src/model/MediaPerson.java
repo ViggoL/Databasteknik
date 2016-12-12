@@ -3,7 +3,7 @@ package src.model;
 public class MediaPerson extends Person {
 
 	private String bio;
-	private PersonType profession;
+	private MediaPersonType profession;
 
 	public MediaPerson(int id,String name,String bio) {
 		super(id,name);
@@ -15,7 +15,7 @@ public class MediaPerson extends Person {
 		this.setBio(bio);
 	}
 	
-	public MediaPerson(PersonType profession, String name, String bio) {
+	public MediaPerson(MediaPersonType profession, String name, String bio) {
 		this(name,bio);
 		this.profession = profession;
 	}
@@ -32,11 +32,11 @@ public class MediaPerson extends Person {
 		this.bio = bio;
 	}
 	
-	public void setProfession(PersonType profession){
+	public void setProfession(MediaPersonType profession){
 		this.profession = profession;
 	}
 	
-	public PersonType getProfession() throws NullPointerException {
+	public MediaPersonType getProfession() throws NullPointerException {
 		return this.profession;
 	}
 	@Override

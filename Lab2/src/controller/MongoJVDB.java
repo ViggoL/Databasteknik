@@ -33,7 +33,7 @@ import src.model.MediaPerson;
 import src.model.MediaReview;
 import src.model.MediaType;
 import src.model.Person;
-import src.model.PersonType;
+import src.model.MediaPersonType;
 import src.model.User;
 
 public class MongoJVDB implements JvdbInterface {
@@ -81,7 +81,6 @@ public class MongoJVDB implements JvdbInterface {
 
 	@Override
 	public void close() throws SQLException {
-		// TODO Auto-generated method stub
 		client.close();
 	}
 
@@ -135,7 +134,7 @@ public class MongoJVDB implements JvdbInterface {
 	}
 
 	@Override
-	public List<Genre> getGenres() throws SQLException {
+	public List<Genre> getGenres(MediaType type) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -155,7 +154,7 @@ public class MongoJVDB implements JvdbInterface {
 		coll.insertOne(new Document("media type", media.getType().toString()).append("title", media.getTitle())
 				.append("release date", ((Date) media.getReleaseDate()).toString()).append("genre", genres)
 				.append("media person", persons).append("rating", media.getRating())
-				.append("adding user", this.currentUser));
+				.append("adding user", this.currentUser.getName()));
 
 		FindIterable<Document> fi = coll.find();
 		for (Object o : fi) {
@@ -265,14 +264,12 @@ public class MongoJVDB implements JvdbInterface {
 
 	@Override
 	public int getUserId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return currentUser.getId();
 	}
-
+	
 	@Override
-	public List<Person> getPersons(PersonType typeEnum) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public String getUserStringId(){
+		return currentUser.getStringId();
 	}
 
 	@Override
@@ -282,7 +279,7 @@ public class MongoJVDB implements JvdbInterface {
 	}
 
 	@Override
-	public List<MediaPerson> getMediaPersons(PersonType mediaPerson) {
+	public List<MediaPerson> getMediaPersons(MediaPersonType mediaPerson) {
 		// TODO Auto-generated method stub
 		return null;
 	}

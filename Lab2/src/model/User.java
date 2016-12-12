@@ -34,6 +34,10 @@ public class User extends Person{
     public int getUserId() {
         return getId();
     }
+    
+    public String getStringId(){
+    	return userStringId;
+    }
 
     public void setUserId(int userId) {
         setId(userId);
@@ -66,4 +70,5 @@ public class User extends Person{
     public void setEmail(String email) {
         this.email = email;
     }
+
 }

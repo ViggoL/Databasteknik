@@ -37,20 +37,13 @@ public interface JvdbInterface {
 	 * @throws SQLException
 	 */
 	boolean addUser(String userName, String password, String email) throws SQLException;
-	
-	/**
-	 * Gets all artists
-	 * @return
-	 * @throws SQLException
-	 */
-	List<Person> getPersons(PersonType typeEnum) throws SQLException;
 
 	/**
-	 * Get all albums genres
+	 * Get all genres
 	 * @return
 	 * @throws SQLException
 	 */
-	List<Genre> getGenres() throws SQLException;
+	List<Genre> getGenres(MediaType type) throws SQLException;
 
 	/**
 	 * Adds an album
@@ -109,10 +102,28 @@ public interface JvdbInterface {
 	 */
 	int getUserId();
 	
+	/**
+	 * 
+	 * @return The current userId for this JVDB session.
+	 */
+	String getUserStringId();
+	
+	/**
+	 * 
+	 * @return logged in User
+	 */
 	User getUser();
+	
+	/**
+	 * Gets media by selected Enum MediaAttributes <b>selectedAttribute</b> 
+	 * and by Enum MediaType <b>media</b>
+	 * @param selectedAttribute 
+	 * @param media
+	 * @param title
+	 * @return
+	 */
+	List<Media> getMedia(MediaAttributes selectedAttribute, MediaType media, String title);
 
-	List<Media> getMedia(MediaAttributes all, MediaType movie, String title);
-
-	List<MediaPerson> getMediaPersons(PersonType artist); 
+	List<MediaPerson> getMediaPersons(MediaPersonType artist); 
 	
 }
