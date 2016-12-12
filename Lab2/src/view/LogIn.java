@@ -17,6 +17,7 @@ import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class LogIn extends JFrame {
 
@@ -24,6 +25,8 @@ public class LogIn extends JFrame {
 	public JTextField txtUsername;
 	public JPasswordField txtPassword;
 	JvdbInterface jvdb;
+	private JLabel databaseLabel;
+	private JTextField databaseTextField;
 
 	/**
 	 * Create the frame.
@@ -32,34 +35,45 @@ public class LogIn extends JFrame {
 		this.jvdb = jvdb;
 		MenuController controller = new MenuController(jvdb);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 156, 173);
+		setBounds(100, 100, 150, 235);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblUsername = new JLabel("Username");
-		lblUsername.setBounds(6, 6, 91, 16);
+		lblUsername.setBounds(6, 65, 91, 16);
 		contentPane.add(lblUsername);
 		
 		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(6, 53, 61, 16);
+		lblPassword.setBounds(6, 115, 61, 16);
 		contentPane.add(lblPassword);
 		
 		txtUsername = new JTextField();
-		txtUsername.setBounds(6, 25, 134, 28);
+		txtUsername.setBounds(6, 80, 134, 28);
 		contentPane.add(txtUsername);
 		txtUsername.setColumns(10);
 		
 
 		
 		txtPassword = new JPasswordField();
-		txtPassword.setBounds(6, 71, 134, 28);
+		txtPassword.setBounds(6, 130, 134, 28);
 		contentPane.add(txtPassword);
 		
 		JButton btnOK = new JButton("Log in");
 		btnOK.addActionListener(controller.new LogIn(this));
-		btnOK.setBounds(23, 111, 117, 29);
+		btnOK.setBounds(40, 166, 70, 41);
 		contentPane.add(btnOK);
+		
+		databaseLabel = new JLabel("Database");
+		databaseLabel.setBounds(6, 15, 91, 16);
+		contentPane.add(databaseLabel);
+		
+		databaseTextField = new JTextField();
+		databaseTextField.setForeground(new Color(102, 102, 102));
+		databaseTextField.setText("localhost");
+		databaseTextField.setColumns(10);
+		databaseTextField.setBounds(6, 30, 134, 28);
+		contentPane.add(databaseTextField);
 	}
 }

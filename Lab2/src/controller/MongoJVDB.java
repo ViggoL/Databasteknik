@@ -142,7 +142,6 @@ public class MongoJVDB implements JvdbInterface {
 	@Override
 	public boolean addMedia(Media media) throws SQLException {
 		List<String> genres = new ArrayList<>();
-		boolean gt1 = false;
 		for (Genre g : media.getGenres()) {
 			genres.add(g.getName());
 		}
@@ -154,12 +153,13 @@ public class MongoJVDB implements JvdbInterface {
 		coll.insertOne(new Document("media type", media.getType().toString()).append("title", media.getTitle())
 				.append("release date", ((Date) media.getReleaseDate()).toString()).append("genre", genres)
 				.append("media person", persons).append("rating", media.getRating())
-				.append("adding user", this.currentUser.getName()));
+				.append("adding user", this.currentUser.getStringId()));
 
 		FindIterable<Document> fi = coll.find();
 		for (Object o : fi) {
 			System.out.println(o.toString());
 		}
+
 		return fi != null;
 	}
 
