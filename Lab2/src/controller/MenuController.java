@@ -42,7 +42,6 @@ public class MenuController {
 	
 	public class LogIn implements ActionListener
 	{
-
 		src.view.LogIn view;
 		public LogIn(src.view.LogIn view)
 		{
@@ -88,7 +87,6 @@ public class MenuController {
 			AddMediaPerson aa = new AddMediaPerson(jvdb);
 			aa.setVisible(true);
 		}
-		
 	}
 	
 	public class Close implements WindowListener

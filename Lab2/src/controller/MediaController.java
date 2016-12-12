@@ -38,6 +38,11 @@ import src.model.MediaPersonType;
 import src.view.*;
 
 public class MediaController {
+	private JvdbInterface jvdb;
+	
+	public MediaController(JvdbInterface jvdb) {
+		this.jvdb = jvdb;
+	}
 
 	public class AddMediaPerson implements ActionListener {
 
@@ -63,7 +68,6 @@ public class MediaController {
 
 			}.start();
 		}
-
 	}
 
 	public class AddRating implements ActionListener {
@@ -93,13 +97,6 @@ public class MediaController {
 
 		}
 
-	}
-
-	private JvdbInterface jvdb;
-	private JButton b;
-
-	public MediaController(JvdbInterface jvdb) {
-		this.jvdb = jvdb;
 	}
 
 	public class ShowMedia implements ActionListener {
@@ -147,7 +144,7 @@ public class MediaController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Media album = null;
+			Media media = null;
 			Object[] arr = new Object[6];
 			int row = view.tblMedia.getSelectedRow();
 			int column = view.tblMedia.getColumnCount();
@@ -159,13 +156,13 @@ public class MediaController {
 			arr[5] = view.tblMedia.getValueAt(row, 5);
 			for (Media a : view.allMedia) {
 				if (a.compareArrays(arr)) {
-					album = a;
+					media = a;
 					break;
 				}
 
 			}
 			try {
-				if (jvdb.mediaReviewExists(jvdb.getUserId(), album.getId())) {
+				if (jvdb.mediaReviewExists(jvdb.getUserId(), media.getId())) {
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
@@ -215,13 +212,9 @@ public class MediaController {
 			this.e = e;
 			this.view = view;
 			java.util.Date utilDate = (java.util.Date) view.releaseDate_FormattedTextField.getValue();
-			if(utilDate == null) {SwingUtilities.invokeLater(new Runnable(){
-				@Override public void run(){
-					JOptionPane.showMessageDialog(null, "No date value entered!");
-					throw new IllegalArgumentException("No date value entered!");
-					
-				}});
-			return;
+			if(utilDate == null) {
+				SwingUtilities.invokeLater(new ErrorDialogue("No date value entered!"));
+				return;
 			}
 			
 			MediaPersonType profession = Enum.valueOf(MediaPersonType.class,((String) view.profComboBox.getSelectedItem()).toUpperCase());
@@ -236,32 +229,25 @@ public class MediaController {
 					list
 					);
 			
+			
 			if(this.view.rdbtnAlbum.isSelected()) media.setType(MediaType.ALBUM);
 			else if(this.view.rdbtnMovie.isSelected()) media.setType(MediaType.MOVIE);
-
-				System.out.println(media.toString());
-
-				new Thread() {
-					@Override
-					public void run() {
-						try {
-							jvdb.addMedia(media);
-						} catch (SQLException e1) {
-							e1.printStackTrace();
-						} catch (final MongoException e2){
-							e2.getMessage();
-							SwingUtilities.invokeLater(new Runnable(){
-								
-								@Override 
-								public void run() {
-									JOptionPane.showMessageDialog(null, e2.getMessage());
-								}	
-							});
-						}
+			
+			System.out.println(media.toString());
+			
+			new Thread() {
+				@Override
+				public void run() {
+					try {
+						jvdb.addMedia(media);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					} catch (final MongoException e2){
+						e2.printStackTrace();;
+						SwingUtilities.invokeLater(new ErrorDialogue(e2.getLocalizedMessage()));
 					}
-				}.start();
-
-//			}
+				}
+			}.start();
 		}
 	}
 	

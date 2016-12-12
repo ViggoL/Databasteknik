@@ -97,7 +97,7 @@ public class MongoJVDB implements JvdbInterface {
 	@Override
 	public boolean addUser(String userName, String password, String email) throws SQLException {
 		boolean userAdded = true;
-		MongoCollection<Document> coll = db.getCollection("media_users");
+		MongoCollection<Document> coll = db.getCollection("users");
 		String pwHash = org.apache.commons.codec.digest.DigestUtils.sha1Hex(password);
 		coll.insertOne(
 				new Document("username", userName)
