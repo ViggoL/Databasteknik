@@ -77,7 +77,6 @@ public class MongoJVDB implements JvdbInterface {
 			throw new MongoException("Can't connect!");
 		} finally {
 		}
-
 	}
 
 	@Override
@@ -130,7 +129,6 @@ public class MongoJVDB implements JvdbInterface {
 					user.getString("hashed password"), 
 					user.getString("email"));
 		}
-
 		return tmpUser;
 	}
 
@@ -250,11 +248,20 @@ public class MongoJVDB implements JvdbInterface {
 	}
 
 	@Override
-	public boolean addMediaPerson(MediaPerson artist) throws SQLException {
-		db.createCollection("MediaPerson", new CreateCollectionOptions().autoIndex(true));
-		return false;
-		// TODO Auto-generated method stub
-
+	public boolean addMediaPerson(MediaPerson person) {
+		MongoCollection<Document> coll = db.getCollection("MediaPerson");
+		Document mp;
+		boolean addedPersonConfirmed = false;
+		coll.insertOne(mp = new Document("name", person.getName())
+				.append("profession", person.getProfession().toString())
+				.append("biography", person.getBio()));
+		 
+		FindIterable<Document> fi = coll.find();
+		for (Object o : fi) {
+			if(((Document)o).equals(mp)) addedPersonConfirmed = true;
+			System.out.println(o.toString());
+		}
+		return addedPersonConfirmed;
 	}
 
 	@Override
