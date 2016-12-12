@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.AuthenticationException;
 import javax.security.auth.login.LoginException;
 import javax.swing.SwingUtilities;
 
@@ -77,17 +78,39 @@ public class MongoJVDB implements JvdbInterface {
 	public boolean addUser(String userName, String password, String email) throws SQLException {
 		boolean userAdded = true;
 		MongoCollection<Document> coll = db.getCollection("media_users");
-		String pwHash = org.apache.commons.codec.digest.DigestUtils.sha1Hex(password);;
-		coll.insertOne(new Document("username",userName)
-				.append("hashed password",pwHash)
-				.append("email", email));
-		try {
-			logIn(userName,pwHash);
-		} catch (LoginException e) {
+		String pwHash = org.apache.commons.codec.digest.DigestUtils.sha1Hex(password);
+		coll.insertOne(
+				new Document("username", userName)
+				.append("hashed password", pwHash)
+				.append("email", email)
+				);
+
+		if (assertUser(userName, pwHash) == null) {
 			SwingUtilities.invokeLater(new ErrorDialogue("User not added"));
 			userAdded = false;
 		}
 		return userAdded;
+	}
+
+	private User assertUser(String userName, String pwHash) {
+		MongoCollection<Document> doc = db.getCollection("media_users");
+		Document andQuery = new Document();
+		List<Document> obj = new ArrayList<Document>();
+		obj.add(new Document("username", userName));
+		obj.add(new Document("hashed password", pwHash));
+		andQuery.put("$and", obj);
+
+		Document user = doc.find(andQuery).first();
+		User tmpUser = null;
+		if (user != null) {
+			tmpUser = new User(
+					user.get("_id").toString(), 
+					user.getString("username"),
+					user.getString("hashed password"), 
+					user.getString("email"));
+		}
+
+		return tmpUser;
 	}
 
 	@Override
@@ -105,13 +128,12 @@ public class MongoJVDB implements JvdbInterface {
 		}
 		List<String> persons = new ArrayList<>();
 		for (MediaPerson mp : media.getMediaPersons()) {
-			persons.add(mp.toString().replaceAll("[\\[\\]]",""));
+			persons.add(mp.toString().replaceAll("[\\[\\]]", ""));
 		}
 		MongoCollection<Document> coll = db.getCollection("media");
 		coll.insertOne(new Document("media type", media.getType().toString()).append("title", media.getTitle())
 				.append("release date", ((Date) media.getReleaseDate()).toString()).append("genre", genres)
-				.append("media person", persons)
-				.append("rating", media.getRating())
+				.append("media person", persons).append("rating", media.getRating())
 				.append("adding user", this.currentUser));
 
 		FindIterable<Document> fi = coll.find();
@@ -129,40 +151,41 @@ public class MongoJVDB implements JvdbInterface {
 		return parseMediaDocuments(fi);
 	}
 
-	private List<Media> parseMediaDocuments(FindIterable<Document> fi) throws MongoException{
-		
+	private List<Media> parseMediaDocuments(FindIterable<Document> fi) throws MongoException {
+
 		try {
 			MongoCursor<Document> docs = fi.iterator();
 			List<Document> dList = new ArrayList<>();
 			List<Media> media = new ArrayList<>();
-			try{
-				while(docs.hasNext()){
+			try {
+				while (docs.hasNext()) {
 					Media m = new Media();
 					Document doc = docs.next();
 					m.setId(Integer.valueOf(doc.getObjectId("_id").toString()));
 					m.setTitle(doc.getString("title"));
 					m.setReleaseDate(Date.valueOf(doc.getString("release date")));
 					m.setType(MediaType.valueOf(doc.getString("media type")));
-					
+
 					List<String> genres = doc.get("genres", ArrayList.class);
 					List<Genre> mGenres = new ArrayList<>();
-					for(String s: genres){
+					for (String s : genres) {
 						mGenres.add(new Genre(s));
 					}
 					m.setGenres(mGenres);
-					for(String p: doc.getString("media person").split(",")) m.getMediaPersons().add(new MediaPerson(p));
+					for (String p : doc.getString("media person").split(","))
+						m.getMediaPersons().add(new MediaPerson(p));
 					m.setRating(doc.getInteger("rating", 0));
 					m.setAddedBy((User) doc.get("adding user"));
 				}
-			}finally{
+			} finally {
 				docs.close();
 			}
-			 
+
 			return media;
 		} catch (MongoException e) {
 			System.err.println("Failed to find media documents" + e.getLocalizedMessage());
 			throw new MongoException("Failed to find media documents", e);
-		} 
+		}
 	}
 
 	@Override
@@ -172,35 +195,21 @@ public class MongoJVDB implements JvdbInterface {
 		String pw = org.apache.commons.codec.digest.DigestUtils.sha1Hex(passWord);
 		currentUser.setPwHash(pw);
 		Document user = null;
-		try{
+		try {
 			MongoCollection<Document> doc = db.getCollection("media_users");
-		    Document andQuery = new Document();
-		    List<Document> obj = new ArrayList<Document>();
-		    obj.add(new Document("username", userName));
-		    obj.add(new Document("hashed password", pw));
-		    andQuery.put("$and", obj);
-		    
-		    System.out.println(andQuery.toString());
-		    FindIterable<Document> c = doc.find(andQuery);
-					
+			Document andQuery = new Document();
+			List<Document> obj = new ArrayList<Document>();
+			obj.add(new Document("username", userName));
+			obj.add(new Document("hashed password", pw));
+			andQuery.put("$and", obj);
 
-			
-			if((user = doc.find(andQuery).first()) != null){
-				currentUser = new User(
-						user.get("_id").toString(), 
-						user.getString("username"), 
-						user.getString("hashed password"),
-						user.getString("email"));
-			System.out.println("User: ");
-					
-			}
-			else {
-				throw new LoginException();
-			}
-		} catch (MongoException e){
+			if((currentUser = assertUser(userName,pw)) == null) throw new LoginException();
+				
+		} catch (MongoException e) {
 			e.printStackTrace(System.err);
-		} finally{
-			if(user != null) user.clear();
+		} finally {
+			if (user != null)
+				user.clear();
 		}
 		return 0;
 
