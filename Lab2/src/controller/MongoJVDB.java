@@ -114,7 +114,7 @@ public class MongoJVDB implements JvdbInterface {
 	}
 
 	private User assertUser(String userName, String pwHash) {
-		MongoCollection<Document> doc = db.getCollection("media_users");
+		MongoCollection<Document> doc = db.getCollection("users");
 		Document andQuery = new Document();
 		List<Document> obj = new ArrayList<Document>();
 		obj.add(new Document("username", userName));
@@ -217,7 +217,7 @@ public class MongoJVDB implements JvdbInterface {
 		currentUser.setPwHash(pw);
 		Document user = null;
 		try {
-			MongoCollection<Document> doc = db.getCollection("media_users");
+			MongoCollection<Document> doc = db.getCollection("users");
 			Document andQuery = new Document();
 			List<Document> obj = new ArrayList<Document>();
 			obj.add(new Document("username", userName));
