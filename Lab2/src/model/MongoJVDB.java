@@ -145,8 +145,8 @@ public class MongoJVDB implements JvdbInterface {
 			try {
 				//Find and replace
 				if((mediaPerson = db.getCollection("MediaPerson").find(andQuery).first()) != null){
-					tmpMediaPerson = new MediaPerson(mediaPerson.getString("_id"),mediaPerson.getString("name"),mediaPerson.getString("biography"));
-					tmpMediaPerson.setProfession(MediaPersonType.valueOf(mediaPerson.getString("profession").toUpperCase()));
+					tmpMediaPerson = new MediaPerson(mediaPerson.get("_id").toString(), mediaPerson.getString("name"), MediaPersonType.valueOf(mediaPerson.getString("profession").toUpperCase()), mediaPerson.getString("biography"));
+					//tmpMediaPerson.setProfession(MediaPersonType.valueOf(mediaPerson.getString("profession").toUpperCase()));
 					mp = tmpMediaPerson;
 				}
 			} catch (MongoException e) {
@@ -170,7 +170,7 @@ public class MongoJVDB implements JvdbInterface {
 				.append("genre", genres)
 				.append("media person", persons)
 				.append("rating", media.getRating())
-				.append("adding user", this.currentUser.getId()));
+				.append("adding user", this.currentUser.getName()));
 		
 		Object fi = null;
 		//Let's see what we have now, after the insert
@@ -198,6 +198,7 @@ public class MongoJVDB implements JvdbInterface {
 		return parseMediaDocuments(fi);
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<Media> parseMediaDocuments(FindIterable<Document> fi) throws MongoException {
 
 		try {
@@ -222,7 +223,12 @@ public class MongoJVDB implements JvdbInterface {
 					}
 					m.setGenres(mGenres);
 					for (String p : new ArrayList<String>(doc.get("media person", ArrayList.class)))
-						m.getMediaPersons().add(new MediaPerson(p));
+					{
+						MediaPerson mp = new MediaPerson();
+						mp.setName(p.split(",")[1]);
+						mp.setProfession(MediaPersonType.valueOf(p.split(",")[2].toUpperCase()));
+						m.getMediaPersons().add(mp);
+					}
 					m.setRating(doc.getInteger("rating", 1));
 					m.setAddedBy(doc.getString("adding user"));
 					media.add(m);
@@ -240,10 +246,10 @@ public class MongoJVDB implements JvdbInterface {
 
 	@Override
 	public int logIn(String userName, String passWord) throws SQLException, LoginException {
-		String username = userName;
-		currentUser = new User(userName);
 		String pw = org.apache.commons.codec.digest.DigestUtils.sha1Hex(passWord);
+		currentUser = new User();
 		currentUser.setPwHash(pw);
+		currentUser.setUserName(userName);
 		Document user = null;
 		try {
 			if((currentUser = assertUser(userName,pw)) == null) throw new LoginException();
@@ -319,7 +325,7 @@ public class MongoJVDB implements JvdbInterface {
 				i = fi.iterator();
 				while(i.hasNext()){
 					Document d = i.next();
-					MediaPerson mp = new MediaPerson(d.getString("name"));
+					MediaPerson mp = new MediaPerson(d.getString("name"), null,null,null);
 					mp.setId(d.getString("_id"));
 					mp.setBio(d.getString("biography"));
 					mp.setProfession(MediaPersonType.valueOf(d.getString("profession").toUpperCase()));

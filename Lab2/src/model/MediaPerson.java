@@ -5,23 +5,17 @@ public class MediaPerson extends Person {
 	private String bio;
 	private MediaPersonType profession;
 
-	public MediaPerson(String id,String name,String bio) {
-		super(id,name);
-		this.setBio(bio);
+	
+	public MediaPerson()
+	{
+		super();
 	}
 	
-	public MediaPerson(String name, String bio){
-		this(name);
-		this.setBio(bio);
-	}
-	
-	public MediaPerson(String name, MediaPersonType profession, String bio) {
-		this(name,bio);
+	public MediaPerson(String id, String name, MediaPersonType profession, String bio)
+	{
+		super(id, name);
 		this.profession = profession;
-	}
-	
-	public MediaPerson(String name){
-		super(name);
+		this.bio = bio;
 	}
 	
 	public String getBio() {

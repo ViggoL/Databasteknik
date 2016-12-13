@@ -1,6 +1,5 @@
 package src.model;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -118,6 +117,6 @@ public interface JvdbInterface {
 	 * @return
 	 */
 
-	List<MediaPerson> getMediaPersons(MediaPersonType artist); 
+	List<MediaPerson> getMediaPersons(MediaPersonType type); 
 	
 }

@@ -5,15 +5,25 @@ public abstract class Person {
 	private String id;
 	protected String name;
 
-	public Person(String id, String name) {
-		this(name);
-		this.id = id;
-	}
-
-	public Person(String name) {
-		this.name = name;
+	public Person()
+	{
 		this.id = "-1";
 	}
+	
+	public Person(String id, String name)
+	{
+		this.name = name;
+		this.id = id;
+	}
+	//	public Person(String id, String name) {
+//		this(name);
+//		this.id = id;
+//	}
+//
+//	public Person(String name) {
+//		this.name = name;
+//		this.id = "-1";
+//	}
 
 	public String getId() {
 		return id;
