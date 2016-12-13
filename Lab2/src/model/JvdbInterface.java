@@ -1,6 +1,5 @@
 package src.model;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -109,7 +108,15 @@ public interface JvdbInterface {
 	 */
 	User getUser();
 	
+	/**
+	 * Gets media by selected Enum MediaAttributes <b>selectedAttribute</b> 
+	 * and by Enum MediaType <b>media</b>
+	 * @param selectedAttribute 
+	 * @param media
+	 * @param title
+	 * @return
+	 */
 
-	List<MediaPerson> getMediaPersons(MediaPersonType artist); 
+	List<MediaPerson> getMediaPersons(MediaPersonType type); 
 	
 }
