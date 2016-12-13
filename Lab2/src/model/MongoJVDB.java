@@ -296,7 +296,7 @@ public class MongoJVDB implements JvdbInterface {
 
 	@Override
 	public boolean mediaReviewExists(String userId, String movieId) throws SQLException {
-		
+		db.getCollection("MediaReview");
 		return false;
 	}
 
@@ -312,9 +312,9 @@ public class MongoJVDB implements JvdbInterface {
 		
 		switch(type){
 		case ALL:			fi = db.getCollection("MediaPerson").find(); break;
-		case ARTIST:			fi = db.getCollection("MediaPerson").find(eq("profession","Artist")); break;
+		case ARTIST:		fi = db.getCollection("MediaPerson").find(eq("profession","Artist")); break;
 		case DIRECTOR:		fi = db.getCollection("MediaPerson").find((eq("profession","Director"))); break;
-		case COMPOSER:	fi = db.getCollection("MediaPerson").find((eq("profession","Composer"))); break;
+		case COMPOSER:		fi = db.getCollection("MediaPerson").find((eq("profession","Composer"))); break;
 		default: 			throw new MongoConfigurationException("Syntax Error in method"); 
 		}
 		
@@ -338,6 +338,6 @@ public class MongoJVDB implements JvdbInterface {
 			System.out.println(list);
 		}
 		return list;
-	}
-
+	}	
 }
+		

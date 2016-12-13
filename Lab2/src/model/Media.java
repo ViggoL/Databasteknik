@@ -113,6 +113,9 @@ public class Media {
 		this.addedBy = string;
 	}
 	
+	public void setMediaPerson(List<MediaPerson> mps){
+		mediaPersons = mps;
+	}
 	public List<MediaPerson> getMediaPersons(){
 		return mediaPersons;
 	}
@@ -129,8 +132,9 @@ public class Media {
 	public String toString(){
 		String sep = ";";
 		StringBuilder string = new StringBuilder();
-		string.append(String.valueOf(this.id)).append(sep); // Mongo index
-		string.append(this.mediaType.toString()).append(sep).append(this.getTitle()).append(sep);
+		string.append(this.id).append(sep); // Mongo index
+		string.append(this.mediaType.toString()).append(sep)
+		.append(this.getTitle()).append(sep);
 		string.append(this.releaseDate.toString()).append(sep);
 		string.append("Genre(s):");
 		for(Genre g: genres){
