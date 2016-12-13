@@ -139,10 +139,17 @@ public class MongoJVDB implements JvdbInterface {
 			persons.add(mp.toString().replaceAll("[\\[\\]]", ""));
 		}
 		MongoCollection<Document> coll = db.getCollection("media");
+		
+		//Replace MediaPerson with existing MediaPerson in database
+		if(media.getMediaPersons() != null);
+		
+		
 		coll.insertOne(new Document("media type", media.getType().toString()).append("title", media.getTitle())
-				.append("release date", ((Date) media.getReleaseDate()).toString()).append("genre", genres)
-				.append("media person", persons).append("rating", media.getRating())
-				.append("adding user", this.currentUser.getStringId()));
+				.append("release date", ((Date) media.getReleaseDate()).toString())
+				.append("genre", genres)
+				.append("media person", persons)
+				.append("rating", media.getRating())
+				.append("adding user", this.currentUser.getId()));
 
 		FindIterable<Document> fi = coll.find();
 		for (Object o : fi) {
@@ -155,8 +162,7 @@ public class MongoJVDB implements JvdbInterface {
 	@Override
 	public List<Media> getMedia(MediaAttributes attribute, String value) throws SQLException {
 		FindIterable<Document> fi = null;
-		Document andQuery = new Document();
-		List<Document> obj = new ArrayList<Document>();
+
 		switch(attribute){
 		case ALL:			fi = db.getCollection("media").find(); break;
 		case TITLE:			fi = db.getCollection("media").find((new Document("title",value))); break;
@@ -166,11 +172,6 @@ public class MongoJVDB implements JvdbInterface {
 		case RELEASE_DATE:	fi = db.getCollection("media").find((eq("release date",value))); break;
 		default: 			throw new MongoConfigurationException("Syntax Error in method"); 
 		}
-		
-		
-		andQuery.put("$and", obj);
-
-		//Document user = db.getCollection("users").find(andQuery).first();
 		
 		return parseMediaDocuments(fi);
 	}
@@ -272,19 +273,14 @@ public class MongoJVDB implements JvdbInterface {
 	}
 
 	@Override
-	public boolean mediaReviewExists(int userId, String movieId) throws SQLException {
+	public boolean mediaReviewExists(String userId, String movieId) throws SQLException {
 		
 		return false;
 	}
 
 	@Override
-	public int getUserId() {
+	public String getUserId() {
 		return currentUser.getId();
-	}
-	
-	@Override
-	public String getUserStringId(){
-		return currentUser.getStringId();
 	}
 
 	@Override
@@ -297,14 +293,21 @@ public class MongoJVDB implements JvdbInterface {
 	public List<MediaPerson> getMediaPersons(MediaPersonType type) {
 		List<MediaPerson> list = null;
 		FindIterable<Document> fi = null;
+		
 		switch(type){
-		case ALL:		fi = db.getCollection("MediaPerson").find(); break;
-		case DIRECTOR:	
+		case ALL:			fi = db.getCollection("MediaPerson").find(); break;
+		case ARTIST:			fi = db.getCollection("MediaPerson").find(eq("profession","Artist")); break;
+		case DIRECTOR:		fi = db.getCollection("MediaPerson").find((eq("profession","Director"))); break;
+		case COMPOSER:	fi = db.getCollection("MediaPerson").find((eq("profession","Composer"))); break;
+		default: 			throw new MongoConfigurationException("Syntax Error in method"); 
 		}
 		
 		if(fi != null){
 			list = new ArrayList<>();
-			for (Document d : fi) {
+			MongoCursor<Document> i = fi.iterator();
+			while(i.hasNext()){
+				Document d = i.next();
+				MediaPerson mp = new MediaPerson(d.getString("name"));
 				
 			}
 			

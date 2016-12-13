@@ -94,19 +94,14 @@ public interface JvdbInterface {
 	 * @return True if the movie review already exists for the specified user and movie.
 	 * @throws SQLException
 	 */
-	boolean mediaReviewExists(int userId, String mediaId) throws SQLException;
+	boolean mediaReviewExists(String userId, String mediaId) throws SQLException;
 
 	/**
 	 * 
 	 * @return The current userId for this JVDB session.
 	 */
-	int getUserId();
+	String getUserId();
 	
-	/**
-	 * 
-	 * @return The current userId for this JVDB session.
-	 */
-	String getUserStringId();
 	
 	/**
 	 * 

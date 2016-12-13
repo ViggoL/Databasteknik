@@ -8,22 +8,12 @@ package src.model;
 public class User extends Person{
     private String pwHash;
     private String email;
-	private String userStringId;
 
-    public User(int userId, String userName, String pwHash, String email) 
+    public User(String userId, String userName, String pwHash, String email) 
     {
         super(userId,userName);
         this.pwHash = pwHash;
         this.email = email;
-        this.userStringId = "";
-    }
-    
-    public User(String userId, String userName, String pwHash, String email) 
-    {
-        super(0,userName);
-        this.pwHash = pwHash;
-        this.email = email;
-        this.userStringId = userId;
     }
     
     public User(String userName){
@@ -31,21 +21,14 @@ public class User extends Person{
     	this.pwHash = org.apache.commons.codec.digest.DigestUtils.sha1Hex("Incorrect");;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return getId();
     }
-    
-    public String getStringId(){
-    	return userStringId;
-    }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         setId(userId);
     }
-    
-    public void setUserId(String userId) {
-        this.userStringId = userId;
-    }
+
 
     public String getUserName() {
         return getName();

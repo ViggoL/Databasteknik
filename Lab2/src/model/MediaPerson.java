@@ -5,7 +5,7 @@ public class MediaPerson extends Person {
 	private String bio;
 	private MediaPersonType profession;
 
-	public MediaPerson(int id,String name,String bio) {
+	public MediaPerson(String id,String name,String bio) {
 		super(id,name);
 		this.setBio(bio);
 	}
