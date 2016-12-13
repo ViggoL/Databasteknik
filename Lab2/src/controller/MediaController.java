@@ -167,8 +167,8 @@ public class MediaController {
 
 			}
 			try {
-				if (jvdb.mediaReviewExists(jvdb.getUserId(), media.getId())) {
-					SwingUtilities.invokeLater(new src.view.ErrorDialogue("You have already reviewed this album."));					
+				if (jvdb.mediaReviewExists(jvdb.getUser().getUserName(), media.getTitle())) {
+					SwingUtilities.invokeLater(new src.view.ErrorDialogue("You have already reviewed this " + media.getType().toString()));					
 					return;
 				}
 			} catch (SQLException e1) {
