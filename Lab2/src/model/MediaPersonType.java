@@ -1,7 +1,7 @@
 package src.model;
 
 public enum MediaPersonType {
-	ARTIST("Artist"),DIRECTOR("Director"),COMPOSER("Director");
+	ARTIST("Artist"),DIRECTOR("Director"),COMPOSER("Director"), ALL("All");
 	
 	private final String name;
 	

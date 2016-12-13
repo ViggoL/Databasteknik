@@ -87,9 +87,8 @@ public class MongoJVDB implements JvdbInterface {
 	@Override
 	public boolean addUser(String userName, String password, String email) throws SQLException {
 		boolean userAdded = true;
-		MongoCollection<Document> coll = db.getCollection("users");
 		String pwHash = org.apache.commons.codec.digest.DigestUtils.sha1Hex(password);
-		coll.insertOne(
+		db.getCollection("users").insertOne(
 				new Document("username", userName)
 				.append("hashed password", pwHash)
 				.append("email", email)
@@ -103,14 +102,13 @@ public class MongoJVDB implements JvdbInterface {
 	}
 
 	private User assertUser(String userName, String pwHash) {
-		MongoCollection<Document> doc = db.getCollection("users");
 		Document andQuery = new Document();
 		List<Document> obj = new ArrayList<Document>();
 		obj.add(new Document("username", userName));
 		obj.add(new Document("hashed password", pwHash));
 		andQuery.put("$and", obj);
 
-		Document user = doc.find(andQuery).first();
+		Document user = db.getCollection("users").find(andQuery).first();
 		User tmpUser = null;
 		if (user != null) {
 			tmpUser = new User(
@@ -154,9 +152,25 @@ public class MongoJVDB implements JvdbInterface {
 
 	@Override
 	public List<Media> getMedia(MediaAttributes attribute, String value) throws SQLException {
+		FindIterable<Document> fi = null;
+		Document andQuery = new Document();
+		List<Document> obj = new ArrayList<Document>();
+		switch(attribute){
+		case ALL:			fi = db.getCollection("media").find(); break;
+		case TITLE:			obj.add(new Document("username", userName));
+		obj.add(new Document("hashed password", pwHash));
+		case RATING:		
+		case MEDIA_PERSON:	
+		case GENRE:			
+		case RELEASE_DATE:	
+		default: break; 
+		}
+		
+		
+		andQuery.put("$and", obj);
 
-		MongoCollection<Document> coll = db.getCollection("media");
-		FindIterable<Document> fi = coll.find();
+		//Document user = db.getCollection("users").find(andQuery).first();
+		
 		return parseMediaDocuments(fi);
 	}
 
@@ -165,8 +179,10 @@ public class MongoJVDB implements JvdbInterface {
 		try {
 			MongoCursor<Document> docs = fi.iterator();
 			List<Document> dList = new ArrayList<>();
-			List<Media> media = new ArrayList<>();
+			List<Media> media = null;
 			try {
+				if(docs == null) return media;
+				media = new ArrayList<>();
 				while (docs.hasNext()) {
 					Media m = new Media();
 					Document doc = docs.next();
@@ -271,15 +287,29 @@ public class MongoJVDB implements JvdbInterface {
 	}
 
 	@Override
-	public List<Media> getMedia(MediaAttributes all, MediaType movie, String title) {
+	public List<Media> getMedia(MediaAttributes attribute, MediaType media, String title) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<MediaPerson> getMediaPersons(MediaPersonType mediaPerson) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<MediaPerson> getMediaPersons(MediaPersonType type) {
+		List<MediaPerson> list = null;
+		FindIterable<Document> fi = null;
+		switch(type){
+		case ALL:		fi = db.getCollection("MediaPerson").find(); break;
+		case DIRECTOR:	
+		}
+		
+		if(fi != null){
+			list = new ArrayList<>();
+			for (Document d : fi) {
+				
+			}
+			
+			System.out.println(list);
+		}
+		return list;
 	}
 
 }
