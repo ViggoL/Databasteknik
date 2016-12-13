@@ -188,7 +188,7 @@ public class MongoJVDB implements JvdbInterface {
 		switch(attribute){
 		case ALL:			fi = db.getCollection("media").find(); break;
 		case TITLE:			fi = db.getCollection("media").find((new Document("title",value))); break;
-		case RATING:		fi = db.getCollection("media").find((eq("rating",value))); break;
+		case RATING:		fi = db.getCollection("media").find((eq("rating",Integer.parseInt(value)))); break;
 		case MEDIA_PERSON:	fi = db.getCollection("media").find((eq("media person",value))); break;
 		case GENRE:			fi = db.getCollection("media").find((eq("genre",value))); break;
 		case RELEASE_DATE:	fi = db.getCollection("media").find((eq("release date",value))); break;
@@ -271,8 +271,50 @@ public class MongoJVDB implements JvdbInterface {
 
 	@Override
 	public boolean addMediaReview(MediaReview review) throws SQLException {
-		db.createCollection("MediaReview", new CreateCollectionOptions().autoIndex(true));
-		return false;
+		
+		MongoCollection<Document> coll = db.getCollection("reviews");
+		
+		// Insert new review
+		Document rev = new Document();
+		rev.put("media type", review.getType().toString());
+		rev.put("media title", review.getTitle());
+		rev.put("rating", review.getRating());
+		rev.put("reviewed by", review.getUser().name);
+		rev.put("text", review.getText());
+		
+		try {
+			coll.insertOne(rev);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		// Get new rating
+		List<Document> obj = new ArrayList<Document>();
+		obj.add(new Document("media title", review.getTitle()));
+		FindIterable<Document> media = coll.find();
+		MongoCursor<Document> cs = media.iterator();
+		int rating = 0;
+		int count = 0;
+		while (cs.hasNext())
+		{
+			count++;
+			Document tmpMedia = (Document) cs.next();
+			rating += tmpMedia.getInteger("rating").intValue();
+			rating /= count;
+		}
+		
+		Document newDocument = new Document();
+		newDocument.append("$set", new Document().append("rating", rating));
+
+		Document searchQuery = new Document().append("title", review.getTitle());
+
+		db.getCollection("media").updateOne(searchQuery, newDocument);
+		
+		
+		return true;
+		
+		
 		// TODO Auto-generated method stub
 
 	}
@@ -295,9 +337,15 @@ public class MongoJVDB implements JvdbInterface {
 	}
 
 	@Override
-	public boolean mediaReviewExists(String userId, String movieId) throws SQLException {
-		db.getCollection("MediaReview");
-		return false;
+
+	public boolean mediaReviewExists(String userName, String mediaTitle) throws SQLException {
+		Document andQuery = new Document();
+		List<Document> obj = new ArrayList<Document>();
+		
+		obj.add(new Document("media title", mediaTitle));
+		obj.add(new Document("reviewed by", userName));
+		andQuery.put("$and", obj);
+		return db.getCollection("reviews").find(andQuery).iterator().hasNext();
 	}
 
 	@Override
