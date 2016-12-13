@@ -177,9 +177,7 @@ public class MongoJVDB implements JvdbInterface {
 		for (Object o : db.getCollection("media").find()) {
 			if(o.equals(newMedia)) fi = o;
 			System.out.println(o.toString());
-		}
-
-		
+		} 	
 		return fi != null;
 	}
 
@@ -207,7 +205,7 @@ public class MongoJVDB implements JvdbInterface {
 			List<Document> dList = new ArrayList<>();
 			List<Media> media = null;
 			try {
-				if(docs == null) return media;
+				if(!docs.hasNext()) return media;
 				media = new ArrayList<>();
 				while (docs.hasNext()) {
 					Media m = new Media();
@@ -299,12 +297,6 @@ public class MongoJVDB implements JvdbInterface {
 	@Override
 	public String getUserId() {
 		return currentUser.getId();
-	}
-
-	@Override
-	public List<Media> getMedia(MediaAttributes attribute, MediaType media, String title) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
