@@ -117,7 +117,6 @@ public interface JvdbInterface {
 	 * @param title
 	 * @return
 	 */
-	List<Media> getMedia(MediaAttributes selectedAttribute, MediaType media, String title);
 
 	List<MediaPerson> getMediaPersons(MediaPersonType artist); 
 	
