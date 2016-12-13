@@ -169,7 +169,10 @@ public class AddMedia extends JFrame implements ActionListener {
 			btnOK.addActionListener(ac.new AddMedia(this));
 		} catch (IllegalArgumentException e) {
 					JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (java.lang.ArrayIndexOutOfBoundsException e1){
+			SwingUtilities.invokeLater(new ErrorDialogue(e1.getMessage()));
 		}
+		
 	}
 
 	@Override

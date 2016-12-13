@@ -51,7 +51,7 @@ public class ShowMedia extends JFrame {
 			if (media.get(0).getType() == MediaType.ALBUM)
 				tmodel.addColumn("Artists");
 			else if (media.get(0).getType() == MediaType.MOVIE)
-				tmodel.addColumn("Directors");
+				tmodel.addColumn("Associated persons");
 			else
 				throw new ClassNotFoundException();
 		}
@@ -74,7 +74,7 @@ public class ShowMedia extends JFrame {
 	 * @param jvdb
 	 */
 	public ShowMedia(final JvdbInterface jvdb) throws ClassNotFoundException {
-		setBounds(100, 100, 658, 422);
+		setBounds(100, 100, 830, 430);
 
 		MediaController mc = new MediaController(jvdb);
 		contentPane = new JPanel();
@@ -88,16 +88,20 @@ public class ShowMedia extends JFrame {
 		JPanel panel = new JPanel();
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING).addGroup(gl_contentPane
-				.createSequentialGroup().addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
 				.addPreferredGap(ComponentPlacement.RELATED)
-				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 212, GroupLayout.PREFERRED_SIZE).addContainerGap()));
+				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 212, GroupLayout.PREFERRED_SIZE)
+				.addContainerGap()));
+		
 		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup().addGap(0)
 						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 384, GroupLayout.PREFERRED_SIZE)
 								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE))
 						.addContainerGap()));
+		
 		panel.setLayout(null);
 
 		JLabel lblSearch = new JLabel("Search");
@@ -170,24 +174,11 @@ public class ShowMedia extends JFrame {
 		btnRateAlbum.addActionListener(mc.new ShowAddMediaReview(this));
 		btnRateAlbum.setBounds(50, 220, 117, 29);
 		panel.add(btnRateAlbum);
-		// tblAlbums.addMouseListener(new MouseAdapter() {
-		// @Override
-		// public void mouseClicked(MouseEvent arg0) {
-		// btnRateAlbum.setEnabled(true);
-		// }
-		// });
-		contentPane.setLayout(gl_contentPane);
 
+		contentPane.setLayout(gl_contentPane);
 		
 		btnOK.addActionListener(mc.new SearchMedia(this));
 
-//		try {
-//			allMedia = jvdb.getMedia(MediaAttributes.ALL, "");
-//			Refresh(allMedia);
-//		} catch (SQLException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
 
 	}
 }

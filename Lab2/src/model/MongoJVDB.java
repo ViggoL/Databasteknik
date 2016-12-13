@@ -145,7 +145,10 @@ public class MongoJVDB implements JvdbInterface {
 			try {
 				//Find and replace
 				if((mediaPerson = db.getCollection("MediaPerson").find(andQuery).first()) != null){
-					tmpMediaPerson = new MediaPerson(mediaPerson.get("_id").toString(), mediaPerson.getString("name"), MediaPersonType.valueOf(mediaPerson.getString("profession").toUpperCase()), mediaPerson.getString("biography"));
+					tmpMediaPerson = new MediaPerson(mediaPerson.get("_id").toString(), 
+							mediaPerson.getString("name"), 
+							MediaPersonType.valueOf(mediaPerson.getString("profession").toUpperCase()), 
+							mediaPerson.getString("biography"));
 					//tmpMediaPerson.setProfession(MediaPersonType.valueOf(mediaPerson.getString("profession").toUpperCase()));
 					mp = tmpMediaPerson;
 				}
@@ -203,7 +206,6 @@ public class MongoJVDB implements JvdbInterface {
 
 		try {
 			MongoCursor<Document> docs = fi.iterator();
-			List<Document> dList = new ArrayList<>();
 			List<Media> media = null;
 			try {
 				if(!docs.hasNext()) return media;
@@ -311,11 +313,7 @@ public class MongoJVDB implements JvdbInterface {
 
 		db.getCollection("media").updateOne(searchQuery, newDocument);
 		
-		
 		return true;
-		
-		
-		// TODO Auto-generated method stub
 
 	}
 
@@ -345,7 +343,8 @@ public class MongoJVDB implements JvdbInterface {
 		obj.add(new Document("media title", mediaTitle));
 		obj.add(new Document("reviewed by", userName));
 		andQuery.put("$and", obj);
-		return db.getCollection("reviews").find(andQuery).iterator().hasNext();
+		MongoCollection<Document> d = db.getCollection("reviews");
+		return d.find(andQuery).iterator().hasNext();
 	}
 
 	@Override

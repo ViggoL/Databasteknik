@@ -174,6 +174,7 @@ public class MediaController {
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+				SwingUtilities.invokeLater(new ErrorDialogue(e1.getMessage()));
 			}
 
 			AddMediaReview aar = new AddMediaReview(jvdb, media);
@@ -241,7 +242,7 @@ public class MediaController {
 		}
 	}
 
-	public class SubmitMediaFormEvent {
+	private class SubmitMediaFormEvent {
 
 		private ActionEvent e;
 		private src.view.AddMedia view;
