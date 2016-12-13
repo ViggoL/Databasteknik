@@ -139,9 +139,20 @@ public class MongoJVDB implements JvdbInterface {
 			persons.add(mp.toString().replaceAll("[\\[\\]]", ""));
 		}
 		MongoCollection<Document> coll = db.getCollection("media");
-		
+		Document mediaPerson = new Document();
 		//Replace MediaPerson with existing MediaPerson in database
-		if(media.getMediaPersons() != null);
+		for (MediaPerson mp : media.getMediaPersons()){
+			Document andQuery = new Document();
+			List<Document> obj = new ArrayList<Document>();
+			
+			obj.add(new Document("name",mp.getName() ));
+			obj.add(new Document("profession",mp.getProfession().toString()));
+			andQuery.put("$and", obj);
+
+			if((mediaPerson = db.getCollection("MediaPerson").find(andQuery).first()) != null){
+				//lägg mediaPerson i media.MediaPerson
+			};
+		}
 		
 		
 		coll.insertOne(new Document("media type", media.getType().toString()).append("title", media.getTitle())
@@ -223,13 +234,6 @@ public class MongoJVDB implements JvdbInterface {
 		currentUser.setPwHash(pw);
 		Document user = null;
 		try {
-			MongoCollection<Document> doc = db.getCollection("users");
-			Document andQuery = new Document();
-			List<Document> obj = new ArrayList<Document>();
-			obj.add(new Document("username", userName));
-			obj.add(new Document("hashed password", pw));
-			andQuery.put("$and", obj);
-
 			if((currentUser = assertUser(userName,pw)) == null) throw new LoginException();
 				
 		} catch (MongoException e) {
