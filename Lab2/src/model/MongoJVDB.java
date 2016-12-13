@@ -16,6 +16,7 @@ import org.bson.conversions.Bson;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoConfigurationException;
 import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
@@ -24,6 +25,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.CreateCollectionOptions;
+import static com.mongodb.client.model.Filters.eq;
 
 import src.view.ErrorDialogue;
 
@@ -157,13 +159,12 @@ public class MongoJVDB implements JvdbInterface {
 		List<Document> obj = new ArrayList<Document>();
 		switch(attribute){
 		case ALL:			fi = db.getCollection("media").find(); break;
-		case TITLE:			obj.add(new Document("username", userName));
-		obj.add(new Document("hashed password", pwHash));
-		case RATING:		
-		case MEDIA_PERSON:	
-		case GENRE:			
-		case RELEASE_DATE:	
-		default: break; 
+		case TITLE:			fi = db.getCollection("media").find((new Document("title",value))); break;
+		case RATING:		fi = db.getCollection("media").find((eq("rating",value))); break;
+		case MEDIA_PERSON:	fi = db.getCollection("media").find((eq("media person",value))); break;
+		case GENRE:			fi = db.getCollection("media").find((eq("genre",value))); break;
+		case RELEASE_DATE:	fi = db.getCollection("media").find((eq("release date",value))); break;
+		default: 			throw new MongoConfigurationException("Syntax Error in method"); 
 		}
 		
 		
