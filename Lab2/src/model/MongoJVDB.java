@@ -304,13 +304,21 @@ public class MongoJVDB implements JvdbInterface {
 		
 		if(fi != null){
 			list = new ArrayList<>();
-			MongoCursor<Document> i = fi.iterator();
-			while(i.hasNext()){
-				Document d = i.next();
-				MediaPerson mp = new MediaPerson(d.getString("name"));
-				
+			MongoCursor<Document> i = null; 
+			try {
+				i = fi.iterator();
+				while(i.hasNext()){
+					Document d = i.next();
+					MediaPerson mp = new MediaPerson(d.getString("name"));
+					mp.setId(d.getString("_id"));
+					mp.setBio(d.getString("biography"));
+					mp.setProfession(MediaPersonType.valueOf(d.getString("profession").toUpperCase()));
+					list.add(mp);
+					
+				}
+			} finally{
+				i.close();
 			}
-			
 			System.out.println(list);
 		}
 		return list;
