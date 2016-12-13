@@ -15,11 +15,17 @@ public class User extends Person{
         this.pwHash = pwHash;
         this.email = email;
     }
-    
-    public User(String userName){
-    	super(userName);
-    	this.pwHash = org.apache.commons.codec.digest.DigestUtils.sha1Hex("Incorrect");;
+
+    public User()
+    {
+    	super();
     }
+    
+    
+//    public User(String userName){
+//    	super(userName);
+//    	this.pwHash = org.apache.commons.codec.digest.DigestUtils.sha1Hex("Incorrect");;
+//    }
 
     public String getUserId() {
         return getId();

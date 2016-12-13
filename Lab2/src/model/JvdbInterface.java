@@ -109,15 +109,6 @@ public interface JvdbInterface {
 	 */
 	User getUser();
 	
-	/**
-	 * Gets media by selected Enum MediaAttributes <b>selectedAttribute</b> 
-	 * and by Enum MediaType <b>media</b>
-	 * @param selectedAttribute 
-	 * @param media
-	 * @param title
-	 * @return
-	 */
-	List<Media> getMedia(MediaAttributes selectedAttribute, MediaType media, String title);
 
 	List<MediaPerson> getMediaPersons(MediaPersonType artist); 
 	

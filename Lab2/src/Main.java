@@ -13,9 +13,8 @@ public class Main {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, UnknownHostException {
 		
-		JvdbInterface jvdb = new MongoJVDB("db");
-		//JvdbInterface jvdb = new MongoJVDB("viggolunden.com", "jvdb");
-		//System.out.println(jvdb.isOpen());
+		JvdbInterface jvdb = new MongoJVDB("viggolunden.com", "jvdb");
+		System.out.println(jvdb.isOpen());
 		LogIn li = new LogIn(jvdb);
 		li.setVisible(true);
 	}

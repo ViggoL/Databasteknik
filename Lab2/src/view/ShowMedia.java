@@ -178,6 +178,8 @@ public class ShowMedia extends JFrame {
 		// });
 		contentPane.setLayout(gl_contentPane);
 
+		
+		//TODO: Flytta ut till controller
 		btnOK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {

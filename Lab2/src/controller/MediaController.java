@@ -55,7 +55,12 @@ public class MediaController {
 		public void actionPerformed(ActionEvent e) {
 			new Thread() {
 				public void run() {
-					MediaPerson mediaPerson = new MediaPerson(view.txtName.getText(), MediaPersonType.valueOf(view.profComboBox.getSelectedItem().toString().toUpperCase()),view.txtBio.getText());
+					MediaPerson mediaPerson = 
+							new MediaPerson(
+									null,
+									view.txtName.getText(), 
+									MediaPersonType.valueOf(view.profComboBox.getSelectedItem().toString().toUpperCase()), 
+									view.txtBio.getText());
 					try {
 						if (!jvdb.addMediaPerson(mediaPerson)) SwingUtilities.invokeLater(new ErrorDialogue("Person not added"));
 					} catch (SQLException e) {
@@ -219,7 +224,7 @@ public class MediaController {
 			final Media media = new Media(
 					view.titleTextField.getText(),
 					new java.sql.Date(utilDate.getTime()),
-					new MediaPerson(view.nameTextField.getText(), profession, ""),
+					new MediaPerson(null, view.nameTextField.getText(), profession, ""),
 					list
 					);
 			
