@@ -6,20 +6,35 @@ public class MediaReview {
 	private String text;
 	private int rating;
 	private User user;
-	protected String mediaId;
+	private String mediaId;
+	private MediaType type;
+	private String title;
+	
+	
+	
+//	public MediaReview(int id, String text, int rating, User user, String mediaId) {
+//		this(text,rating,user,mediaId);
+//		this.id = id;
+//	}
 
-	public MediaReview(int id, String text, int rating, User user, String mediaId) {
-		this(text,rating,user,mediaId);
-		this.id = id;
-	}
-
-	public MediaReview(String text, int rating, User user, String mediaId) {
+	public MediaReview(String text, int rating, User user, String mediaTitle, MediaType type) {
 		this.text = text;
 		this.rating = rating;
 		this.user= user;
-		this.mediaId=mediaId;
+		this.setTitle(mediaTitle);
+		this.setType(type);
 	}
 
+	public void setType(MediaType type)
+	{
+		this.type = type;
+	}
+	
+	public MediaType getType()
+	{
+		return this.type;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -54,12 +69,20 @@ public class MediaReview {
 		this.user = user;
 	}
 
-	public String getMediaId() {
-		return mediaId;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setMediaId(String mediaId) {
-		this.mediaId = mediaId;
+	public void setTitle(String title) {
+		this.title = title;
 	}
+
+//	public String getMediaId() {
+//		return mediaId;
+//	}
+
+//	public void setMediaId(String mediaId) {
+//		this.mediaId = mediaId;
+//	}
 
 }

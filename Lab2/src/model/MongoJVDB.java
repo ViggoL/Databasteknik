@@ -271,8 +271,20 @@ public class MongoJVDB implements JvdbInterface {
 
 	@Override
 	public boolean addMediaReview(MediaReview review) throws SQLException {
-		db.createCollection("MediaReview", new CreateCollectionOptions().autoIndex(true));
-		return false;
+		Document doc = new Document();
+		doc.put("media type", review.getType().toString());
+		doc.put("media title", review.getTitle());
+		doc.put("rating", review.getRating());
+		doc.put("reviewed by", review.getUser().name);
+		try {
+			db.getCollection("reviews").insertOne(doc);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		
 		// TODO Auto-generated method stub
 
 	}

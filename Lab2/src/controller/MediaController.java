@@ -30,6 +30,7 @@ import src.controller.MediaController.AddMedia;
 import src.model.Genre;
 import src.model.JvdbInterface;
 import src.model.Media;
+import src.model.MediaAttributes;
 import src.model.MediaPerson;
 import src.model.MediaReview;
 import src.model.MediaType;
@@ -87,13 +88,12 @@ public class MediaController {
 		public void actionPerformed(ActionEvent e) {
 			new Thread() {
 				public void run() {
-					MediaReview review = new MediaReview(view.txtComment.getText(), view.slider.getValue(),
-							jvdb.getUser(), ((Media) view.media).getId());
+					MediaReview review = new MediaReview(view.txtComment.getText(), view.slider.getValue(), jvdb.getUser(), view.media.getTitle(), view.media.getType());
 
 					try {
 						jvdb.addMediaReview(review);
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
+						// TODO; Auto-generated catch block
 						e.printStackTrace();
 					}
 					view.setVisible(false);
@@ -176,12 +176,51 @@ public class MediaController {
 				e1.printStackTrace();
 			}
 
-			AddMediaReview aar = new AddMediaReview();
+			AddMediaReview aar = new AddMediaReview(jvdb, media);
 			aar.setVisible(true);
 		}
 
 	}
 
+	
+	public class SearchMedia implements ActionListener
+	{
+
+		src.view.ShowMedia view;
+		
+		public SearchMedia(src.view.ShowMedia view)
+		{
+			this.view = view;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new Thread(){
+				public void run()
+				{
+						try {
+							if (view.textField.getText().equals("")) {
+								view.allMedia = jvdb.getMedia(MediaAttributes.ALL, "");
+								view.Refresh(view.allMedia);
+								return;
+							}
+							view.Refresh(jvdb.getMedia(view.operations, view.textField.getText()));
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (ClassNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Media Type Error");
+						}	
+				}
+			}.start();
+			
+		}
+		
+		
+	}
+	
 	public class AddMedia implements ActionListener {
 		src.view.AddMedia aa;
 		public AddMedia(src.view.AddMedia aa) {

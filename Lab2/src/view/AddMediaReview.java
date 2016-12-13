@@ -78,20 +78,20 @@ public class AddMediaReview extends JFrame {
 
 	}
 
-	public AddMediaReview() throws HeadlessException {
-		super();
-	}
-
-	public AddMediaReview(GraphicsConfiguration gc) {
-		super(gc);
-	}
-
-	public AddMediaReview(String title) throws HeadlessException {
-		super(title);
-	}
-
-	public AddMediaReview(String title, GraphicsConfiguration gc) {
-		super(title, gc);
-	}
+//	public AddMediaReview() throws HeadlessException {
+//		super();
+//	}
+//
+//	public AddMediaReview(GraphicsConfiguration gc) {
+//		super(gc);
+//	}
+//
+//	public AddMediaReview(String title) throws HeadlessException {
+//		super(title);
+//	}
+//
+//	public AddMediaReview(String title, GraphicsConfiguration gc) {
+//		super(title, gc);
+//	}
 
 }

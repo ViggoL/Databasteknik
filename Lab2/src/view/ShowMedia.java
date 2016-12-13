@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import src.controller.MediaController;
+import src.controller.*;
 import src.model.JvdbInterface;
 import src.model.Media;
 import src.model.MediaAttributes;
@@ -166,7 +167,6 @@ public class ShowMedia extends JFrame {
 		btnGroup.add(rdbtnRating);
 
 		JButton btnRateAlbum = new JButton("Rate Media");
-		btnRateAlbum.setEnabled(false);
 		btnRateAlbum.addActionListener(mc.new ShowAddMediaReview(this));
 		btnRateAlbum.setBounds(50, 220, 117, 29);
 		panel.add(btnRateAlbum);
@@ -179,28 +179,7 @@ public class ShowMedia extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 
 		
-		//TODO: Flytta ut till controller
-		btnOK.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if (textField.getText().equals("")) {
-						allMedia = jvdb.getMedia(MediaAttributes.ALL, "");
-						Refresh(allMedia);
-						return;
-					}
-
-					Refresh(jvdb.getMedia(operations, textField.getText()));
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Media Type Error");
-					;
-				}
-			}
-		});
+		btnOK.addActionListener(mc.new SearchMedia(this));
 
 //		try {
 //			allMedia = jvdb.getMedia(MediaAttributes.ALL, "");
