@@ -188,7 +188,7 @@ public class MongoJVDB implements JvdbInterface {
 		switch(attribute){
 		case ALL:			fi = db.getCollection("media").find(); break;
 		case TITLE:			fi = db.getCollection("media").find((new Document("title",value))); break;
-		case RATING:		fi = db.getCollection("media").find((eq("rating",value))); break;
+		case RATING:		fi = db.getCollection("media").find((eq("rating",Integer.parseInt(value)))); break;
 		case MEDIA_PERSON:	fi = db.getCollection("media").find((eq("media person",value))); break;
 		case GENRE:			fi = db.getCollection("media").find((eq("genre",value))); break;
 		case RELEASE_DATE:	fi = db.getCollection("media").find((eq("release date",value))); break;
