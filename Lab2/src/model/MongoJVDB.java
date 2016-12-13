@@ -136,7 +136,7 @@ public class MongoJVDB implements JvdbInterface {
 		}
 		List<String> persons = new ArrayList<>();
 		for (MediaPerson mp : media.getMediaPersons()) {
-			persons.add(mp.toString().replaceAll("[\\[\\]]", ""));
+			persons.add(mp.toMongoString().replaceAll("[\\[\\]]", ""));
 		}
 		MongoCollection<Document> coll = db.getCollection("media");
 		Document mediaPerson = new Document();
@@ -214,6 +214,7 @@ public class MongoJVDB implements JvdbInterface {
 						m.getMediaPersons().add(new MediaPerson(p));
 					m.setRating(doc.getInteger("rating", 1));
 					m.setAddedBy(doc.getString("adding user"));
+					media.add(m);
 				}
 			} finally {
 				docs.close();

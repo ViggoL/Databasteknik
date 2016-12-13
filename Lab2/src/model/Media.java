@@ -24,7 +24,6 @@ public class Media {
 	private MediaType mediaType;
 
 	public Media() {
-		super();
 		id = "-1"; rating = 0;
 		title = null;
 		releaseDate = null;

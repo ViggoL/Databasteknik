@@ -41,7 +41,10 @@ public class MediaPerson extends Person {
 	}
 	@Override
 	public String toString(){
-		return "[" + String.valueOf(getId()) + "," + name + "," + profession + "," + bio + "]";
+		return "[" + name + "," + profession + "]";
 	}
-
+	
+	public String toMongoString(){
+		return "[" + getId() + "," + name + "," + profession + "," + bio + "]";
+	}
 }
