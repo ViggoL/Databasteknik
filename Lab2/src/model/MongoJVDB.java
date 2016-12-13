@@ -130,16 +130,6 @@ public class MongoJVDB implements JvdbInterface {
 
 	@Override
 	public boolean addMedia(Media media) throws SQLException {
-		List<String> genres = new ArrayList<>();
-		for (Genre g : media.getGenres()) {
-			genres.add(g.getName());
-		}
-		List<String> persons = new ArrayList<>();
-		for (MediaPerson mp : media.getMediaPersons()) {
-			persons.add(mp.toString().replaceAll("[\\[\\]]", ""));
-		}
-		MongoCollection<Document> coll = db.getCollection("media");
-		Document mediaPerson = new Document();
 		//Replace MediaPerson with existing MediaPerson in database
 		for (MediaPerson mp : media.getMediaPersons()){
 			Document andQuery = new Document();
@@ -148,25 +138,47 @@ public class MongoJVDB implements JvdbInterface {
 			obj.add(new Document("name",mp.getName() ));
 			obj.add(new Document("profession",mp.getProfession().toString()));
 			andQuery.put("$and", obj);
-
-			if((mediaPerson = db.getCollection("MediaPerson").find(andQuery).first()) != null){
-				//lägg mediaPerson i media.MediaPerson
-			};
+			
+			MediaPerson tmpMediaPerson = null;
+			Document mediaPerson = null;
+			try {
+				//Find and replace
+				if((mediaPerson = db.getCollection("MediaPerson").find(andQuery).first()) != null){
+					tmpMediaPerson = new MediaPerson(mediaPerson.getString("_id"),mediaPerson.getString("name"),mediaPerson.getString("biography"));
+					tmpMediaPerson.setProfession(MediaPersonType.valueOf(mediaPerson.getString("profession").toUpperCase()));
+					mp = tmpMediaPerson;
+				}
+			} catch (MongoException e) {
+				System.err.println("Find and replace method failure: \n\t" + e.getMessage());
+				e.printStackTrace();
+			}
 		}
 		
+		List<String> genres = new ArrayList<>();
+		for (Genre g : media.getGenres()) {
+			genres.add(g.getName());
+		}
+		List<String> persons = new ArrayList<>();
+		for (MediaPerson mp : media.getMediaPersons()) {
+			persons.add(mp.toMongoString().replaceAll("[\\[\\]]", ""));
+		}
 		
-		coll.insertOne(new Document("media type", media.getType().toString()).append("title", media.getTitle())
+		Document newMedia;
+		db.getCollection("media").insertOne(newMedia = new Document("media type", media.getType().toString()).append("title", media.getTitle())
 				.append("release date", ((Date) media.getReleaseDate()).toString())
 				.append("genre", genres)
 				.append("media person", persons)
 				.append("rating", media.getRating())
 				.append("adding user", this.currentUser.getId()));
-
-		FindIterable<Document> fi = coll.find();
-		for (Object o : fi) {
+		
+		Object fi = null;
+		//Let's see what we have now, after the insert
+		for (Object o : db.getCollection("media").find()) {
+			if(o.equals(newMedia)) fi = o;
 			System.out.println(o.toString());
 		}
 
+		
 		return fi != null;
 	}
 
