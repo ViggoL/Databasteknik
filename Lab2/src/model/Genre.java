@@ -6,11 +6,14 @@ public class Genre {
 	protected String name;
 
 	public Genre(int id, String name) {
-		super();
 		this.id = id;
 		this.name = name;
 	}
 
+	public String toString(){
+		return this.name;
+	}
+	
 	public Genre(String s) {
 		this(-1,s);
 	}

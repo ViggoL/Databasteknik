@@ -112,11 +112,11 @@ public class MediaController {
 			new Thread() {
 				public void run() {
 					try {
-						final List<Media> albums = jvdb.getMedia(view.operations, view.textField.getText());
+						final List<Media> media = jvdb.getMedia(view.operations, view.textField.getText());
 						SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
 								try {
-									view.Refresh(albums);
+									view.Refresh(media);
 								} catch (ClassNotFoundException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();

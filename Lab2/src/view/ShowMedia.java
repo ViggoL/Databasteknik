@@ -200,13 +200,13 @@ public class ShowMedia extends JFrame {
 			}
 		});
 
-		try {
-			allMedia = jvdb.getMedia(MediaAttributes.ALL, "");
-			Refresh(allMedia);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		try {
+//			allMedia = jvdb.getMedia(MediaAttributes.ALL, "");
+//			Refresh(allMedia);
+//		} catch (SQLException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 
 	}
 }

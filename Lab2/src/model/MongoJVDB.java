@@ -130,6 +130,7 @@ public class MongoJVDB implements JvdbInterface {
 
 	@Override
 	public boolean addMedia(Media media) throws SQLException {
+
 		//Replace MediaPerson with existing MediaPerson in database
 		for (MediaPerson mp : media.getMediaPersons()){
 			Document andQuery = new Document();
@@ -226,6 +227,7 @@ public class MongoJVDB implements JvdbInterface {
 						m.getMediaPersons().add(new MediaPerson(p));
 					m.setRating(doc.getInteger("rating", 1));
 					m.setAddedBy(doc.getString("adding user"));
+					media.add(m);
 				}
 			} finally {
 				docs.close();
