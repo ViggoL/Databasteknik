@@ -1,4 +1,4 @@
-package src.controller;
+package src.model;
 
 import java.net.UnknownHostException;
 import java.sql.Date;
@@ -25,16 +25,6 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.CreateCollectionOptions;
 
-import src.model.Genre;
-import src.model.JvdbInterface;
-import src.model.Media;
-import src.model.MediaAttributes;
-import src.model.MediaPerson;
-import src.model.MediaReview;
-import src.model.MediaType;
-import src.model.Person;
-import src.model.MediaPersonType;
-import src.model.User;
 import src.view.ErrorDialogue;
 
 public class MongoJVDB implements JvdbInterface {
@@ -265,7 +255,7 @@ public class MongoJVDB implements JvdbInterface {
 	}
 
 	@Override
-	public boolean mediaReviewExists(int userId, int movieId) throws SQLException {
+	public boolean mediaReviewExists(int userId, String movieId) throws SQLException {
 		
 		return false;
 	}

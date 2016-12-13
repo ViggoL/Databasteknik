@@ -10,9 +10,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import src.controller.MediaController;
-import src.controller.MongoJVDB;
 import src.controller.MenuController;
 import src.model.JvdbInterface;
+import src.model.MongoJVDB;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;

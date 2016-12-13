@@ -27,7 +27,6 @@ import javax.swing.SwingUtilities;
 import com.mongodb.MongoException;
 
 import src.controller.MediaController.AddMedia;
-import src.model.Artist;
 import src.model.Genre;
 import src.model.JvdbInterface;
 import src.model.Media;
@@ -164,13 +163,7 @@ public class MediaController {
 			}
 			try {
 				if (jvdb.mediaReviewExists(jvdb.getUserId(), media.getId())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							JOptionPane.showMessageDialog(null, "You have already reviewed this album.");
-						}
-
-					});
+					SwingUtilities.invokeLater(new src.view.ErrorDialogue("You have already reviewed this album."));					
 					return;
 				}
 			} catch (SQLException e1) {
